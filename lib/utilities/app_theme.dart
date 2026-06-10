@@ -25,10 +25,10 @@ class AppTheme {
       ),
       titleTextStyle: TextStyle(
         fontFamily: AppAsset.fontBold,
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 22,
       ),
-      iconTheme: const IconThemeData(color: Colors.black),
+      iconTheme: const IconThemeData(color: Colors.white),
     ),
     textSelectionTheme: .new(
       cursorColor: AppColor.colorPrimary,

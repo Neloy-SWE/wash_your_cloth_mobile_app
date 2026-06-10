@@ -5,6 +5,7 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/auth/login/screen_auth_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
 
 final GlobalKey<NavigatorState> navigator = GlobalKey();
@@ -24,10 +25,10 @@ final GoRouter appRouter = GoRouter(
       path: AppRouter.screenSplash,
       builder: (context, state) => ScreenSplash(),
     ),
-    // GoRoute(
-    //   path: AppRouter.screenAuthLogin,
-    //   builder: (context, state) => ScreenAuthLogin(),
-    // ),
+    GoRoute(
+      path: AppRouter.screenAuthLogin,
+      builder: (context, state) => ScreenAuthLogin(),
+    ),
     // GoRoute(
     //   path: AppRouter.screenAuthRegistration,
     //   builder: (context, state) => ScreenAuthRegistration(),
