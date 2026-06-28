@@ -4,6 +4,8 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
@@ -29,11 +31,10 @@ class MyApp extends StatelessWidget {
             data: MediaQuery.of(
               context,
             ).copyWith(textScaler: TextScaler.noScaling),
-            child: child!,
+            child: BlocProvider(create: (_) => GlobalBloc(), child: child!),
           );
         },
       ),
     );
   }
 }
-

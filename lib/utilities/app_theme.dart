@@ -81,7 +81,7 @@ class AppTheme {
     textTheme: .new(
       titleLarge: TextStyle(
         fontFamily: AppAsset.fontBold,
-        color: Colors.white,
+        color: AppColor.colorPrimary,
         fontSize: 25,
       ),
 

@@ -13,4 +13,6 @@ class AppText {
   static const String appTitle = "Wash Your Cloth";
   static const String welcome = "Welcome";
   static const String login = "Login";
+  static const String selectRole = "Select Role";
+  static const String selectedRoleColon = "Selected Role:";
 }
