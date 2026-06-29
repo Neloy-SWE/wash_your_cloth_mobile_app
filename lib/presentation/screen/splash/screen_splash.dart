@@ -34,9 +34,9 @@ class _ScreenSplashState extends State<ScreenSplash> with TickerProviderStateMix
     });
     controllerLoader.repeat(reverse: false);
 
-    Timer(const Duration(seconds: 2), () {
-      context.go(AppRouter.screenRole);
-    });
+    // Timer(const Duration(seconds: 2), () {
+    //   context.go(AppRouter.screenRole);
+    // });
 
     super.initState();
   }

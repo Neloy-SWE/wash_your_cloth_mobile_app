@@ -25,6 +25,8 @@ class GlobalEventSetPhone extends GlobalEvent {
   GlobalEventSetPhone({required this.phone});
 }
 
+class GlobalEventGetLoginStatus extends GlobalEvent {}
+
 class GlobalEventSetProfile extends GlobalEvent {}
 
 class GlobalEventUpdateProfile extends GlobalEvent {}
