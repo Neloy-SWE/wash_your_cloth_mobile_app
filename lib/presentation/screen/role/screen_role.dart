@@ -5,12 +5,15 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_button.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
+
+import '../../../router/app_router.dart';
 
 class ScreenRole extends StatelessWidget {
   const ScreenRole({super.key});
@@ -25,7 +28,6 @@ class ScreenRole extends StatelessWidget {
           child: Center(
             child: BlocBuilder<GlobalBloc, GlobalState>(
               builder: (context, state) {
-
                 final selectedRole = state.role;
                 // print("selectedRole::: $selectedRole");
 
@@ -46,11 +48,14 @@ class ScreenRole extends StatelessWidget {
                         context.read<GlobalBloc>().add(
                           GlobalEventSetRole(role: Role.user),
                         );
-
                       },
-                      buttonText: "USER",
-                      textColor: selectedRole == Role.user ? Colors.white : AppColor.colorPrimary,
-                      colorButton: selectedRole == Role.user ? AppColor.colorPrimary : Colors.white,
+                      buttonText: AppText.userCapital,
+                      textColor: selectedRole == Role.user
+                          ? Colors.white
+                          : AppColor.colorPrimary,
+                      colorButton: selectedRole == Role.user
+                          ? AppColor.colorPrimary
+                          : Colors.white,
                       colorBorder: AppColor.colorPrimary,
                     ),
                     AppSize.gapH15,
@@ -60,11 +65,28 @@ class ScreenRole extends StatelessWidget {
                           GlobalEventSetRole(role: Role.shop),
                         );
                       },
-                      buttonText: "SHOP",
-                      textColor: selectedRole == Role.shop ? Colors.white : AppColor.colorPrimary,
-                      colorButton: selectedRole == Role.shop ? AppColor.colorPrimary : Colors.white,
+                      buttonText: AppText.shopCapital,
+                      textColor: selectedRole == Role.shop
+                          ? Colors.white
+                          : AppColor.colorPrimary,
+                      colorButton: selectedRole == Role.shop
+                          ? AppColor.colorPrimary
+                          : Colors.white,
                       colorBorder: AppColor.colorPrimary,
                     ),
+                    AppSize.gapH80,
+
+                    if (selectedRole != null) ...[
+                      CustomButton(
+                        onPressed: () {
+                          context.go(AppRouter.screenAuthLogin);
+                        },
+                        buttonText: AppText.proceed,
+                        textColor: Colors.white,
+                        colorButton: AppColor.colorPrimary,
+                        colorBorder: AppColor.colorPrimary,
+                      ),
+                    ],
                   ],
                 );
               },

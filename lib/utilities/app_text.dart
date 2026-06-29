@@ -15,4 +15,13 @@ class AppText {
   static const String login = "Login";
   static const String selectRole = "Select Role";
   static const String selectedRoleColon = "Selected Role:";
+  static const String userCapital = "USER";
+  static const String shopCapital = "SHOP";
+  static const String proceed = "Proceed";
+  static const String phone = "Phone";
+  static const String phoneHint = "01....";
+  static const String password = "Password";
+  static const String passwordHint = "!ab#ZZn988*";
+  static const String orNew = "Or new?";
+  static const String registration = "Registration";
 }

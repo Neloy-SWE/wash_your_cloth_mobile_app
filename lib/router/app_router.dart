@@ -7,7 +7,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/auth/login/screen_auth_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
@@ -17,9 +16,9 @@ import '../presentation/screen/dashboard/screen_dashboard.dart';
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
 class AppRouter {
-  final GlobalBloc globalBloc;
-
-  AppRouter({required this.globalBloc});
+  // final GlobalBloc globalBloc;
+  //
+  // AppRouter({required this.globalBloc});
 
   static const String screenSplash = "/screenSplash";
   static const String screenRole = "/screenRole";
@@ -31,16 +30,19 @@ class AppRouter {
   late final GoRouter door = GoRouter(
     navigatorKey: navigator,
     initialLocation: AppRouter.screenSplash,
-    refreshListenable: GoRouterRefreshStream(globalBloc.stream),
-    redirect: (context, state) {
-      final currentState = globalBloc.state;
-      if (currentState.isLogin == null) {
-        return screenSplash;
-      } else if (currentState.isLogin == true) {
-        return screenDashboard;
-      }
-      return screenRole;
-    },
+    // refreshListenable: GoRouterRefreshStream(globalBloc.stream),
+    // redirect: (context, state) {
+    //   final currentState = globalBloc.state;
+    //   if (currentState.isLogin == null) {
+    //     return screenSplash;
+    //   } else if (currentState.isLogin == true) {
+    //     return screenDashboard;
+    //   }
+    //   else if (currentState.isLogin == false){
+    //     return screenRole;
+    //   }
+    //   return null;
+    // },
     routes: [
       GoRoute(
         path: AppRouter.screenSplash,

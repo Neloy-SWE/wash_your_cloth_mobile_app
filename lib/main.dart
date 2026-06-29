@@ -31,7 +31,7 @@ void main() {
     repositoryAuthentication: repositoryAuthentication,
   )..add(GlobalEventGetLoginStatus());
 
-  final appRouter = AppRouter(globalBloc: globalBloc);
+  final appRouter = AppRouter();
 
   runApp(
     MyApp(
