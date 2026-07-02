@@ -24,4 +24,5 @@ class AppText {
   static const String passwordHint = "!ab#ZZn988*";
   static const String orNew = "Or new?";
   static const String registration = "Registration";
+  static const String okay = "Okay";
 }
