@@ -20,7 +20,7 @@ abstract class IApiRefreshToken {
 class ApiRefreshToken implements IApiRefreshToken {
   final Client client;
 
-  ApiRefreshToken({required this.client});
+  const ApiRefreshToken({required this.client});
 
   @override
   Future<(ModelLogin?, ModelError?)> refreshToken({

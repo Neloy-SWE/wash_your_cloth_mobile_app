@@ -4,10 +4,11 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 class ClientConstant {
-  static const String baseUrl = "";
+  static const String baseUrl = "http://192.168.0.104:5000";
 
   // status code:
   static const int statusCode200OK = 200;
+  static const int statusCode202Accepted = 202;
 
   // result:
   static const String selectRole = "selectRole";
@@ -23,5 +24,8 @@ class ClientConstant {
   static const String refreshToken = "refreshToken";
   static const String expirationToken = "expirationToken";
   static const String expirationRefreshToken = "expirationRefreshToken";
+  static const String phone = "phone";
+  static const String password = "password";
+  static const String role = "role";
 
 }

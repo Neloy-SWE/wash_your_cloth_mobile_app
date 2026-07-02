@@ -4,7 +4,8 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 class ApiPath {
-  // auth
-  static const String auth = "/auth/";
-  static const String refreshToken = "${auth}refresh-token";
+  // authentication
+  static const String authentication = "/auth";
+  static const String refreshToken = "$authentication/refresh-token";
+  static const String login = "$authentication/login";
 }
