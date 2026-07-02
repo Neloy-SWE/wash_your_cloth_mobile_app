@@ -8,3 +8,5 @@ class AppConstant {}
 enum Role { user, shop }
 
 enum OTPNavigation { updatePhone, updatePassword, registration }
+
+enum DialogueType { loader, question, result }
