@@ -79,7 +79,7 @@ class ScreenRole extends StatelessWidget {
                     if (selectedRole != null) ...[
                       CustomButton(
                         onPressed: () {
-                          context.go(AppRouter.screenAuthLogin);
+                          context.push(AppRouter.screenAuthLogin);
                         },
                         buttonText: AppText.proceed,
                         textColor: Colors.white,
