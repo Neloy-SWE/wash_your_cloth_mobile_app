@@ -8,10 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_dialogue.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/bloc/authentication_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/bloc/login_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
+import '../../../../data/repository/repository_authentication.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utilities/app_color.dart';
 import '../../../../utilities/app_validator.dart';
@@ -34,114 +35,127 @@ class _ScreenLoginState extends State<ScreenLogin> {
   bool isPasswordSecure = true;
 
   @override
+  void dispose() {
+    controllerPhone.dispose();
+    controllerPassword.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(AppText.login)),
       body: SafeArea(
-        child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            if (state is AuthenticationStateLoading) {
-              CallDialogue.showLoader(context);
-            } else if (state is AuthenticationStateNavigateLogin) {
-              CallDialogue.hideLoader(context);
-              context.go(AppRouter.screenDashboard);
-            } else if (state is AuthenticationStateNavigateOTP) {
-              CallDialogue.hideLoader(context);
-              context.go(AppRouter.screenOTP);
-            } else if (state is AuthenticationStateResult) {
-              CallDialogue.hideLoader(context);
-              CallDialogue.showResult(
-                context: context,
-                message: state.message,
-                onOk: () {
-                  CallDialogue.hideLoader(context);
-                },
-              );
-            }
-          },
-          builder: (context, state) {
-            return ListView(
-              padding: AppSize.paddingAll25,
-              children: [
-                Form(
-                  key: _loginKey,
-                  child: Column(
-                    children: [
-                      AppSize.gapH150,
-                      // phone:
-                      CustomFieldPrimary(
-                        controller: controllerPhone,
-                        textInputType: TextInputType.phone,
-                        textInputAction: TextInputAction.next,
-                        title: AppText.phone,
-                        label: AppText.phoneHint,
-                        validator: (value) {
-                          if (AppValidator.isPhone(value)) {
-                            return null;
-                          } else {
-                            return AppValidator.validatePhone;
-                          }
-                        },
-                      ),
-                      AppSize.gapH15,
-
-                      // password:
-                      CustomFieldPrimary(
-                        controller: controllerPassword,
-                        textInputType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        title: AppText.password,
-                        label: AppText.passwordHint,
-                        isSecure: isPasswordSecure,
-                        suffixWidget: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isPasswordSecure = !isPasswordSecure;
-                            });
+        child: BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(
+            repositoryAuthentication:
+                RepositoryProvider.of<IRepositoryAuthentication>(context),
+          ),
+          child: BlocConsumer<LoginBloc, LoginState>(
+            listener: (context, state) {
+              if (state is LoginStateLoading) {
+                CallDialogue.showLoader(context);
+              } else if (state is LoginStateNavigateLogin) {
+                CallDialogue.hideLoader(context);
+                context.go(AppRouter.screenDashboard);
+              } else if (state is LoginStateNavigateOTP) {
+                CallDialogue.hideLoader(context);
+                context.go(AppRouter.screenOTP);
+              } else if (state is LoginStateResult) {
+                CallDialogue.hideLoader(context);
+                CallDialogue.showResult(
+                  context: context,
+                  message: state.message,
+                  onOk: () {
+                    CallDialogue.hideLoader(context);
+                  },
+                );
+              }
+            },
+            builder: (context, state) {
+              return ListView(
+                padding: AppSize.paddingAll25,
+                children: [
+                  Form(
+                    key: _loginKey,
+                    child: Column(
+                      children: [
+                        AppSize.gapH150,
+                        // phone:
+                        CustomFieldPrimary(
+                          controller: controllerPhone,
+                          textInputType: TextInputType.phone,
+                          textInputAction: TextInputAction.next,
+                          title: AppText.phone,
+                          label: AppText.phoneHint,
+                          validator: (value) {
+                            if (AppValidator.isPhone(value)) {
+                              return null;
+                            } else {
+                              return AppValidator.validatePhone;
+                            }
                           },
-                          icon: Icon(
-                            isPasswordSecure
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
                         ),
-                        validator: (value) {
-                          // todo: need some solid conditions
-                          if (value == null || value.isEmpty) {
-                            return AppValidator.validatorPassword;
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      AppSize.gapH35,
+                        AppSize.gapH15,
 
-                      // login button:
-                      CustomButton(
-                        onPressed: _login,
-                        buttonText: AppText.login,
-                      ),
+                        // password:
+                        CustomFieldPrimary(
+                          controller: controllerPassword,
+                          textInputType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          title: AppText.password,
+                          label: AppText.passwordHint,
+                          isSecure: isPasswordSecure,
+                          suffixWidget: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isPasswordSecure = !isPasswordSecure;
+                              });
+                            },
+                            icon: Icon(
+                              isPasswordSecure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                          ),
+                          validator: (value) {
+                            // todo: need some solid conditions
+                            if (value == null || value.isEmpty) {
+                              return AppValidator.validatorPassword;
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                        AppSize.gapH35,
 
-                      CustomTitledDivider(title: AppText.orNew),
+                        // login button:
+                        CustomButton(
+                          onPressed: _login,
+                          buttonText: AppText.login,
+                        ),
 
-                      // navigate registration:
-                      CustomButton(
-                        onPressed: () {
-                          context.pushReplacement(
-                            AppRouter.screenAuthRegistration,
-                          );
-                        },
-                        buttonText: AppText.registration,
-                        textColor: AppColor.colorPrimary,
-                        colorButton: Colors.white,
-                      ),
-                      AppSize.gapH35,
-                    ],
+                        CustomTitledDivider(title: AppText.orNew),
+
+                        // navigate registration:
+                        CustomButton(
+                          onPressed: () {
+                            context.pushReplacement(
+                              AppRouter.screenRegistration,
+                            );
+                          },
+                          buttonText: AppText.registration,
+                          textColor: AppColor.colorPrimary,
+                          colorButton: Colors.white,
+                        ),
+                        AppSize.gapH35,
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -153,8 +167,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
       String role = context.read<GlobalBloc>().state.role!.name;
 
-      context.read<AuthenticationBloc>().add(
-        AuthenticationEventLogin(
+      context.read<LoginBloc>().add(
+        LoginEventLogin(
           phone: controllerPhone.text,
           password: controllerPassword.text,
           role: role,
