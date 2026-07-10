@@ -6,6 +6,8 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 
+import '../model/model_login.dart';
+
 class LocalStorageService {
   final FlutterSecureStorage _secureStorage;
 
@@ -13,23 +15,27 @@ class LocalStorageService {
     : _secureStorage = secureStorage ?? FlutterSecureStorage();
 
   Future<void> saveAuthData({
-    required String token,
-    required String refreshToken,
-    required String expirationToken,
-    required String expirationRefreshToken,
+    // required String token,
+    // required String refreshToken,
+    // required String expirationToken,
+    // required String expirationRefreshToken,
+    required ModelLogin modelLogin,
   }) async {
-    await _secureStorage.write(key: ClientConstant.token, value: token);
+    await _secureStorage.write(
+      key: ClientConstant.token,
+      value: modelLogin.token,
+    );
     await _secureStorage.write(
       key: ClientConstant.refreshToken,
-      value: refreshToken,
+      value: modelLogin.refreshToken,
     );
     await _secureStorage.write(
       key: ClientConstant.expirationToken,
-      value: expirationToken,
+      value: modelLogin.expirationToken.toIso8601String(),
     );
     await _secureStorage.write(
       key: ClientConstant.expirationRefreshToken,
-      value: expirationRefreshToken,
+      value: modelLogin.expirationRefreshToken.toIso8601String(),
     );
   }
 
@@ -84,4 +90,34 @@ class LocalStorageService {
       return ClientConstant.selectRole;
     }
   }
+
+  // Future<String> checkToken() async {
+  //   try {
+  //     final token = await getToken();
+  //     final refreshToken = await getRefreshToken();
+  //     final tokenExpiration = await getTokenExpiration();
+  //     final refreshTokenExpiration = await getRefreshTokenExpiration();
+  //
+  //     if (token == null || refreshToken == null) {
+  //       return ClientConstant.logout;
+  //     }
+  //
+  //     final nowDT = DateTime.now();
+  //     final tokenExpirationDT = DateTime.parse(tokenExpiration!);
+  //
+  //     if (tokenExpirationDT.isAfter(nowDT)) {
+  //       return ClientConstant.validToken;
+  //     }
+  //
+  //     final refreshTokenExpirationDT = DateTime.parse(refreshTokenExpiration!);
+  //
+  //     if (refreshTokenExpirationDT.isAfter(nowDT)) {
+  //       return ClientConstant.updateToken;
+  //     } else {
+  //       return ClientConstant.logout;
+  //     }
+  //   } catch (e) {
+  //     return ClientConstant.logout;
+  //   }
+  // }
 }

@@ -9,6 +9,7 @@ class ClientConstant {
   // status code:
   static const int statusCode200OK = 200;
   static const int statusCode202Accepted = 202;
+  static const int statusCode401Unauthorized = 401;
 
   // result:
   static const String selectRole = "selectRole";
@@ -18,6 +19,9 @@ class ClientConstant {
 
   // status:
   static const String serverError = "Server error!";
+  static const String validToken = "validToken";
+  static const String updateToken = "updateToken";
+  static const String logout = "logout";
 
   // key
   static const String token = "token";
@@ -27,5 +31,7 @@ class ClientConstant {
   static const String phone = "phone";
   static const String password = "password";
   static const String role = "role";
+  static const String authorization = "Authorization";
+  static const String bearer = "Bearer";
 
 }

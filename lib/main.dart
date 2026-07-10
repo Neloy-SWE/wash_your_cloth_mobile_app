@@ -46,7 +46,13 @@ class MyApp extends StatelessWidget {
             create: (context) => LocalStorageService(),
           ),
 
-          RepositoryProvider<Client>(create: (context) => Client()),
+          RepositoryProvider<Client>(
+            create: (context) => Client(
+              localStorageService: RepositoryProvider.of<LocalStorageService>(
+                context,
+              ),
+            ),
+          ),
 
           RepositoryProvider<IApiRefreshToken>(
             create: (context) =>

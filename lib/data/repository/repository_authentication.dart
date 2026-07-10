@@ -35,7 +35,11 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
   @override
   Future<bool> getLoginStatus() async {
     try {
-      String result = await localStorageService.loginStatus();
+      String result = await localStorageService.loginStatus(
+        // positiveStatus: ClientConstant.dashboard,
+        // negativeStatus: ClientConstant.selectRole,
+        // tokenStatus: ClientConstant.tokenRefresh,
+      );
 
       if (result == ClientConstant.dashboard) {
         return true;
@@ -57,7 +61,8 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
           //   expirationRefreshToken: modelLogin.expirationRefreshToken
           //       .toIso8601String(),
           // );
-          await _initializeToken(modelLogin: modelLogin!);
+          // await _initializeToken(modelLogin: modelLogin!);
+          await localStorageService.saveAuthData(modelLogin: modelLogin!);
           return true;
         } else {
           return await _handleSessionFailure();
@@ -89,7 +94,7 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
       );
 
       if (modelLogin != null) {
-        await _initializeToken(modelLogin: modelLogin);
+        await localStorageService.saveAuthData(modelLogin: modelLogin);
         return UseCaseLogin(isOTPRequired: false, isLogin: true);
       } else if (modelLoginUnverified != null) {
         final result = await _loginFailedResult(
@@ -120,15 +125,15 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
     return false;
   }
 
-  Future<void> _initializeToken({required ModelLogin modelLogin}) async {
-    await localStorageService.saveAuthData(
-      token: modelLogin.token,
-      refreshToken: modelLogin.refreshToken,
-      expirationToken: modelLogin.expirationToken.toIso8601String(),
-      expirationRefreshToken: modelLogin.expirationRefreshToken
-          .toIso8601String(),
-    );
-  }
+  // Future<void> _initializeToken({required ModelLogin modelLogin}) async {
+  //   await localStorageService.saveAuthData(
+  //     token: modelLogin.token,
+  //     refreshToken: modelLogin.refreshToken,
+  //     expirationToken: modelLogin.expirationToken.toIso8601String(),
+  //     expirationRefreshToken: modelLogin.expirationRefreshToken
+  //         .toIso8601String(),
+  //   );
+  // }
 
   Future<UseCaseLogin> _loginFailedResult({
     required bool isOTP,
