@@ -8,6 +8,7 @@ class ClientConstant {
 
   // status code:
   static const int statusCode200OK = 200;
+  static const int statusCode201Created = 201;
   static const int statusCode202Accepted = 202;
   static const int statusCode401Unauthorized = 401;
 

@@ -15,7 +15,11 @@ import '../network/api_path.dart';
 class ClientInterceptor extends Interceptor {
   final LocalStorageService _localStorageService;
 
-  static const List<String> _openPaths = [ApiPath.login, ApiPath.refreshToken];
+  static const List<String> _openPaths = [
+    ApiPath.login,
+    ApiPath.refreshToken,
+    ApiPath.registration,
+  ];
   final Dio _refreshDio = Dio(BaseOptions(baseUrl: ClientConstant.baseUrl));
 
   ClientInterceptor({required LocalStorageService localStorageService})

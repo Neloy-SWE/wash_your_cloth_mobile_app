@@ -6,7 +6,10 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_registration.dart';
 import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_registration.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 
 import '../local/local_storage_service.dart';
 import '../network/api_call/api_refresh_token.dart';
@@ -19,17 +22,23 @@ abstract class IRepositoryAuthentication {
     required String password,
     required String role,
   });
+
+  Future<UseCaseRegistration> registration({
+    required RegistrationData registrationData,
+  });
 }
 
 class RepositoryAuthentication extends IRepositoryAuthentication {
   final LocalStorageService localStorageService;
   final IApiRefreshToken apiRefreshToken;
   final IApiLogin apiLogin;
+  final IApiRegistration apiRegistration;
 
   RepositoryAuthentication({
     required this.localStorageService,
     required this.apiRefreshToken,
     required this.apiLogin,
+    required this.apiRegistration,
   });
 
   @override
@@ -100,6 +109,8 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
         final result = await _loginFailedResult(
           message: modelLoginUnverified.message,
           isOTP: true,
+          otpRequestId: modelLoginUnverified.otpRequestId,
+          recordId: modelLoginUnverified.recordId,
         );
         return result;
       } else {
@@ -138,8 +149,54 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
   Future<UseCaseLogin> _loginFailedResult({
     required bool isOTP,
     String? message,
+    String? otpRequestId,
+    String? recordId,
   }) async {
     await localStorageService.clearAuthData();
-    return UseCaseLogin(isOTPRequired: isOTP, isLogin: false, message: message);
+    return UseCaseLogin(
+      isOTPRequired: isOTP,
+      isLogin: false,
+      message: message,
+      otpRequestId: otpRequestId,
+      recordId: recordId,
+    );
+  }
+
+  @override
+  Future<UseCaseRegistration> registration({
+    required RegistrationData registrationData,
+  }) async {
+    Map<String, dynamic> data;
+    try {
+      if (registrationData.role == Role.user.name) {
+        data = registrationData.toMapUser();
+      } else {
+        data = registrationData.toMapShop();
+      }
+
+      var (modelLoginUnverified, modelError) = await apiRegistration
+          .registration(data: data);
+
+      if (modelError == null) {
+        return UseCaseRegistration(
+          message: modelLoginUnverified!.message,
+          recordId: modelLoginUnverified.recordId,
+          otpRequestId: modelLoginUnverified.otpRequestId,
+          isNavigateOTP: true,
+        );
+      } else {
+        return UseCaseRegistration(
+          message: modelError.error?.isNotEmpty == true
+              ? modelError.error!.first
+              : ClientConstant.serverError,
+          isNavigateOTP: false,
+        );
+      }
+    } catch (e) {
+      return UseCaseRegistration(
+        message: ClientConstant.serverError,
+        isNavigateOTP: false,
+      );
+    }
   }
 }
