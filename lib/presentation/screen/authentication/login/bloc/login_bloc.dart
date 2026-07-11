@@ -14,8 +14,7 @@ part 'login_event.dart';
 
 part 'login_state.dart';
 
-class LoginBloc
-    extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final IRepositoryAuthentication repositoryAuthentication;
 
   LoginBloc({required this.repositoryAuthentication})
@@ -23,10 +22,7 @@ class LoginBloc
     on<LoginEventLogin>(_onLogin);
   }
 
-  Future<void> _onLogin(
-    LoginEventLogin event,
-    Emitter<LoginState> emit,
-  ) async {
+  Future<void> _onLogin(LoginEventLogin event, Emitter<LoginState> emit) async {
     emit(LoginStateLoading());
 
     try {
@@ -37,7 +33,12 @@ class LoginBloc
       );
 
       if (useCaseLogin.isOTPRequired) {
-        emit(LoginStateNavigateOTP());
+        emit(
+          LoginStateNavigateOTP(
+            otpRequestId: useCaseLogin.otpRequestId!,
+            recordId: useCaseLogin.recordId!, message: useCaseLogin.message!,
+          ),
+        );
       } else if (useCaseLogin.isLogin) {
         emit(LoginStateNavigateLogin());
       } else {

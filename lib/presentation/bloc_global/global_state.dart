@@ -10,8 +10,17 @@ class GlobalState {
   final OTPNavigation? otpNavigation;
   final String? phone;
   final bool? isLogin;
+  final String? otpRequestId;
+  final String? recordId;
 
-  GlobalState({this.role, this.otpNavigation, this.phone, this.isLogin});
+  GlobalState({
+    this.role,
+    this.otpNavigation,
+    this.phone,
+    this.isLogin,
+    this.otpRequestId,
+    this.recordId,
+  });
 
   GlobalState copyWith({
     Role? role,
@@ -19,12 +28,16 @@ class GlobalState {
     String? email,
     String? phone,
     bool? isLogin,
+    String? otpRequestId,
+    String? recordId,
   }) {
     return GlobalState(
       role: role ?? this.role,
       otpNavigation: otpNavigation ?? this.otpNavigation,
       phone: phone ?? this.phone,
       isLogin: isLogin ?? this.isLogin,
+      otpRequestId: otpRequestId ?? this.otpRequestId,
+      recordId: recordId ?? this.recordId,
     );
   }
 }

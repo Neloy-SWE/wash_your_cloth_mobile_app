@@ -30,3 +30,10 @@ class GlobalEventGetLoginStatus extends GlobalEvent {}
 class GlobalEventSetProfile extends GlobalEvent {}
 
 class GlobalEventUpdateProfile extends GlobalEvent {}
+
+class GlobalEventSetOTPInfo extends GlobalEvent {
+  final String otpRequestId;
+  final String recordId;
+
+  GlobalEventSetOTPInfo({required this.otpRequestId, required this.recordId});
+}

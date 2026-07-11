@@ -16,7 +16,20 @@ class LoginStateInitial extends LoginState {}
 
 class LoginStateLoading extends LoginState {}
 
-class LoginStateNavigateOTP extends LoginState {}
+class LoginStateNavigateOTP extends LoginState {
+  final String otpRequestId;
+  final String recordId;
+  final String message;
+
+  const LoginStateNavigateOTP({
+    required this.otpRequestId,
+    required this.recordId,
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [otpRequestId, recordId];
+}
 
 class LoginStateNavigateLogin extends LoginState {}
 

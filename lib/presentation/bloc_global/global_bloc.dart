@@ -20,6 +20,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     on<GlobalEventSetOTPNavigation>(_onSetOTPNavigation);
     on<GlobalEventSetPhone>(_onSetPhone);
     on<GlobalEventGetLoginStatus>(_onGetLoginStatus);
+    on<GlobalEventSetOTPInfo>(_onSetOTPInfo);
   }
 
   void _onSetRole(GlobalEventSetRole event, Emitter<GlobalState> emit) {
@@ -43,5 +44,17 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
   ) async {
     bool isLogin = await repositoryAuthentication.getLoginStatus();
     emit(state.copyWith(isLogin: isLogin));
+  }
+
+  Future<void> _onSetOTPInfo(
+    GlobalEventSetOTPInfo event,
+    Emitter<GlobalState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        otpRequestId: event.otpRequestId,
+        recordId: event.recordId,
+      ),
+    );
   }
 }
