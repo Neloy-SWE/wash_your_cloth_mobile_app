@@ -25,4 +25,18 @@ class AppText {
   static const String orNew = "Or new?";
   static const String registration = "Registration";
   static const String okay = "Okay";
+  static const String firstName = "First name";
+  static const String ownerFirstName = "Owner first name";
+  static const String firstNameHint = "Mr. AAA";
+  static const String lastName = "Last name";
+  static const String ownerLastName = "Owner last name";
+  static const String lastNameHint = "Bbb";
+  static const String optionalBracket = " (Optional)";
+  static const String address = "Address";
+  static const String addressHint = "117/C, Dhanmondi, Dhaka";
+  static const String shopName = "Shop name";
+  static const String shopNameHint = "Rahman Brothers";
+  static const String openTime = "Open time";
+  static const String closeTime = "Close time";
+  static const String weekends = "Weekends";
 }
