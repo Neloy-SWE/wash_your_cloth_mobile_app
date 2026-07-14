@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_asset.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
@@ -54,7 +55,12 @@ class _ScreenSplashState extends State<ScreenSplash>
       listenWhen: (previous, current) => previous.isLogin != current.isLogin,
       listener: (context, state) {
         if (state.isLogin == true) {
-          context.go(AppRouter.screenDashboard);
+          if (state.role == Role.user){
+            context.go(AppRouter.screenHomeUser);
+          } else {
+            context.go(AppRouter.screenHomeShop);
+          }
+
         } else if (state.isLogin == false) {
           context.go(AppRouter.screenRole);
         }

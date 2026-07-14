@@ -18,31 +18,32 @@ abstract class IApiRegistration {
 }
 
 class ApiRegistration implements IApiRegistration {
-
   final Client client;
 
   const ApiRegistration({required this.client});
 
   @override
-  Future<(ModelLoginUnverified?, ModelError?)> registration(
-      {required Map<String, dynamic> data}) async {
+  Future<(ModelLoginUnverified?, ModelError?)> registration({
+    required Map<String, dynamic> data,
+  }) async {
     try {
+      Response response = await client.request.post(
+        ApiPath.registration,
+        data: data,
+      );
 
-    Response response = await client.request.post(
-        ApiPath.registration, data: data);
+      if (response.statusCode == ClientConstant.statusCode201Created) {
+        ModelLoginUnverified modelLoginUnverified =
+            ModelLoginUnverified.fromJson(response.data);
 
-    if (response.statusCode == ClientConstant.statusCode201Created) {
-      ModelLoginUnverified modelLoginUnverified =
-      ModelLoginUnverified.fromJson(response.data);
-
-      return (modelLoginUnverified, null);
-    } else {
-      ModelError modelError = ModelError.fromJson(response.data);
-      return (null, modelError);
-    }
-  }  catch (e) {
+        return (modelLoginUnverified, null);
+      } else {
+        ModelError modelError = ModelError.fromJson(response.data);
+        return (null, modelError);
+      }
+    } catch (e) {
       ModelError modelError = ModelError(error: []);
       return (null, modelError);
     }
-}
+  }
 }

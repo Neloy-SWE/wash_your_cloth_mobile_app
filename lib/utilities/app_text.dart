@@ -39,4 +39,13 @@ class AppText {
   static const String openTime = "Open time";
   static const String closeTime = "Close time";
   static const String weekends = "Weekends";
+  static const String verifyOtp = "Verify OTP";
+  static const String otpInstruction =
+      "A 4 digit one-time-password has been sent to your email";
+  static const String verify = "Verify";
+  static const String expireIn = "Expire in";
+  static const String otpExpired = "OTP Expired";
+  static const String orderList = "Order list";
+  static const String shopList = "Shop list";
+  static const String profile = "Profile";
 }

@@ -97,7 +97,7 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                 context: context,
                 contentText: state.message,
               );
-              context.go(AppRouter.screenOTP);
+              context.push(AppRouter.screenOTP);
             } else if (state is RegistrationStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(
@@ -277,6 +277,18 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                               isSecure: isPasswordSecure,
                               title: AppText.password,
                               label: AppText.passwordHint,
+                              suffixWidget: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isPasswordSecure = !isPasswordSecure;
+                                  });
+                                },
+                                icon: Icon(
+                                  isPasswordSecure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ),
                               validator: (val) => val!.length < 6
                                   ? AppValidator.validatorPassword
                                   : null,

@@ -9,15 +9,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/home/screen_home_shop.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_home_user.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
-import '../presentation/screen/dashboard/screen_dashboard.dart';
 
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
@@ -31,7 +33,9 @@ class AppRouter {
   static const String screenLogin = "/screenLogin";
   static const String screenRegistration = "/screenRegistration";
   static const String screenOTP = "/screenOTP";
-  static const String screenDashboard = "/screenDashboard";
+  // static const String screenDashboard = "/screenDashboard";
+  static const String screenHomeUser = "/screenHomeUser";
+  static const String screenHomeShop = "/screenHomeShop";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -68,13 +72,19 @@ class AppRouter {
           child: ScreenLogin(),
         ),
       ),
-      GoRoute(
-        path: AppRouter.screenDashboard,
-        builder: (context, state) => ScreenDashboard(),
-      ),
+      // GoRoute(
+      //   path: AppRouter.screenDashboard,
+      //   builder: (context, state) => ScreenDashboard(),
+      // ),
       GoRoute(
         path: AppRouter.screenOTP,
-        builder: (context, state) => ScreenOTP(),
+        builder: (context, state) => BlocProvider<OTPBloc>(
+          create: (_) => OTPBloc(
+            repositoryAuthentication:
+                RepositoryProvider.of<IRepositoryAuthentication>(context),
+          ),
+          child: ScreenOTP(),
+        ),
       ),
 
       GoRoute(
@@ -87,14 +97,14 @@ class AppRouter {
           child: ScreenRegistration(),
         ),
       ),
-      // GoRoute(
-      //   path: AppRouter.screenOTP,
-      //   builder: (context, state) => ScreenOTP(),
-      // ),
-      // GoRoute(
-      //   path: AppRouter.screenHomeBuyer,
-      //   builder: (context, state) => ScreenHomeBuyer(),
-      // ),
+      GoRoute(
+        path: AppRouter.screenHomeUser,
+        builder: (context, state) => ScreenHomeUser(),
+      ),
+      GoRoute(
+        path: AppRouter.screenHomeShop,
+        builder: (context, state) => ScreenHomeShop(),
+      ),
       // GoRoute(
       //   path: AppRouter.screenProfileBuyerEdit,
       //   builder: (context, state) => ScreenProfileBuyerEdit(),

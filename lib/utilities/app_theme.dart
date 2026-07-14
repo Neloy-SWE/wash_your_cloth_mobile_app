@@ -70,13 +70,13 @@ class AppTheme {
       ),
     ),
 
-    // navigationBarTheme: .new(
-    //   labelPadding: EdgeInsets.zero,
-    //   backgroundColor: Colors.white,
-    //   indicatorColor: Colors.white,
-    //   elevation: 2,
-    //   height: 65,
-    // ),
+    navigationBarTheme: .new(
+      labelPadding: EdgeInsets.zero,
+      backgroundColor: Colors.white,
+      indicatorColor: Colors.white,
+      elevation: 2,
+      height: 65,
+    ),
 
     textTheme: .new(
       titleLarge: TextStyle(

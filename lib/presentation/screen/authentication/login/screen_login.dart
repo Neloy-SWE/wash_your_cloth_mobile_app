@@ -15,6 +15,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
 import '../../../../router/app_router.dart';
 import '../../../../utilities/app_color.dart';
+import '../../../../utilities/app_constant.dart';
 import '../../../../utilities/app_validator.dart';
 import '../../../custom_widget/custom_button.dart';
 import '../../../custom_widget/custom_textfield.dart';
@@ -43,6 +44,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   @override
   Widget build(BuildContext context) {
+    var selectedRole = context.read<GlobalBloc>().state.role;
     return Scaffold(
       appBar: AppBar(title: Text(AppText.login)),
       body: SafeArea(
@@ -52,7 +54,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
               CallDialogue.showLoader(context);
             } else if (state is LoginStateNavigateLogin) {
               CallDialogue.hideLoader(context);
-              context.go(AppRouter.screenDashboard);
+              if (selectedRole == Role.user){
+                context.go(AppRouter.screenHomeUser);
+              } else {
+                context.go(AppRouter.screenHomeShop);
+              }
             } else if (state is LoginStateNavigateOTP) {
               CallDialogue.hideLoader(context);
               context.read<GlobalBloc>().add(
@@ -65,7 +71,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 context: context,
                 contentText: state.message,
               );
-              context.go(AppRouter.screenOTP);
+              context.push(AppRouter.screenOTP);
             } else if (state is LoginStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(
