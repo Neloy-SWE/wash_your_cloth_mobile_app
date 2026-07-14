@@ -16,6 +16,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 
 import 'data/local/local_storage_service.dart';
+import 'data/network/api_call/api_otp_verify.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +59,11 @@ class MyApp extends StatelessWidget {
                 ApiRegistration(client: RepositoryProvider.of<Client>(context)),
           ),
 
+          RepositoryProvider<IApiOTPVerify>(
+            create: (context) =>
+                ApiOTPVerify(client: RepositoryProvider.of<Client>(context)),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: RepositoryProvider.of<LocalStorageService>(
@@ -66,6 +72,7 @@ class MyApp extends StatelessWidget {
               apiRefreshToken: RepositoryProvider.of<IApiRefreshToken>(context),
               apiLogin: RepositoryProvider.of<IApiLogin>(context),
               apiRegistration: RepositoryProvider.of<IApiRegistration>(context),
+              apiOTPVerify: RepositoryProvider.of<IApiOTPVerify>(context),
             ),
           ),
 
