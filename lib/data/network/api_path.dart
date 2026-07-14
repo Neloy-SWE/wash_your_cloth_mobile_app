@@ -9,4 +9,5 @@ class ApiPath {
   static const String refreshToken = "$auth/refresh-token";
   static const String login = "$auth/login";
   static const String registration = "$auth/registration";
+  static const String otpVerify = "$auth/otp-verify";
 }

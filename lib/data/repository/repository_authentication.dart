@@ -7,7 +7,9 @@ import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_otp_verify.dart';
 import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_otp_verify.dart';
 import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_registration.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 
@@ -26,6 +28,8 @@ abstract class IRepositoryAuthentication {
   Future<UseCaseRegistration> registration({
     required RegistrationData registrationData,
   });
+
+  Future<UseCaseOtpVerify> otpVerify({required OTPVerifyData otpVerifyData});
 }
 
 class RepositoryAuthentication extends IRepositoryAuthentication {
@@ -33,12 +37,14 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
   final IApiRefreshToken apiRefreshToken;
   final IApiLogin apiLogin;
   final IApiRegistration apiRegistration;
+  final IApiOTPVerify apiOTPVerify;
 
   RepositoryAuthentication({
     required this.localStorageService,
     required this.apiRefreshToken,
     required this.apiLogin,
     required this.apiRegistration,
+    required this.apiOTPVerify,
   });
 
   @override
@@ -196,6 +202,33 @@ class RepositoryAuthentication extends IRepositoryAuthentication {
       return UseCaseRegistration(
         message: ClientConstant.serverError,
         isNavigateOTP: false,
+      );
+    }
+  }
+
+  @override
+  Future<UseCaseOtpVerify> otpVerify({
+    required OTPVerifyData otpVerifyData,
+  }) async {
+    try {
+      var (message, modelError) = await apiOTPVerify.verify(
+        data: otpVerifyData.toMap(),
+      );
+
+      if (modelError == null) {
+        return UseCaseOtpVerify(message: message!, isVerify: true);
+      } else {
+        return UseCaseOtpVerify(
+          message: modelError.error?.isNotEmpty == true
+              ? modelError.error!.first
+              : ClientConstant.serverError,
+          isVerify: false,
+        );
+      }
+    } catch (e) {
+      return UseCaseOtpVerify(
+        message: ClientConstant.serverError,
+        isVerify: false,
       );
     }
   }
