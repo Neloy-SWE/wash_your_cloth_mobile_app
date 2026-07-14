@@ -13,6 +13,7 @@ class AppValidator {
   static const String validatorCloseTime = "Please add shop close time";
   static const String validatorAddress = "Please add address";
   static const String validatorWeekends = "Please select Weekend";
+  static const String validatorOTP = "Please add full otp code";
 
   static bool isPhone(String? phone) {
     if (phone == null || phone.isEmpty || phone[0] == " ") return false;
