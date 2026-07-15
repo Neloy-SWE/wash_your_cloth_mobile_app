@@ -8,8 +8,8 @@ import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_error.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_login_unverified.dart';
 
-import '../../client/client.dart';
-import '../api_path.dart';
+import '../../../client/client.dart';
+import '../../api_path.dart';
 
 abstract class IApiRegistration {
   Future<(ModelLoginUnverified?, ModelError?)> registration({

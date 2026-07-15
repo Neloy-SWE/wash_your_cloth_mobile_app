@@ -9,7 +9,7 @@ import 'package:wash_your_cloth_mobile_app/data/model/model_error.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_path.dart';
 
-import '../../client/client.dart';
+import '../../../client/client.dart';
 
 abstract class IApiRefreshToken {
   Future<(ModelLogin?, ModelError?)> refreshToken({

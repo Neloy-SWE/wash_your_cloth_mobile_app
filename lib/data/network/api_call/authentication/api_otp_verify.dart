@@ -5,10 +5,10 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:dio/dio.dart';
 
-import '../../client/client.dart';
-import '../../client/client_constant.dart';
-import '../../model/model_error.dart';
-import '../api_path.dart';
+import '../../../client/client.dart';
+import '../../../client/client_constant.dart';
+import '../../../model/model_error.dart';
+import '../../api_path.dart';
 
 abstract class IApiOTPVerify {
   Future<(String?, ModelError?)> verify({required Map<String, dynamic> data});

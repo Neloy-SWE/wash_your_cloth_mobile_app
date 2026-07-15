@@ -5,12 +5,12 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:dio/dio.dart';
 
-import '../../client/client.dart';
-import '../../client/client_constant.dart';
-import '../../model/model_error.dart';
-import '../../model/model_login.dart';
-import '../../model/model_login_unverified.dart';
-import '../api_path.dart';
+import '../../../client/client.dart';
+import '../../../client/client_constant.dart';
+import '../../../model/model_error.dart';
+import '../../../model/model_login.dart';
+import '../../../model/model_login_unverified.dart';
+import '../../api_path.dart';
 
 abstract class IApiLogin {
   Future<(ModelLogin?, ModelLoginUnverified?, ModelError?)> login({
