@@ -8,6 +8,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/i_api_get_order_list.dart';
+import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
@@ -16,7 +18,9 @@ import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.
 import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/home/screen_home_shop.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_home_user.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order_list/bloc/order_list_user_bloc.dart';
 
+import '../data/client/client.dart';
 import '../data/repository/repository_authentication.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
@@ -33,7 +37,6 @@ class AppRouter {
   static const String screenLogin = "/screenLogin";
   static const String screenRegistration = "/screenRegistration";
   static const String screenOTP = "/screenOTP";
-  // static const String screenDashboard = "/screenDashboard";
   static const String screenHomeUser = "/screenHomeUser";
   static const String screenHomeShop = "/screenHomeShop";
 
@@ -72,10 +75,6 @@ class AppRouter {
           child: ScreenLogin(),
         ),
       ),
-      // GoRoute(
-      //   path: AppRouter.screenDashboard,
-      //   builder: (context, state) => ScreenDashboard(),
-      // ),
       GoRoute(
         path: AppRouter.screenOTP,
         builder: (context, state) => BlocProvider<OTPBloc>(
@@ -99,7 +98,35 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRouter.screenHomeUser,
-        builder: (context, state) => ScreenHomeUser(),
+        builder: (context, state) => MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<IApiGetOrderList>(
+              create: (context) => ApiGetOrderListUser(
+                client: RepositoryProvider.of<Client>(context),
+              ),
+            ),
+
+            RepositoryProvider<IRepositoryOrder>(
+              create: (context) => RepositoryOrder(
+                apiGetOrderList: RepositoryProvider.of<IApiGetOrderList>(
+                  context,
+                ),
+              ),
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<OrderListUserBloc>(
+                create: (context) => OrderListUserBloc(
+                  repositoryOrder: RepositoryProvider.of<IRepositoryOrder>(
+                    context,
+                  ),
+                )..add(OrderListUserEventFetch()),
+              ),
+            ],
+            child: ScreenHomeUser(),
+          ),
+        ),
       ),
       GoRoute(
         path: AppRouter.screenHomeShop,

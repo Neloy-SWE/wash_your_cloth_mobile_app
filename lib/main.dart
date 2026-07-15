@@ -6,9 +6,9 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_refresh_token.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
@@ -16,7 +16,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 
 import 'data/local/local_storage_service.dart';
-import 'data/network/api_call/api_otp_verify.dart';
+import 'data/network/api_call/authentication/api_otp_verify.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

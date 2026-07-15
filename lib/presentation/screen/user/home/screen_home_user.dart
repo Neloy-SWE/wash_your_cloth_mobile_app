@@ -37,7 +37,7 @@ class _ScreenHomeUserState extends State<ScreenHomeUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(_titles[currentPageIndex])),
-      body: _pages[currentPageIndex],
+      body: SafeArea(child: _pages[currentPageIndex]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPageIndex,
         onDestinationSelected: (int index) {
@@ -48,15 +48,15 @@ class _ScreenHomeUserState extends State<ScreenHomeUser> {
         destinations: [
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined),
-            selectedIcon: Icon(
-              Icons.view_list,
-              color: AppColor.colorPrimary,
-            ),
+            selectedIcon: Icon(Icons.view_list, color: AppColor.colorPrimary),
             label: "",
           ),
           NavigationDestination(
             icon: Icon(Icons.shopping_bag_outlined),
-            selectedIcon: Icon(Icons.shopping_bag, color: AppColor.colorPrimary),
+            selectedIcon: Icon(
+              Icons.shopping_bag,
+              color: AppColor.colorPrimary,
+            ),
             label: "",
           ),
           NavigationDestination(

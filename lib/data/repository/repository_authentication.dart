@@ -4,17 +4,16 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
-import 'package:wash_your_cloth_mobile_app/data/model/model_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_registration.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/api_otp_verify.dart';
-import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_otp_verify.dart';
-import 'package:wash_your_cloth_mobile_app/data/usecase/use_case_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_otp_verify.dart';
+import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_login.dart';
+import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_otp_verify.dart';
+import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_registration.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 
 import '../local/local_storage_service.dart';
-import '../network/api_call/api_refresh_token.dart';
+import '../network/api_call/authentication/api_refresh_token.dart';
 
 abstract class IRepositoryAuthentication {
   Future<bool> getLoginStatus();
@@ -32,14 +31,14 @@ abstract class IRepositoryAuthentication {
   Future<UseCaseOtpVerify> otpVerify({required OTPVerifyData otpVerifyData});
 }
 
-class RepositoryAuthentication extends IRepositoryAuthentication {
+class RepositoryAuthentication implements IRepositoryAuthentication {
   final LocalStorageService localStorageService;
   final IApiRefreshToken apiRefreshToken;
   final IApiLogin apiLogin;
   final IApiRegistration apiRegistration;
   final IApiOTPVerify apiOTPVerify;
 
-  RepositoryAuthentication({
+  const RepositoryAuthentication({
     required this.localStorageService,
     required this.apiRefreshToken,
     required this.apiLogin,

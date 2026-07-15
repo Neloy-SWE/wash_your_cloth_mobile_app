@@ -48,4 +48,6 @@ class AppText {
   static const String orderList = "Order list";
   static const String shopList = "Shop list";
   static const String profile = "Profile";
+  static const String totalAmount = "Total amount";
+  static const String bdtCapital = "BDT";
 }

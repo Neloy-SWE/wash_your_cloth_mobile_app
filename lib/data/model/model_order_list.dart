@@ -8,7 +8,7 @@ import 'dart:convert';
 class ModelOrderList {
   final String id;
   final String trackingId;
-  final int totalPrice;
+  final num totalPrice;
   final String status;
 
   ModelOrderList({
