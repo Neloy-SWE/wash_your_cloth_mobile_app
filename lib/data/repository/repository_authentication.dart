@@ -17,6 +17,7 @@ import '../network/api_call/authentication/api_refresh_token.dart';
 
 abstract class IRepositoryAuthentication {
   Future<bool> getLoginStatus();
+  Future<String> getRole();
 
   Future<UseCaseLogin> login({
     required String phone,
@@ -230,5 +231,11 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         isVerify: false,
       );
     }
+  }
+
+  @override
+  Future<String> getRole() async {
+    String? role =  await localStorageService.getRole();
+    return role.toString();
   }
 }

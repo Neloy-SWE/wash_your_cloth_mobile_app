@@ -43,7 +43,13 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     Emitter<GlobalState> emit,
   ) async {
     bool isLogin = await repositoryAuthentication.getLoginStatus();
-    emit(state.copyWith(isLogin: isLogin));
+
+    if (isLogin) {
+      String role = await repositoryAuthentication.getRole();
+      emit(state.copyWith(isLogin: isLogin, role: Role.values.byName(role)));
+    } else {
+      emit(state.copyWith(isLogin: isLogin));
+    }
   }
 
   Future<void> _onSetOTPInfo(

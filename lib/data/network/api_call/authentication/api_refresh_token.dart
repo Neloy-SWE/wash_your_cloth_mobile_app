@@ -27,7 +27,7 @@ class ApiRefreshToken implements IApiRefreshToken {
     required Map<String, dynamic> data,
   }) async {
     try {
-      Response response = await client.request.post(
+      Response response = await client.request.get(
         ApiPath.refreshToken,
         data: data,
       );

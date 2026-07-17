@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 
+import '../../utilities/app_constant.dart';
 import '../model/model_login.dart';
 
 class LocalStorageService {
@@ -37,6 +38,10 @@ class LocalStorageService {
       key: ClientConstant.expirationRefreshToken,
       value: modelLogin.expirationRefreshToken.toIso8601String(),
     );
+    await _secureStorage.write(
+      key: ClientConstant.role,
+      value: modelLogin.role,
+    );
   }
 
   Future<String?> getToken() => _secureStorage.read(key: ClientConstant.token);
@@ -49,6 +54,8 @@ class LocalStorageService {
 
   Future<String?> getRefreshTokenExpiration() =>
       _secureStorage.read(key: ClientConstant.expirationRefreshToken);
+
+  Future<String?> getRole() => _secureStorage.read(key: ClientConstant.role);
 
   Future<void> clearAuthData() async {
     await _secureStorage.deleteAll();
