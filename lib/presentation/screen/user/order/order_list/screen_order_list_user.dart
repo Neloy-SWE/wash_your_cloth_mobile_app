@@ -5,13 +5,15 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order_list/bloc/order_list_user_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_tool.dart';
 
-import '../../../custom_widget/custom_dialogue.dart';
+import '../../../../custom_widget/custom_dialogue.dart';
 
 class ScreenOrderListUser extends StatelessWidget {
   const ScreenOrderListUser({super.key});
@@ -45,7 +47,12 @@ class ScreenOrderListUser extends StatelessWidget {
               );
               return InkWell(
                 borderRadius: BorderRadius.circular(20),
-                onTap: () {},
+                onTap: () {
+                  context.push(
+                    AppRouter.screenOrderDetailsUser,
+                    extra: state.orderList[index].id,
+                  );
+                },
                 child: Container(
                   padding: AppSize.paddingAll10,
                   decoration: BoxDecoration(
