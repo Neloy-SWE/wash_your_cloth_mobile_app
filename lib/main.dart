@@ -17,6 +17,9 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 
 import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
+import 'data/network/api_call/order/api_get_order_details_user.dart';
+import 'data/network/api_call/order/i_api_get_order_list.dart';
+import 'data/repository/repository_order.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,41 +41,52 @@ class MyApp extends StatelessWidget {
 
           RepositoryProvider<Client>(
             create: (context) => Client(
-              localStorageService: RepositoryProvider.of<LocalStorageService>(
-                context,
-              ),
+              localStorageService: context.read<LocalStorageService>(),
             ),
           ),
 
           RepositoryProvider<IApiRefreshToken>(
             create: (context) =>
-                ApiRefreshToken(client: RepositoryProvider.of<Client>(context)),
+                ApiRefreshToken(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiLogin>(
-            create: (context) =>
-                ApiLogin(client: RepositoryProvider.of<Client>(context)),
+            create: (context) => ApiLogin(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiRegistration>(
             create: (context) =>
-                ApiRegistration(client: RepositoryProvider.of<Client>(context)),
+                ApiRegistration(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiOTPVerify>(
-            create: (context) =>
-                ApiOTPVerify(client: RepositoryProvider.of<Client>(context)),
+            create: (context) => ApiOTPVerify(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
-              localStorageService: RepositoryProvider.of<LocalStorageService>(
-                context,
-              ),
-              apiRefreshToken: RepositoryProvider.of<IApiRefreshToken>(context),
-              apiLogin: RepositoryProvider.of<IApiLogin>(context),
-              apiRegistration: RepositoryProvider.of<IApiRegistration>(context),
-              apiOTPVerify: RepositoryProvider.of<IApiOTPVerify>(context),
+              localStorageService: context.read<LocalStorageService>(),
+              apiRefreshToken: context.read<IApiRefreshToken>(),
+              apiLogin: context.read<IApiLogin>(),
+              apiRegistration: context.read<IApiRegistration>(),
+              apiOTPVerify: context.read<IApiOTPVerify>(),
+            ),
+          ),
+
+          RepositoryProvider<IApiGetOrderList>(
+            create: (context) =>
+                ApiGetOrderListUser(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetOrderDetailsUser>(
+            create: (context) =>
+                ApiGetOrderDetailsUser(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IRepositoryOrder>(
+            create: (context) => RepositoryOrder(
+              apiGetOrderList: context.read<IApiGetOrderList>(),
+              apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
             ),
           ),
 
@@ -82,8 +96,8 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider<GlobalBloc>(
               create: (context) => GlobalBloc(
-                repositoryAuthentication:
-                    RepositoryProvider.of<IRepositoryAuthentication>(context),
+                repositoryAuthentication: context
+                    .read<IRepositoryAuthentication>(),
               )..add(GlobalEventGetLoginStatus()),
             ),
           ],

@@ -28,7 +28,7 @@ class RegistrationStateNavigateOTP extends RegistrationState {
   });
 
   @override
-  List<Object?> get props => [otpRequestId, recordId];
+  List<Object?> get props => [otpRequestId, recordId, message];
 }
 
 class RegistrationStateResult extends RegistrationState {

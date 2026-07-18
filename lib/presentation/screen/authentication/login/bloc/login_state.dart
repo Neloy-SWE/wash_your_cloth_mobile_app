@@ -28,7 +28,7 @@ class LoginStateNavigateOTP extends LoginState {
   });
 
   @override
-  List<Object?> get props => [otpRequestId, recordId];
+  List<Object?> get props => [otpRequestId, recordId, message];
 }
 
 class LoginStateNavigateLogin extends LoginState {}

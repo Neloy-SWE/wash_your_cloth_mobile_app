@@ -44,10 +44,11 @@ class AppText {
       "A 4 digit one-time-password has been sent to your email";
   static const String verify = "Verify";
   static const String expireIn = "Expire in";
-  static const String otpExpired = "OTP Expired";
+  static const String otpExpired = "OTP expired";
   static const String orderList = "Order list";
   static const String shopList = "Shop list";
   static const String profile = "Profile";
   static const String totalAmount = "Total amount";
   static const String bdtCapital = "BDT";
+  static const String orderDetails = "Order details";
 }
