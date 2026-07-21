@@ -51,4 +51,16 @@ class AppText {
   static const String totalAmount = "Total amount";
   static const String bdtCapital = "BDT";
   static const String orderDetails = "Order details";
+  static const String shopInformation = "Shop information";
+  static const String shop = "Shop";
+  static const String owner = "Owner";
+  static const String pleaseSelectARole = "Please select a role.";
+  static const String orderItems = "Order Items";
+  static const String yes = "Yes";
+  static const String no = "No";
+  static const String quantity = "Quantity";
+  static const String unitPrice = "Unit Price";
+  static const String ironPress = "Iron Press";
+  static const String ironCharge = "Iron Charge";
+  static const String grandTotal = "Grand Total";
 }
