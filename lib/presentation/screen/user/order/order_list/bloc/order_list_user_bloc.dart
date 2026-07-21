@@ -6,10 +6,10 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/order/use_case_order_list.dart';
 
-import '../../../../../data/client/client_constant.dart';
-import '../../../../../data/model/model_order_list.dart';
+import '../../../../../../data/client/client_constant.dart';
+import '../../../../../../data/model/model_order_list.dart';
+import '../../../../../../data/use_case/order/use_case_order.dart';
 
 part 'order_list_user_event.dart';
 
@@ -29,10 +29,10 @@ class OrderListUserBloc extends Bloc<OrderListUserEvent, OrderListUserState> {
   ) async {
     emit(OrderListUserStateLoading());
     try {
-      UseCaseOrderList useCaseOrderList = await repositoryOrder
-          .getOrderListUser();
-      if (useCaseOrderList.isListFetch) {
-        emit(OrderListUserStateFetch(orderList: useCaseOrderList.orderList!));
+      UseCaseOrder<List<ModelOrderList>> useCaseOrderList =
+          await repositoryOrder.getOrderListUser();
+      if (useCaseOrderList.isSuccess) {
+        emit(OrderListUserStateFetch(orderList: useCaseOrderList.data!));
       } else {
         emit(OrderListUserStateResult(message: useCaseOrderList.message!));
       }

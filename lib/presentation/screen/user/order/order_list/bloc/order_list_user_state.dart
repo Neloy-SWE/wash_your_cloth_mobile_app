@@ -20,6 +20,9 @@ class OrderListUserStateFetch extends OrderListUserState {
   final List<ModelOrderList> orderList;
 
   const OrderListUserStateFetch({required this.orderList});
+
+  @override
+  List<Object?> get props => [orderList];
 }
 
 class OrderListUserStateResult extends OrderListUserState {

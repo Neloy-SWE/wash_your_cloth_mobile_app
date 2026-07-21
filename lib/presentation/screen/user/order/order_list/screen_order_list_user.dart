@@ -5,13 +5,17 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order_list/bloc/order_list_user_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_laundry_icon.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_status_badge.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_tool.dart';
 
-import '../../../custom_widget/custom_dialogue.dart';
+import '../../../../custom_widget/custom_dialogue.dart';
 
 class ScreenOrderListUser extends StatelessWidget {
   const ScreenOrderListUser({super.key});
@@ -45,7 +49,12 @@ class ScreenOrderListUser extends StatelessWidget {
               );
               return InkWell(
                 borderRadius: BorderRadius.circular(20),
-                onTap: () {},
+                onTap: () {
+                  context.push(
+                    AppRouter.screenOrderDetailsUser,
+                    extra: state.orderList[index].id,
+                  );
+                },
                 child: Container(
                   padding: AppSize.paddingAll10,
                   decoration: BoxDecoration(
@@ -54,31 +63,7 @@ class ScreenOrderListUser extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        width: 58,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              AppColor.colorBackgroundIconTop,
-                              AppColor.colorBackgroundIconBottom,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.local_laundry_service_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
+                      CustomLaundryIcon(size: 48),
 
                       const SizedBox(width: 16),
 
@@ -117,22 +102,9 @@ class ScreenOrderListUser extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: statusColorSet[0],
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(color: statusColorSet[1]),
-                            ),
-                            child: Text(
-                              state.orderList[index].status.toUpperCase(),
-                              style: AppText.style.bodySmall!.copyWith(
-                                color: statusColorSet[1],
-                              ),
-                            ),
+                          CustomStatusBadge(
+                            statusColorSet: statusColorSet,
+                            status: state.orderList[index].status,
                           ),
 
                           const SizedBox(height: 16),

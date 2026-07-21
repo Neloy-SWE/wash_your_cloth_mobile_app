@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_button.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_snack_bar.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
@@ -35,61 +36,121 @@ class ScreenRole extends StatelessWidget {
                   crossAxisAlignment: .center,
                   mainAxisAlignment: .center,
                   children: [
-                    if (selectedRole != null) ...[
-                      Text(
-                        "${AppText.selectedRoleColon} ${selectedRole.name.toUpperCase()}",
-                        style: AppText.style.titleMedium,
-                      ),
-                      AppSize.gapH150,
-                    ],
-
-                    CustomButton(
-                      onPressed: () {
-                        context.read<GlobalBloc>().add(
-                          GlobalEventSetRole(role: Role.user),
-                        );
-                      },
-                      buttonText: AppText.userCapital,
-                      textColor: selectedRole == Role.user
-                          ? Colors.white
-                          : AppColor.colorPrimary,
-                      colorButton: selectedRole == Role.user
-                          ? AppColor.colorPrimary
-                          : Colors.white,
-                      colorBorder: AppColor.colorPrimary,
+                    Text(
+                      selectedRole != null
+                          ? "${AppText.selectedRoleColon} ${selectedRole.name.toUpperCase()}"
+                          : "",
+                      style: AppText.style.titleMedium,
                     ),
-                    AppSize.gapH15,
-                    CustomButton(
-                      onPressed: () {
-                        context.read<GlobalBloc>().add(
-                          GlobalEventSetRole(role: Role.shop),
-                        );
-                      },
-                      buttonText: AppText.shopCapital,
-                      textColor: selectedRole == Role.shop
-                          ? Colors.white
-                          : AppColor.colorPrimary,
-                      colorButton: selectedRole == Role.shop
-                          ? AppColor.colorPrimary
-                          : Colors.white,
-                      colorBorder: AppColor.colorPrimary,
+                    AppSize.gapH150,
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildRoleCard(
+                            context: context,
+                            title: AppText.userCapital,
+                            icon: Icons.person_outline_rounded,
+                            isSelected: selectedRole == Role.user,
+                            onTap: () {
+                              context.read<GlobalBloc>().add(
+                                GlobalEventSetRole(role: Role.user),
+                              );
+                            },
+                          ),
+                        ),
+
+                        AppSize.gapW15,
+
+                        Expanded(
+                          child: _buildRoleCard(
+                            context: context,
+                            title: AppText.shopCapital,
+                            icon: Icons.storefront_rounded,
+                            isSelected: selectedRole == Role.shop,
+                            onTap: () {
+                              context.read<GlobalBloc>().add(
+                                GlobalEventSetRole(role: Role.shop),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     AppSize.gapH80,
 
-                    if (selectedRole != null) ...[
-                      CustomButton(
-                        onPressed: () {
+                    CustomButton(
+                      onPressed: () {
+                        if (selectedRole != null) {
                           context.push(AppRouter.screenLogin);
-                        },
-                        buttonText: AppText.proceed,
-                        textColor: Colors.white,
-                        colorButton: AppColor.colorPrimary,
-                        colorBorder: AppColor.colorPrimary,
-                      ),
-                    ],
+                        } else {
+                          CustomSnackBar.primary(
+                            context: context,
+                            contentText: AppText.pleaseSelectARole,
+                          );
+                        }
+                      },
+                      buttonText: AppText.proceed,
+                      textColor: selectedRole != null
+                          ? Colors.white
+                          : AppColor.colorPrimary,
+                      colorButton: selectedRole != null
+                          ? AppColor.colorPrimary
+                          : Colors.white,
+                      colorBorder: AppColor.colorPrimary,
+                    ),
                   ],
                 );
               },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoleCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    final cardColor = isSelected ? AppColor.colorPrimary : Colors.white;
+    final contentColor = isSelected ? Colors.white : AppColor.colorPrimary;
+
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: AppSize.borderRadiusAll10,
+          border: Border.all(
+            color: AppColor.colorPrimary,
+            width: isSelected ? 2.0 : 1.0,
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppSize.borderRadiusAll10,
+          child: Padding(
+            padding: AppSize.paddingAll10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 48, color: contentColor),
+                AppSize.gapH10,
+
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: AppText.style.titleMedium?.copyWith(
+                    color: contentColor,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

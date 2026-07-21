@@ -243,7 +243,7 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                               AppSize.gapH15,
 
                               // Weekend Selector Component
-                              CustomTitle(title: AppText.weekends),
+                              CustomTitlePrimary(title: AppText.weekends),
                               WeekendSelector(
                                 initialSelectedDays: selectedWeekends,
                                 onChanged: (csvDays) {

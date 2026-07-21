@@ -59,7 +59,7 @@ class CustomFieldPrimary extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         title != null
-            ? CustomTitle(title: title!, isRequired: isRequired)
+            ? CustomTitlePrimary(title: title!, isRequired: isRequired)
             : AppSize.noGap,
 
         TextFormField(
