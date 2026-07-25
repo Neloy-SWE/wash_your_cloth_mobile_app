@@ -5,7 +5,7 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:wash_your_cloth_mobile_app/data/model/model_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_order_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/api_get_order_details_user.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/i_api_get_order_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/use_case/order/use_case_order.dart';
 

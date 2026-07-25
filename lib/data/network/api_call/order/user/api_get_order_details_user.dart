@@ -6,10 +6,10 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:dio/dio.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_order_details_user.dart';
 
-import '../../../client/client.dart';
-import '../../../client/client_constant.dart';
-import '../../../model/model_error.dart';
-import '../../api_path.dart';
+import '../../../../client/client.dart';
+import '../../../../client/client_constant.dart';
+import '../../../../model/model_error.dart';
+import '../../../api_path.dart';
 
 abstract class IApiGetOrderDetailsUser {
   Future<(ModelOrderDetailsUser?, ModelError?)> getDetails({

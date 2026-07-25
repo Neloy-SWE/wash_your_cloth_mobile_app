@@ -11,7 +11,13 @@ class ApiPath {
   static const String registration = "$auth/registration";
   static const String otpVerify = "$auth/otp-verify";
 
+  // order
   static const String order = "/order";
   static const String orderListUser = "$order/list-user";
   static const String orderDetailsUser = "$order/details-user/";
+  static const String place = "$order/place/";
+
+  // shop
+  static const String shop = "/shop";
+  static const String shopList = "$shop/list";
 }

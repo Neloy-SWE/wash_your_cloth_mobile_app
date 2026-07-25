@@ -3,13 +3,9 @@ Created by Neloy on 18 May, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/api_get_order_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/i_api_get_order_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
@@ -23,7 +19,6 @@ import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/screen_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 
-import '../data/client/client.dart';
 import '../data/repository/repository_authentication.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
@@ -73,8 +68,7 @@ class AppRouter {
         path: AppRouter.screenLogin,
         builder: (context, state) => BlocProvider<LoginBloc>(
           create: (_) => LoginBloc(
-            repositoryAuthentication:
-                RepositoryProvider.of<IRepositoryAuthentication>(context),
+            repositoryAuthentication: context.read<IRepositoryAuthentication>(),
           ),
           child: ScreenLogin(),
         ),
@@ -83,8 +77,7 @@ class AppRouter {
         path: AppRouter.screenOTP,
         builder: (context, state) => BlocProvider<OTPBloc>(
           create: (_) => OTPBloc(
-            repositoryAuthentication:
-                RepositoryProvider.of<IRepositoryAuthentication>(context),
+            repositoryAuthentication: context.read<IRepositoryAuthentication>(),
           ),
           child: ScreenOTP(),
         ),
@@ -94,8 +87,7 @@ class AppRouter {
         path: AppRouter.screenRegistration,
         builder: (context, state) => BlocProvider<RegistrationBloc>(
           create: (_) => RegistrationBloc(
-            repositoryAuthentication:
-                RepositoryProvider.of<IRepositoryAuthentication>(context),
+            repositoryAuthentication: context.read<IRepositoryAuthentication>(),
           ),
           child: ScreenRegistration(),
         ),
@@ -106,9 +98,7 @@ class AppRouter {
           providers: [
             BlocProvider<OrderListUserBloc>(
               create: (context) => OrderListUserBloc(
-                repositoryOrder: RepositoryProvider.of<IRepositoryOrder>(
-                  context,
-                ),
+                repositoryOrder: context.read<IRepositoryOrder>(),
               )..add(OrderListUserEventFetch()),
             ),
           ],
@@ -122,7 +112,7 @@ class AppRouter {
           final orderId = state.extra as String;
           return BlocProvider<OrderDetailsUserBloc>(
             create: (context) => OrderDetailsUserBloc(
-              repositoryOrder: RepositoryProvider.of<IRepositoryOrder>(context),
+              repositoryOrder: context.read<IRepositoryOrder>(),
             )..add(OrderDetailsUserEventFetch(orderId: orderId)),
             child: ScreenOrderDetailsUser(),
           );
@@ -151,19 +141,4 @@ class AppRouter {
       // ),
     ],
   );
-}
-
-class GoRouterRefreshStream extends ChangeNotifier {
-  late final StreamSubscription<dynamic> _subscription;
-
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
-  }
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
 }

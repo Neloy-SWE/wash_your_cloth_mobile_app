@@ -17,7 +17,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 
 import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
-import 'data/network/api_call/order/api_get_order_details_user.dart';
+import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/i_api_get_order_list.dart';
 import 'data/repository/repository_order.dart';
 

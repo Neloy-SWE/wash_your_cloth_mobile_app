@@ -11,7 +11,7 @@ import '../../../model/model_error.dart';
 import '../../../model/model_order_list.dart';
 import '../../api_path.dart';
 
-part 'api_get_order_list_user.dart';
+part 'user/api_get_order_list_user.dart';
 
 abstract class IApiGetOrderList {
   Future<(List<ModelOrderList>?, ModelError?)> getOrderList();

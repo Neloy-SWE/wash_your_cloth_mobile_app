@@ -3,7 +3,7 @@ Created by Neloy on 15 July, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-part of 'i_api_get_order_list.dart';
+part of '../i_api_get_order_list.dart';
 
 class ApiGetOrderListUser implements IApiGetOrderList {
   final Client client;
