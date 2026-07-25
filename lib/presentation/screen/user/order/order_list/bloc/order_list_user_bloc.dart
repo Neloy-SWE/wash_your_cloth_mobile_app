@@ -9,7 +9,7 @@ import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart
 
 import '../../../../../../data/client/client_constant.dart';
 import '../../../../../../data/model/model_order_list.dart';
-import '../../../../../../data/use_case/order/use_case_order.dart';
+import '../../../../../../data/use_case/use_case_generic.dart';
 
 part 'order_list_user_event.dart';
 
@@ -29,7 +29,7 @@ class OrderListUserBloc extends Bloc<OrderListUserEvent, OrderListUserState> {
   ) async {
     emit(OrderListUserStateLoading());
     try {
-      UseCaseOrder<List<ModelOrderList>> useCaseOrderList =
+      UseCaseGeneric<List<ModelOrderList>> useCaseOrderList =
           await repositoryOrder.getOrderListUser();
       if (useCaseOrderList.isSuccess) {
         emit(OrderListUserStateFetch(orderList: useCaseOrderList.data!));

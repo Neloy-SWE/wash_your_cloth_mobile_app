@@ -5,25 +5,25 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:wash_your_cloth_mobile_app/data/model/model_error.dart';
 
-import '../../client/client_constant.dart';
+import '../client/client_constant.dart';
 
-class UseCaseOrder<T> {
+class UseCaseGeneric<T> {
   bool isSuccess;
   T? data;
   String? message;
 
-  UseCaseOrder({required this.isSuccess, this.data, this.message});
+  UseCaseGeneric({required this.isSuccess, this.data, this.message});
 
-  factory UseCaseOrder.serverError({String? customMessage}) {
-    return UseCaseOrder(
+  factory UseCaseGeneric.serverError({String? customMessage}) {
+    return UseCaseGeneric(
       isSuccess: false,
       message: customMessage ?? ClientConstant.serverError,
     );
   }
 
-  factory UseCaseOrder.fromModelError(ModelError modelError) {
+  factory UseCaseGeneric.fromModelError(ModelError modelError) {
     final hasErrorText = modelError.error?.isNotEmpty == true;
-    return UseCaseOrder(
+    return UseCaseGeneric(
       isSuccess: false,
       message: hasErrorText ? modelError.error!.first : ClientConstant.serverError,
     );

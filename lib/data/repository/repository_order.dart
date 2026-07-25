@@ -7,14 +7,12 @@ import 'package:wash_your_cloth_mobile_app/data/model/model_order_details_user.d
 import 'package:wash_your_cloth_mobile_app/data/model/model_order_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/i_api_get_order_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/order/use_case_order.dart';
-
-import '../client/client_constant.dart';
+import 'package:wash_your_cloth_mobile_app/data/use_case/use_case_generic.dart';
 
 abstract class IRepositoryOrder {
-  Future<UseCaseOrder<List<ModelOrderList>>> getOrderListUser();
+  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser();
 
-  Future<UseCaseOrder<ModelOrderDetailsUser>> getOrderDetails({
+  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetails({
     required String orderId,
   });
 }
@@ -29,11 +27,11 @@ class RepositoryOrder implements IRepositoryOrder {
   });
 
   @override
-  Future<UseCaseOrder<List<ModelOrderList>>> getOrderListUser() async {
+  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser() async {
     try {
       var (modelOrderList, modelError) = await apiGetOrderList.getOrderList();
       if (modelError == null) {
-        return UseCaseOrder(isSuccess: true, data: modelOrderList);
+        return UseCaseGeneric(isSuccess: true, data: modelOrderList);
       } else {
         // return UseCaseOrder(
         //   isSuccess: false,
@@ -41,28 +39,28 @@ class RepositoryOrder implements IRepositoryOrder {
         //       ? modelError.error!.first
         //       : ClientConstant.serverError,
         // );
-        return UseCaseOrder.fromModelError(modelError);
+        return UseCaseGeneric.fromModelError(modelError);
       }
     } catch (e) {
       // return UseCaseOrder(message: ClientConstant.serverError, isSuccess: false);
-      return UseCaseOrder.serverError();
+      return UseCaseGeneric.serverError();
     }
   }
 
   @override
-  Future<UseCaseOrder<ModelOrderDetailsUser>> getOrderDetails({
+  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetails({
     required String orderId,
   }) async {
     try {
       var (modelOrderDetails, modelError) = await apiGetOrderDetailsUser
           .getDetails(orderId: orderId);
       if (modelError == null) {
-        return UseCaseOrder(isSuccess: true, data: modelOrderDetails);
+        return UseCaseGeneric(isSuccess: true, data: modelOrderDetails);
       } else {
-        return UseCaseOrder.fromModelError(modelError);
+        return UseCaseGeneric.fromModelError(modelError);
       }
     } catch (e) {
-      return UseCaseOrder.serverError();
+      return UseCaseGeneric.serverError();
     }
   }
 }
