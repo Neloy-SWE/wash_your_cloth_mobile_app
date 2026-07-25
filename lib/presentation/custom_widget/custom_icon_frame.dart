@@ -7,9 +7,15 @@ import 'package:flutter/material.dart';
 
 import '../../utilities/app_color.dart';
 
-class CustomLaundryIcon extends StatelessWidget {
+class CustomIconFrame extends StatelessWidget {
   final double size;
-  const CustomLaundryIcon({super.key, required this.size});
+  final IconData iconData;
+
+  const CustomIconFrame({
+    super.key,
+    required this.size,
+    required this.iconData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +38,7 @@ class CustomLaundryIcon extends StatelessWidget {
           ),
         ],
       ),
-      child: const Icon(
-        Icons.local_laundry_service_rounded,
-        color: Colors.white,
-        size: 30,
-      ),
+      child: Icon(iconData, color: Colors.white, size: 30),
     );
   }
 }

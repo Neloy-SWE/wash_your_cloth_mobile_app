@@ -63,4 +63,6 @@ class AppText {
   static const String ironPress = "Iron Press";
   static const String ironCharge = "Iron Charge";
   static const String grandTotal = "Grand Total";
+  static const String open = "Open";
+  static const String close = "Close";
 }

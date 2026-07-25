@@ -21,25 +21,3 @@ class AppToolSpaceFormatter extends TextInputFormatter {
     );
   }
 }
-
-/// order status color select
-List<Color> getStatusBadgeColorSet({required String orderStatus}) {
-  List<Color> colorSet = [];
-  final status = OrderStatus.values.byName(orderStatus);
-  switch (status) {
-    case OrderStatus.pending:
-      colorSet.addAll([
-        AppColor.colorBackgroundStatusPending,
-        AppColor.colorBorderStatusPending,
-      ]);
-    case OrderStatus.accepted:
-      colorSet.addAll([
-        AppColor.colorBackgroundStatusAccepted,
-        AppColor.colorBorderStatusAccepted,
-      ]);
-    default:
-      colorSet = [];
-  }
-
-  return colorSet;
-}
