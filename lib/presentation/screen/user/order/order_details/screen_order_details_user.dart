@@ -6,7 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_dialogue.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_laundry_icon.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_title.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
@@ -43,9 +43,6 @@ class ScreenOrderDetailsUser extends StatelessWidget {
           builder: (context, state) {
             if (state is OrderDetailsUserStateFetch) {
               final order = state.orderDetailsUser;
-              List<Color> statusColorSet = getStatusBadgeColorSet(
-                orderStatus: order.status,
-              );
               return SingleChildScrollView(
                 padding: AppSize.paddingAll25,
                 child: Column(
@@ -64,7 +61,10 @@ class ScreenOrderDetailsUser extends StatelessWidget {
                           padding: const EdgeInsets.all(20),
                           child: Column(
                             children: [
-                              CustomLaundryIcon(size: 70),
+                              CustomIconFrame(
+                                size: 70,
+                                iconData: Icons.local_laundry_service_rounded,
+                              ),
 
                               AppSize.gapH20,
 
@@ -77,7 +77,6 @@ class ScreenOrderDetailsUser extends StatelessWidget {
                               AppSize.gapH15,
 
                               CustomStatusBadge(
-                                statusColorSet: statusColorSet,
                                 status: order.status,
                                 fontSize: 14,
                               ),

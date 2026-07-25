@@ -6,14 +6,13 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_laundry_icon.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_status_badge.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_tool.dart';
 
 import '../../../../custom_widget/custom_dialogue.dart';
 
@@ -44,11 +43,8 @@ class ScreenOrderListUser extends StatelessWidget {
           return ListView.separated(
             padding: AppSize.paddingAll25,
             itemBuilder: (BuildContext context, int index) {
-              List<Color> statusColorSet = getStatusBadgeColorSet(
-                orderStatus: state.orderList[index].status,
-              );
               return InkWell(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: AppSize.borderRadiusAll10,
                 onTap: () {
                   context.push(
                     AppRouter.screenOrderDetailsUser,
@@ -59,13 +55,15 @@ class ScreenOrderListUser extends StatelessWidget {
                   padding: AppSize.paddingAll10,
                   decoration: BoxDecoration(
                     color: AppColor.colorBackgroundCard,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: AppSize.borderRadiusAll10,
                   ),
                   child: Row(
                     children: [
-                      CustomLaundryIcon(size: 48),
-
-                      const SizedBox(width: 16),
+                      CustomIconFrame(
+                        size: 48,
+                        iconData: Icons.local_laundry_service_rounded,
+                      ),
+                      AppSize.gapW15,
 
                       Expanded(
                         child: Column(
@@ -87,7 +85,7 @@ class ScreenOrderListUser extends StatelessWidget {
                               style: AppText.style.bodySmall,
                             ),
 
-                            const SizedBox(height: 2),
+                            AppSize.gapH02,
 
                             Text(
                               "${state.orderList[index].totalPrice} ${AppText.bdtCapital}",
@@ -98,16 +96,16 @@ class ScreenOrderListUser extends StatelessWidget {
                           ],
                         ),
                       ),
+                      AppSize.gapW05,
 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           CustomStatusBadge(
-                            statusColorSet: statusColorSet,
                             status: state.orderList[index].status,
                           ),
 
-                          const SizedBox(height: 16),
+                          AppSize.gapH15,
 
                           const Icon(
                             Icons.arrow_forward_ios_rounded,

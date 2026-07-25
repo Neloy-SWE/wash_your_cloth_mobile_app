@@ -9,6 +9,7 @@ import 'package:wash_your_cloth_mobile_app/data/client/client.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/shop/api_get_shop_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
@@ -20,6 +21,7 @@ import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/i_api_get_order_list.dart';
 import 'data/repository/repository_order.dart';
+import 'data/repository/repository_shop.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,11 +85,19 @@ class MyApp extends StatelessWidget {
                 ApiGetOrderDetailsUser(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetShopList>(
+            create: (context) => ApiGetShopList(client: context.read<Client>()),
+          ),
           RepositoryProvider<IRepositoryOrder>(
             create: (context) => RepositoryOrder(
               apiGetOrderList: context.read<IApiGetOrderList>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
             ),
+          ),
+
+          RepositoryProvider<IRepositoryShop>(
+            create: (context) =>
+                RepositoryShop(apiGetShopList: context.read<IApiGetShopList>()),
           ),
 
           // RepositoryProvider<AppRouter>(create: (context) => AppRouter()),
