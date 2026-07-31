@@ -20,6 +20,7 @@ import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/user/api_get_order_list_user.dart';
+import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
 import 'data/repository/repository_order.dart';
 import 'data/repository/repository_shop.dart';
@@ -95,6 +96,11 @@ class MyApp extends StatelessWidget {
                 ApiGetShopDetailsUser(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetPriceListUser>(
+            create: (context) =>
+                ApiGetPriceListUser(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryOrder>(
             create: (context) => RepositoryOrder(
               apiGetOrderListUser: context.read<IApiGetOrderListUser>(),
@@ -106,6 +112,7 @@ class MyApp extends StatelessWidget {
             create: (context) => RepositoryShop(
               apiGetShopList: context.read<IApiGetShopList>(),
               apiGetShopDetailsUser: context.read<IApiGetShopDetailsUser>(),
+              apiGetPriceListUser: context.read<IApiGetPriceListUser>(),
             ),
           ),
 
