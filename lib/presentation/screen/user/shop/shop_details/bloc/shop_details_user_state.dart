@@ -18,11 +18,15 @@ class ShopDetailsUserStateLoading extends ShopDetailsUserState {}
 
 class ShopDetailsUserStateFetch extends ShopDetailsUserState {
   final ModelShopDetails shopDetailsUser;
+  final List<ModelPriceListUser> priceList;
 
-  const ShopDetailsUserStateFetch({required this.shopDetailsUser});
+  const ShopDetailsUserStateFetch({
+    required this.shopDetailsUser,
+    required this.priceList,
+  });
 
   @override
-  List<Object?> get props => [shopDetailsUser];
+  List<Object?> get props => [shopDetailsUser, priceList];
 }
 
 class ShopDetailsUserStateResult extends ShopDetailsUserState {

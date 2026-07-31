@@ -5,6 +5,7 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/data/model/model_price_list_user.dart';
 
 import '../../../../../../data/client/client_constant.dart';
 import '../../../../../../data/model/model_shop_details.dart';
@@ -30,14 +31,29 @@ class ShopDetailsUserBloc
   ) async {
     emit(ShopDetailsUserStateLoading());
     try {
-      UseCaseGeneric<ModelShopDetails> useCaseShopDetails = await repositoryShop
-          .getShopDetailsUser(shopId: event.shopId);
-      if (useCaseShopDetails.isSuccess) {
+      final results = await Future.wait([
+        repositoryShop.getShopDetailsUser(shopId: event.shopId),
+        repositoryShop.getPriceListUser(shopId: event.shopId),
+      ]);
+
+      final useCaseShopDetails = results[0] as UseCaseGeneric<ModelShopDetails>;
+      final useCasePriceList =
+          results[1] as UseCaseGeneric<List<ModelPriceListUser>>;
+
+      if (useCaseShopDetails.isSuccess && useCasePriceList.isSuccess) {
         emit(
-          ShopDetailsUserStateFetch(shopDetailsUser: useCaseShopDetails.data!),
+          ShopDetailsUserStateFetch(
+            shopDetailsUser: useCaseShopDetails.data!,
+            priceList: useCasePriceList.data!,
+          ),
         );
       } else {
-        emit(ShopDetailsUserStateResult(message: useCaseShopDetails.message!));
+        // emit(ShopDetailsUserStateResult(message: useCaseShopDetails.message!));
+        emit(
+          ShopDetailsUserStateResult(
+            message: ClientConstant.unableToGetDetails,
+          ),
+        );
       }
     } catch (e) {
       emit(ShopDetailsUserStateResult(message: ClientConstant.serverError));
