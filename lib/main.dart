@@ -19,7 +19,8 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
-import 'data/network/api_call/order/i_api_get_order_list.dart';
+import 'data/network/api_call/order/user/api_get_order_list_user.dart';
+import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
 import 'data/repository/repository_order.dart';
 import 'data/repository/repository_shop.dart';
 
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
-          RepositoryProvider<IApiGetOrderList>(
+          RepositoryProvider<IApiGetOrderListUser>(
             create: (context) =>
                 ApiGetOrderListUser(client: context.read<Client>()),
           ),
@@ -88,16 +89,24 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<IApiGetShopList>(
             create: (context) => ApiGetShopList(client: context.read<Client>()),
           ),
+
+          RepositoryProvider<IApiGetShopDetailsUser>(
+            create: (context) =>
+                ApiGetShopDetailsUser(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryOrder>(
             create: (context) => RepositoryOrder(
-              apiGetOrderList: context.read<IApiGetOrderList>(),
+              apiGetOrderListUser: context.read<IApiGetOrderListUser>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
             ),
           ),
 
           RepositoryProvider<IRepositoryShop>(
-            create: (context) =>
-                RepositoryShop(apiGetShopList: context.read<IApiGetShopList>()),
+            create: (context) => RepositoryShop(
+              apiGetShopList: context.read<IApiGetShopList>(),
+              apiGetShopDetailsUser: context.read<IApiGetShopDetailsUser>(),
+            ),
           ),
 
           // RepositoryProvider<AppRouter>(create: (context) => AppRouter()),
