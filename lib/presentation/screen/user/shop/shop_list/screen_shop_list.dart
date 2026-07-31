@@ -5,15 +5,15 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/model/model_shop_list.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_status_badge.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
-import '../../../../utilities/app_color.dart';
-import '../../../../utilities/app_size.dart';
-import '../../../custom_widget/custom_dialogue.dart';
-import '../../../custom_widget/custom_title.dart';
+import '../../../../../data/model/model_shop_list.dart';
+import '../../../../../utilities/app_color.dart';
+import '../../../../../utilities/app_size.dart';
+import '../../../../../utilities/app_text.dart';
+import '../../../../custom_widget/custom_dialogue.dart';
+import '../../../../custom_widget/custom_icon_frame.dart';
+import '../../../../custom_widget/custom_status_badge.dart';
+import '../../../../custom_widget/custom_title.dart';
 import 'bloc/shop_list_bloc.dart';
 
 class ScreenShopList extends StatelessWidget {
@@ -64,7 +64,7 @@ class ScreenShopList extends StatelessWidget {
     );
   }
 
-  Widget _shopListItemCard({required ModelSopList shop}) {
+  Widget _shopListItemCard({required ModelShopList shop}) {
     return InkWell(
       onTap: () {},
       borderRadius: AppSize.borderRadiusAll10,

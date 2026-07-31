@@ -18,7 +18,7 @@ import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/screen_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop_list/bloc/shop_list_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_shop.dart';

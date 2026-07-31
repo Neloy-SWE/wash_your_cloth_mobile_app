@@ -12,7 +12,7 @@ import '../../../model/model_shop_list.dart';
 import '../../api_path.dart';
 
 abstract class IApiGetShopList {
-  Future<(List<ModelSopList>?, ModelError?)> getShopList();
+  Future<(List<ModelShopList>?, ModelError?)> getShopList();
 }
 
 class ApiGetShopList implements IApiGetShopList {
@@ -21,14 +21,14 @@ class ApiGetShopList implements IApiGetShopList {
   const ApiGetShopList({required this.client});
 
   @override
-  Future<(List<ModelSopList>?, ModelError?)> getShopList() async {
+  Future<(List<ModelShopList>?, ModelError?)> getShopList() async {
     try {
       Response response = await client.request.get(ApiPath.shopList);
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelSopList = List<ModelSopList>.from(
-          response.data.map((x) => ModelSopList.fromJson(x)),
+        var modelShopList = List<ModelShopList>.from(
+          response.data.map((x) => ModelShopList.fromJson(x)),
         );
-        return (modelSopList, null);
+        return (modelShopList, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, modelError);

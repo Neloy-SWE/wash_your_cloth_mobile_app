@@ -31,7 +31,7 @@ class OrderDetailsUserBloc
     emit(OrderDetailsUserStateLoading());
     try {
       UseCaseGeneric<ModelOrderDetailsUser> useCaseOrderDetails =
-          await repositoryOrder.getOrderDetails(orderId: event.orderId);
+          await repositoryOrder.getOrderDetailsUser(orderId: event.orderId);
       if (useCaseOrderDetails.isSuccess) {
         emit(
           OrderDetailsUserStateFetch(

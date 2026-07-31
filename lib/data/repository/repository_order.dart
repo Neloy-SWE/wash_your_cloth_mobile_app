@@ -3,33 +3,34 @@ Created by Neloy on 15 July, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import 'package:wash_your_cloth_mobile_app/data/model/model_order_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/data/model/model_order_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_get_order_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/i_api_get_order_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/use_case_generic.dart';
+import '../model/model_order_details_user.dart';
+import '../model/model_order_list.dart';
+import '../network/api_call/order/user/api_get_order_details_user.dart';
+import '../network/api_call/order/user/api_get_order_list_user.dart';
+import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryOrder {
   Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser();
 
-  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetails({
+  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetailsUser({
     required String orderId,
   });
 }
 
 class RepositoryOrder implements IRepositoryOrder {
-  final IApiGetOrderList apiGetOrderList;
+  final IApiGetOrderListUser apiGetOrderListUser;
   final IApiGetOrderDetailsUser apiGetOrderDetailsUser;
 
   const RepositoryOrder({
-    required this.apiGetOrderList,
+    required this.apiGetOrderListUser,
     required this.apiGetOrderDetailsUser,
   });
 
   @override
   Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser() async {
     try {
-      var (modelOrderList, modelError) = await apiGetOrderList.getOrderList();
+      var (modelOrderList, modelError) = await apiGetOrderListUser
+          .getOrderList();
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelOrderList);
       } else {
@@ -48,7 +49,7 @@ class RepositoryOrder implements IRepositoryOrder {
   }
 
   @override
-  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetails({
+  Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetailsUser({
     required String orderId,
   }) async {
     try {

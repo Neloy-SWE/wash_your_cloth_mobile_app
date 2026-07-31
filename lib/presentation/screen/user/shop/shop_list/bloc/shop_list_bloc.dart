@@ -7,9 +7,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_shop_list.dart';
 
-import '../../../../../data/client/client_constant.dart';
-import '../../../../../data/repository/repository_shop.dart';
-import '../../../../../data/use_case/use_case_generic.dart';
+import '../../../../../../data/client/client_constant.dart';
+import '../../../../../../data/repository/repository_shop.dart';
+import '../../../../../../data/use_case/use_case_generic.dart';
 
 part 'shop_list_event.dart';
 
@@ -28,8 +28,8 @@ class ShopListBloc extends Bloc<ShopListEvent, ShopListState> {
   ) async {
     emit(ShopListStateLoading());
     try {
-      UseCaseGeneric<List<ModelSopList>> useCaseShopList = await repositoryShop
-          .getOrderListUser();
+      UseCaseGeneric<List<ModelShopList>> useCaseShopList = await repositoryShop
+          .getShopList();
       if (useCaseShopList.isSuccess) {
         emit(ShopListStateFetch(shopList: useCaseShopList.data!));
       } else {

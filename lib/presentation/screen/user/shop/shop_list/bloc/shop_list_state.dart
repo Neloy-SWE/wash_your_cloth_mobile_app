@@ -17,7 +17,7 @@ class ShopListStateInitial extends ShopListState {}
 class ShopListStateLoading extends ShopListState {}
 
 class ShopListStateFetch extends ShopListState {
-  final List<ModelSopList> shopList;
+  final List<ModelShopList> shopList;
 
   const ShopListStateFetch({required this.shopList});
 
