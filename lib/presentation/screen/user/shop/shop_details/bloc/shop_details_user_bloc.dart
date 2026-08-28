@@ -51,7 +51,11 @@ class ShopDetailsUserBloc
         // emit(ShopDetailsUserStateResult(message: useCaseShopDetails.message!));
         emit(
           ShopDetailsUserStateResult(
-            message: ClientConstant.unableToGetDetails,
+            message: !useCaseShopDetails.isSuccess
+                ? useCaseShopDetails.message!
+                : !useCasePriceList.isSuccess
+                ? useCasePriceList.message!
+                : ClientConstant.unableToGetDetails,
           ),
         );
       }

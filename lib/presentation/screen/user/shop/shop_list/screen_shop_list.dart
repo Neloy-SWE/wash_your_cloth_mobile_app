@@ -5,13 +5,16 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_card.dart';
 
 import '../../../../../data/model/model_shop_list.dart';
-import '../../../../../utilities/app_color.dart';
+import '../../../../../router/app_router.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_icon_frame.dart';
+import '../../../../custom_widget/custom_not_found.dart';
 import '../../../../custom_widget/custom_status_badge.dart';
 import '../../../../custom_widget/custom_title.dart';
 import 'bloc/shop_list_bloc.dart';
@@ -42,9 +45,9 @@ class ScreenShopList extends StatelessWidget {
         if (state is ShopListStateFetch) {
           return ListView.separated(
             padding: AppSize.paddingAll25,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, index) {
               final shop = state.shopList[index];
-              return _shopListItemCard(shop: shop);
+              return _shopListItemCard(shop: shop, context: context);
             },
             separatorBuilder: (BuildContext context, int index) {
               return AppSize.gapH20;
@@ -52,81 +55,64 @@ class ScreenShopList extends StatelessWidget {
             itemCount: state.shopList.length,
           );
         } else {
-          return Center(
-            child: Icon(
-              Icons.not_interested,
-              size: 50,
-              color: AppColor.colorBackgroundCard,
-            ),
-          );
+          return CustomNotFound();
         }
       },
     );
   }
 
-  Widget _shopListItemCard({required ModelShopList shop}) {
-    return InkWell(
-      onTap: () {},
-      borderRadius: AppSize.borderRadiusAll10,
-      child: Container(
-        padding: AppSize.paddingAll10,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade200, width: 1),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomIconFrame(size: 48, iconData: Icons.storefront_rounded),
-            AppSize.gapW15,
+  Widget _shopListItemCard({
+    required ModelShopList shop,
+    required BuildContext context,
+  }) {
+    return CustomCardWithAction(
+      onTap: () {
+        context.push(AppRouter.screenShopDetailsUser, extra: shop.id);
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CustomIconFrame(size: 48, iconData: Icons.storefront_rounded),
+          AppSize.gapW15,
 
-            // 2. Shop Information
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Shop Name & Status Badge Row
-                  Text(shop.shopName, style: AppText.style.titleMedium),
-                  AppSize.gapH10,
-
-                  CustomTitleWithIconValue(
-                    iconData: Icons.location_on,
-                    title: AppText.address,
-                    value: shop.shopAddress,
-                  ),
-                ],
-              ),
-            ),
-            AppSize.gapH10,
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+          // 2. Shop Information
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomStatusBadge(
-                  status: shop.status ? AppText.open : AppText.close,
-                  isBorder: false,
-                  fontSize: 11,
-                ),
+                // Shop Name & Status Badge Row
+                Text(shop.shopName, style: AppText.style.titleMedium),
+                AppSize.gapH10,
 
-                AppSize.gapH15,
-
-                const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: Colors.grey,
+                CustomTitleWithIconValue(
+                  iconData: Icons.location_on,
+                  title: AppText.address,
+                  value: shop.shopAddress,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          AppSize.gapH10,
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              CustomStatusBadge(
+                status: shop.status ? AppText.open : AppText.close,
+                isBorder: false,
+                fontSize: 11,
+              ),
+
+              AppSize.gapH15,
+
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: Colors.grey,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
