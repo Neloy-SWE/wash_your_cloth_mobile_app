@@ -4,8 +4,6 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:flutter/services.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 
 class AppToolSpaceFormatter extends TextInputFormatter {
   @override

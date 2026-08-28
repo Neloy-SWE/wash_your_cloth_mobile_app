@@ -49,7 +49,7 @@ class AppText {
   static const String shopList = "Shop list";
   static const String profile = "Profile";
   static const String totalAmount = "Total amount";
-  static const String bdtCapital = "BDT";
+    static const String bdtCapital = "BDT";
   static const String orderDetails = "Order details";
   static const String shopInformation = "Shop information";
   static const String shop = "Shop";
@@ -59,10 +59,22 @@ class AppText {
   static const String yes = "Yes";
   static const String no = "No";
   static const String quantity = "Quantity";
-  static const String unitPrice = "Unit Price";
-  static const String ironPress = "Iron Press";
-  static const String ironCharge = "Iron Charge";
-  static const String grandTotal = "Grand Total";
+  static const String unitPrice = "Unit price";
+  static const String ironPress = "Iron press";
+  static const String ironCharge = "Iron charge";
+  static const String grandTotal = "Grand total";
   static const String open = "Open";
   static const String close = "Close";
+  static const String shopDetails = "Shop details";
+  static const String businessHours = "Business hours";
+  static const String priceList = "Price list";
+  static const String deliveryCharge = "Delivery charge";
+  static const String deliveryChargeBDT = "Delivery charge (BDT)";
+  static const String deliveryChargeHint = "10";
+  static const String ironPressColon = "Iron Press:";
+  static const String cart = "Cart";
+  static const String placeOrder = "Place order";
+  static const String orderSummary = "Order summary";
+  static const String note = "Note";
+  static const String noteHint = "Add your note here...";
 }
