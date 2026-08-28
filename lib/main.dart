@@ -9,9 +9,12 @@ import 'package:wash_your_cloth_mobile_app/data/client/client.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_place_order.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/shop/api_get_shop_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
@@ -67,16 +70,6 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiOTPVerify(client: context.read<Client>()),
           ),
 
-          RepositoryProvider<IRepositoryAuthentication>(
-            create: (context) => RepositoryAuthentication(
-              localStorageService: context.read<LocalStorageService>(),
-              apiRefreshToken: context.read<IApiRefreshToken>(),
-              apiLogin: context.read<IApiLogin>(),
-              apiRegistration: context.read<IApiRegistration>(),
-              apiOTPVerify: context.read<IApiOTPVerify>(),
-            ),
-          ),
-
           RepositoryProvider<IApiGetOrderListUser>(
             create: (context) =>
                 ApiGetOrderListUser(client: context.read<Client>()),
@@ -101,10 +94,25 @@ class MyApp extends StatelessWidget {
                 ApiGetPriceListUser(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiPlaceOrder>(
+            create: (context) => ApiPlaceOrder(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IRepositoryAuthentication>(
+            create: (context) => RepositoryAuthentication(
+              localStorageService: context.read<LocalStorageService>(),
+              apiRefreshToken: context.read<IApiRefreshToken>(),
+              apiLogin: context.read<IApiLogin>(),
+              apiRegistration: context.read<IApiRegistration>(),
+              apiOTPVerify: context.read<IApiOTPVerify>(),
+            ),
+          ),
+
           RepositoryProvider<IRepositoryOrder>(
             create: (context) => RepositoryOrder(
               apiGetOrderListUser: context.read<IApiGetOrderListUser>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
+              apiPlaceOrder: context.read<IApiPlaceOrder>(),
             ),
           ),
 
@@ -125,6 +133,18 @@ class MyApp extends StatelessWidget {
                 repositoryAuthentication: context
                     .read<IRepositoryAuthentication>(),
               )..add(GlobalEventGetLoginStatus()),
+            ),
+
+            BlocProvider<OrderListUserBloc>(
+              create: (context) => OrderListUserBloc(
+                repositoryOrder: context.read<IRepositoryOrder>(),
+              )..add(OrderListUserEventFetch()),
+            ),
+
+            BlocProvider<ShopListBloc>(
+              create: (context) =>
+                  ShopListBloc(repositoryShop: context.read<IRepositoryShop>())
+                    ..add(ShopListEventFetch()),
             ),
           ],
           child: MaterialApp.router(

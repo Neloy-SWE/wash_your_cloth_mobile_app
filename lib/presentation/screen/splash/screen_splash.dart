@@ -3,8 +3,6 @@ Created by Neloy on 20 May, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -56,7 +54,8 @@ class _ScreenSplashState extends State<ScreenSplash>
       listener: (context, state) {
         if (state.isLogin == true) {
           if (state.role == Role.user){
-            context.go(AppRouter.screenHomeUser);
+            // context.go(AppRouter.screenHomeUser);
+            context.go(AppRouter.screenOrderListUser);
           } else {
             context.go(AppRouter.screenHomeShop);
           }
