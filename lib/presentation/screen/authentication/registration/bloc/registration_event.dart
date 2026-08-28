@@ -22,6 +22,7 @@ class RegistrationEventRegistration extends RegistrationEvent {
   final String? shopName;
   final String? openTime;
   final String? closeTime;
+  final double? deliveryCharge;
   final String? weekends;
 
   const RegistrationEventRegistration({
@@ -35,6 +36,7 @@ class RegistrationEventRegistration extends RegistrationEvent {
     this.openTime,
     this.closeTime,
     this.weekends,
+    this.deliveryCharge,
   });
 
   @override
@@ -49,5 +51,6 @@ class RegistrationEventRegistration extends RegistrationEvent {
     openTime,
     closeTime,
     weekends,
+    deliveryCharge,
   ];
 }

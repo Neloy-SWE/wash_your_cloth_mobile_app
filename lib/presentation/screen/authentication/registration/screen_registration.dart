@@ -41,6 +41,8 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
   final TextEditingController controllerShopName = TextEditingController();
   final TextEditingController controllerOpenTime = TextEditingController();
   final TextEditingController controllerCloseTime = TextEditingController();
+  final TextEditingController controllerDeliveryCharge =
+      TextEditingController();
 
   bool isPasswordSecure = true;
 
@@ -242,9 +244,29 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                               ),
                               AppSize.gapH15,
 
+                              CustomFieldPrimary(
+                                controller: controllerDeliveryCharge,
+                                textInputType:
+                                    TextInputType.numberWithOptions(),
+                                textInputAction: TextInputAction.next,
+                                title: AppText.deliveryChargeBDT,
+                                label: AppText.deliveryChargeHint,
+                                validator: (value) {
+                                  if (selectedRole == Role.shop) {
+                                    if (value!.isEmpty) {
+                                      return AppValidator
+                                          .validatorDeliveryCharge;
+                                    }
+                                    return null;
+                                  }
+                                  return null;
+                                },
+                              ),
+                              AppSize.gapH15,
+
                               // Weekend Selector Component
                               CustomTitlePrimary(title: AppText.weekends),
-                              WeekendSelector(
+                              CustomWeekendSelector(
                                 initialSelectedDays: selectedWeekends,
                                 onChanged: (csvDays) {
                                   selectedWeekends = csvDays;
@@ -343,6 +365,9 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                 ? controllerCloseTime.text
                 : null,
             weekends: selectedRole == Role.shop ? selectedWeekends : null,
+            deliveryCharge: selectedRole == Role.shop
+                ? double.tryParse(controllerDeliveryCharge.text.trim())
+                : null,
           ),
         );
       }
