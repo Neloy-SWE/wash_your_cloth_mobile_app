@@ -103,12 +103,16 @@ class CustomDialogue extends StatelessWidget {
 
 class CallDialogue {
   static void showLoader(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) =>
-          CustomDialogue(dialogueType: DialogueType.loader, message: ''),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) =>
+              CustomDialogue(dialogueType: DialogueType.loader, message: ''),
+        );
+      }
+    });
   }
 
   static void showQuestion({
@@ -117,20 +121,24 @@ class CallDialogue {
     required void Function() onYes,
     void Function()? onNo,
   }) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => CustomDialogue(
-        dialogueType: DialogueType.question,
-        message: message,
-        onYesPressed: () {
-          onYes();
-        },
-        onNoPressed: () {
-          if (onNo != null) onNo();
-        },
-      ),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (_) => CustomDialogue(
+            dialogueType: DialogueType.question,
+            message: message,
+            onYesPressed: () {
+              onYes();
+            },
+            onNoPressed: () {
+              if (onNo != null) onNo();
+            },
+          ),
+        );
+      }
+    });
   }
 
   static void showResult({
@@ -138,20 +146,31 @@ class CallDialogue {
     required String message,
     void Function()? onOk,
   }) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => CustomDialogue(
-        dialogueType: DialogueType.result,
-        message: message,
-        onOkPressed: () {
-          if (onOk != null) onOk();
-        },
-      ),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (_) => CustomDialogue(
+            dialogueType: DialogueType.result,
+            message: message,
+            onOkPressed: () {
+              if (onOk != null) onOk();
+            },
+          ),
+        );
+      }
+    });
   }
 
   static void hideLoader(BuildContext context) {
-    Navigator.of(context).pop();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        final navigator = Navigator.of(context, rootNavigator: true);
+        if (navigator.canPop()) {
+          navigator.pop();
+        }
+      }
+    });
   }
 }

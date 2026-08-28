@@ -23,4 +23,12 @@ class AppColor {
       211, 255, 241, 1.0);
   static const Color colorBorderStatusAccepted = Color.fromRGBO(
       16, 186, 100, 1.0);
+
+  static const Color colorBackgroundStatusRejected = Color(0xFFFFEBEE);
+
+  static const Color colorBackgroundStatusReady =  Color(0xFFE3F2FD);
+  static const Color colorBorderStatusReady = Color(0xFF1976D2);
+
+
+
 }

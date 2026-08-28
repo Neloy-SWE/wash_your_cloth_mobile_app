@@ -14,6 +14,7 @@ class RegistrationData {
   final String? openTime;
   final String? closeTime;
   final String? weekends;
+  final double? deliveryCharge;
 
   const RegistrationData({
     this.role,
@@ -26,6 +27,7 @@ class RegistrationData {
     this.openTime,
     this.closeTime,
     this.weekends,
+    this.deliveryCharge,
   });
 
   Map<String, dynamic> toMapUser() {
@@ -55,6 +57,7 @@ class RegistrationData {
       "openTime": openTime,
       "closeTime": closeTime,
       "weekends": weekends,
+      "deliveryCharge": deliveryCharge,
     };
   }
 }

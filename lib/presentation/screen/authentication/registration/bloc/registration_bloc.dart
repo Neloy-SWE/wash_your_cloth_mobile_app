@@ -39,6 +39,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         role: event.role,
         shopName: event.shopName,
         weekends: event.weekends,
+        deliveryCharge: event.deliveryCharge,
       );
 
       UseCaseRegistration useCaseRegistration = await repositoryAuthentication

@@ -55,7 +55,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
             } else if (state is LoginStateNavigateLogin) {
               CallDialogue.hideLoader(context);
               if (selectedRole == Role.user){
-                context.go(AppRouter.screenHomeUser);
+                // context.go(AppRouter.screenHomeUser);
+                context.go(AppRouter.screenOrderListUser);
               } else {
                 context.go(AppRouter.screenHomeShop);
               }

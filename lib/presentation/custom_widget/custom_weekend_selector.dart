@@ -5,23 +5,24 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
-class WeekendSelector extends StatefulWidget {
+class CustomWeekendSelector extends StatefulWidget {
   final String initialSelectedDays; // Accept "Sunday,Friday" format
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
 
-  const WeekendSelector({
+  const CustomWeekendSelector({
     super.key,
     required this.initialSelectedDays,
-    required this.onChanged,
+    this.onChanged,
   });
 
   @override
-  State<WeekendSelector> createState() => _WeekendSelectorState();
+  State<CustomWeekendSelector> createState() => _CustomWeekendSelectorState();
 }
 
-class _WeekendSelectorState extends State<WeekendSelector> {
+class _CustomWeekendSelectorState extends State<CustomWeekendSelector> {
   final List<String> _daysOfWeek = [
     'Saturday',
     'Sunday',
@@ -51,14 +52,16 @@ class _WeekendSelectorState extends State<WeekendSelector> {
   }
 
   void _onDayToggled(bool? checked, String day) {
-    setState(() {
-      if (checked == true) {
-        if (!_selectedDays.contains(day)) _selectedDays.add(day);
-      } else {
-        _selectedDays.remove(day);
-      }
-    });
-    widget.onChanged(_selectedDays.join(','));
+    if (widget.onChanged != null) {
+      setState(() {
+        if (checked == true) {
+          if (!_selectedDays.contains(day)) _selectedDays.add(day);
+        } else {
+          _selectedDays.remove(day);
+        }
+      });
+      widget.onChanged?.call(_selectedDays.join(','));
+    }
   }
 
   @override
@@ -71,10 +74,20 @@ class _WeekendSelectorState extends State<WeekendSelector> {
         return FilterChip(
           label: Text(day),
           labelStyle: AppText.style.titleSmall!.copyWith(
-            color: !isChecked ? Colors.black : AppColor.colorPrimary,
+            color: !isChecked ? Colors.black : AppColor.colorDanger,
           ),
           backgroundColor: AppColor.colorPrimaryTextSelection,
           selected: isChecked,
+          color: WidgetStateColor.resolveWith((state) {
+            return Colors.white;
+          }),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppSize.borderRadiusAll8,
+            side: BorderSide(
+              color: isChecked ? AppColor.colorPrimary : Colors.black,
+              width: isChecked ? 1 : 0.5,
+            ),
+          ),
           onSelected: (bool selected) => _onDayToggled(selected, day),
         );
       }).toList(),

@@ -4,48 +4,40 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/profile/screen_profile_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop_list/screen_shop_list_user.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/screen_shop_list.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
 import '../../../../utilities/app_color.dart';
 
-class ScreenHomeUser extends StatefulWidget {
-  const ScreenHomeUser({super.key});
+class ScreenHomeUser extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
-  @override
-  State<ScreenHomeUser> createState() => _ScreenHomeUserState();
-}
-
-class _ScreenHomeUserState extends State<ScreenHomeUser> {
-  int currentPageIndex = 0;
-
-  final List<Widget> _pages = [
-    ScreenOrderListUser(),
-    ScreenShopListUser(),
-    ScreenProfileUser(),
-  ];
-
-  final List<String> _titles = [
-    AppText.orderList,
-    AppText.shopList,
-    AppText.profile,
-  ];
+  const ScreenHomeUser({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
+    final List<String> titles = [
+      AppText.orderList,
+      AppText.shopList,
+      AppText.profile,
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: Text(_titles[currentPageIndex])),
-      body: SafeArea(child: _pages[currentPageIndex]),
+      appBar: AppBar(title: Text(titles[navigationShell.currentIndex])),
+      body: SafeArea(child: navigationShell),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: currentPageIndex,
+        selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
+          // Stateful navigation handle index switching natively
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
         },
-        destinations: [
+        destinations: const [
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined),
             selectedIcon: Icon(Icons.view_list, color: AppColor.colorPrimary),

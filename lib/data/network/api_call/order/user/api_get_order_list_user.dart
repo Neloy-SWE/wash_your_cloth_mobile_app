@@ -3,9 +3,19 @@ Created by Neloy on 15 July, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-part of 'i_api_get_order_list.dart';
+import 'package:dio/dio.dart';
 
-class ApiGetOrderListUser implements IApiGetOrderList {
+import '../../../../client/client.dart';
+import '../../../../client/client_constant.dart';
+import '../../../../model/model_error.dart';
+import '../../../../model/model_order_list.dart';
+import '../../../api_path.dart';
+
+abstract class IApiGetOrderListUser {
+  Future<(List<ModelOrderList>?, ModelError?)> getOrderList();
+}
+
+class ApiGetOrderListUser implements IApiGetOrderListUser {
   final Client client;
 
   const ApiGetOrderListUser({required this.client});

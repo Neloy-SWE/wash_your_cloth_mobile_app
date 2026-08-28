@@ -6,7 +6,6 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 
-import '../../utilities/app_constant.dart';
 import '../model/model_login.dart';
 
 class LocalStorageService {
