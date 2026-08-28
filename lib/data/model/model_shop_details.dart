@@ -10,10 +10,11 @@ class ModelShopDetails {
   final String shopName;
   final String ownerFirstName;
   final String ownerLastName;
-  final String phone;
+  final String shopPhone;
   final String shopAddress;
   final double longitude;
   final double latitude;
+  final double deliveryCharge;
   final String openTime;
   final String closeTime;
   final String weekends;
@@ -24,10 +25,11 @@ class ModelShopDetails {
     required this.shopName,
     required this.ownerFirstName,
     required this.ownerLastName,
-    required this.phone,
+    required this.shopPhone,
     required this.shopAddress,
     required this.longitude,
     required this.latitude,
+    required this.deliveryCharge,
     required this.openTime,
     required this.closeTime,
     required this.weekends,
@@ -45,10 +47,11 @@ class ModelShopDetails {
         shopName: json["shopName"],
         ownerFirstName: json["ownerFirstName"],
         ownerLastName: json["ownerLastName"],
-        phone: json["phone"],
+        shopPhone: json["shopPhone"],
         shopAddress: json["shopAddress"],
         longitude: json["longitude"]?.toDouble(),
         latitude: json["latitude"]?.toDouble(),
+        deliveryCharge: json["deliveryCharge"]?.toDouble(),
         openTime: json["openTime"],
         closeTime: json["closeTime"],
         weekends: json["weekends"],
@@ -60,10 +63,11 @@ class ModelShopDetails {
     "shopName": shopName,
     "ownerFirstName": ownerFirstName,
     "ownerLastName": ownerLastName,
-    "phone": phone,
+    "shopPhone": shopPhone,
     "shopAddress": shopAddress,
     "longitude": longitude,
     "latitude": latitude,
+    "deliveryCharge": deliveryCharge,
     "openTime": openTime,
     "closeTime": closeTime,
     "weekends": weekends,

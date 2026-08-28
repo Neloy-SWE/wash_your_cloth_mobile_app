@@ -10,12 +10,14 @@ class ModelShopList {
   final String shopName;
   final bool status;
   final String shopAddress;
+  final double deliveryCharge;
 
   ModelShopList({
     required this.id,
     required this.shopName,
     required this.status,
     required this.shopAddress,
+    required this.deliveryCharge,
   });
 
   factory ModelShopList.fromRawJson(String str) =>
@@ -28,6 +30,7 @@ class ModelShopList {
     shopName: json["shopName"],
     status: json["status"],
     shopAddress: json["shopAddress"],
+    deliveryCharge: json["deliveryCharge"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +38,6 @@ class ModelShopList {
     "shopName": shopName,
     "status": status,
     "shopAddress": shopAddress,
+    "deliveryCharge": deliveryCharge,
   };
 }
