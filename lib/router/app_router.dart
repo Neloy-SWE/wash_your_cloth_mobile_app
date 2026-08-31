@@ -20,11 +20,13 @@ import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/screen_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/user/profile/bloc/profile_view_user_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_details/screen_shop_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 
 import '../data/repository/repository_authentication.dart';
+import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
 import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
@@ -126,7 +128,12 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRouter.screenShopList,
-                builder: (context, state) => const ScreenShopList(),
+                builder: (context, state) => BlocProvider<ShopListBloc>(
+                  create: (context) => ShopListBloc(
+                    repositoryShop: context.read<IRepositoryShop>(),
+                  )..add(ShopListEventFetch()),
+                  child: const ScreenShopList(),
+                ),
               ),
             ],
           ),
@@ -134,7 +141,12 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRouter.screenProfileUser,
-                builder: (context, state) => const ScreenProfileUser(),
+                builder: (context, state) => BlocProvider<ProfileViewUserBloc>(
+                  create: (context) => ProfileViewUserBloc(
+                    repositoryProfile: context.read<IRepositoryProfile>(),
+                  )..add(ProfileViewUserEventFetch()),
+                  child: const ScreenProfileUser(),
+                ),
               ),
             ],
           ),

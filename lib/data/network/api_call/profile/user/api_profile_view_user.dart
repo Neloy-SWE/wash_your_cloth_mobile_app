@@ -4,6 +4,7 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:dio/dio.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_path.dart';
 
 import '../../../../client/client.dart';
 import '../../../../client/client_constant.dart';
@@ -22,7 +23,7 @@ class ApiProfileViewUser implements IApiProfileViewUser {
   @override
   Future<(ModelProfileViewUser?, ModelError?)> getProfileView() async {
     try {
-      Response response = await client.request.get("");
+      Response response = await client.request.get(ApiPath.viewUser);
       if (response.statusCode == ClientConstant.statusCode200OK) {
         ModelProfileViewUser modelShopDetails = ModelProfileViewUser.fromJson(
           response.data,
