@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_profile.dart';
 import 'package:wash_your_cloth_mobile_app/data/use_case/use_case_generic.dart';
 
-import '../../../../../data/client/client_constant.dart';
-import '../../../../../data/model/model_profile_view_user.dart';
+import '../../../../../../data/client/client_constant.dart';
+import '../../../../../../data/model/model_profile_view_user.dart';
 
 part 'profile_view_user_event.dart';
 
