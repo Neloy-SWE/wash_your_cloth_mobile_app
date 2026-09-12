@@ -29,4 +29,5 @@ class ApiPath {
   // user
   static const String user = "/user";
   static const viewUser = "$user/view";
+  static const updateUser = "$user/update";
 }

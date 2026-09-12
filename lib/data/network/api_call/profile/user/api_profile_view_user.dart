@@ -25,10 +25,10 @@ class ApiProfileViewUser implements IApiProfileViewUser {
     try {
       Response response = await client.request.get(ApiPath.viewUser);
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelProfileViewUser modelShopDetails = ModelProfileViewUser.fromJson(
+        ModelProfileViewUser profile = ModelProfileViewUser.fromJson(
           response.data,
         );
-        return (modelShopDetails, null);
+        return (profile, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, modelError);
