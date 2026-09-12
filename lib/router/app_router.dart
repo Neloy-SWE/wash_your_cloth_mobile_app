@@ -31,6 +31,8 @@ import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
+import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
+import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
 import '../presentation/screen/user/profile/view/screen_profile_user.dart';
 import '../presentation/screen/user/shop/shop_details/bloc/shop_details_user_bloc.dart';
 import '../presentation/screen/user/shop/shop_list/screen_shop_list.dart';
@@ -55,6 +57,7 @@ class AppRouter {
   static const String screenShopDetailsUser = "/screenShopDetailsUser";
   static const String screenProfileUser = "/ScreenProfileUser";
   static const String screenCart = "/screenCart";
+  static const String screenProfileUpdateUser = "/screenProfileUpdateUser";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -216,6 +219,26 @@ class AppRouter {
               shopId: shopId,
               items: items,
               deliveryCharge: deliveryCharge,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenProfileUpdateUser,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final firstName = extra[AppConstant.firstName] as String;
+          final lastName = extra[AppConstant.lastName] as String;
+          final address = extra[AppConstant.address] as String;
+          return BlocProvider<ProfileUpdateUserBloc>(
+            create: (context) => ProfileUpdateUserBloc(
+              repositoryProfile: context.read<IRepositoryProfile>(),
+            ),
+            child: ScreenProfileUpdateUser(
+              firstName: firstName,
+              lastName: lastName,
+              address: address,
             ),
           );
         },

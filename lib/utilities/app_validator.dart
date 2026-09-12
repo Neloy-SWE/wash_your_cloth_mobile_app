@@ -15,10 +15,19 @@ class AppValidator {
   static const String validatorWeekends = "Please select Weekend";
   static const String validatorOTP = "Please add full otp code";
   static const String validatorDeliveryCharge = "Please add delivery charge amount";
+  static const String validatorProfileUpdate = "You haven't updated any profile data yet";
+  static const String validatorProfileFetchFail = "Failed to get updated profile";
 
   static bool isPhone(String? phone) {
     if (phone == null || phone.isEmpty || phone[0] == " ") return false;
     final RegExp phoneRegex = RegExp(r'^01\d{9}$');
     return phoneRegex.hasMatch(phone);
   }
+
+  static bool isName(String? name) {
+    if (name == null || name.isEmpty || name[0] == " ") return false;
+    final RegExp nameRegex = RegExp(r"^[a-zA-Z\p{L} .]+$", unicode: true);
+    return nameRegex.hasMatch(name);
+  }
+
 }

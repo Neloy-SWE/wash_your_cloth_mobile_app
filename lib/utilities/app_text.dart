@@ -78,7 +78,8 @@ class AppText {
   static const String note = "Note";
   static const String noteHint = "Add your note here...";
   static const String name = "Name";
-  static const String profileInformation = "Profile information";
+  static const String updateProfile = "Update profile";
+  static const String update = "Update";
   static const String updatePassword = "Update password";
   static const String logout = "Logout";
 }

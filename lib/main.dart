@@ -10,6 +10,7 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_place_order.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/shop/api_get_shop_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
@@ -105,6 +106,11 @@ class MyApp extends StatelessWidget {
                 ApiProfileViewUser(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiProfileUpdateUser>(
+            create: (context) =>
+                ApiProfileUpdateUser(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -134,6 +140,7 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<IRepositoryProfile>(
             create: (context) => RepositoryProfile(
               apiProfileViewUser: context.read<IApiProfileViewUser>(),
+              apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
             ),
           ),
 

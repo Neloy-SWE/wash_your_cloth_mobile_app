@@ -5,15 +5,21 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_helper.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_validator.dart';
 
+import '../../../../../data/model/model_profile_view_user.dart';
+import '../../../../../utilities/app_constant.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
 import '../../../../custom_widget/custom_button.dart';
 import '../../../../custom_widget/custom_card.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_snack_bar.dart';
 import '../../../../custom_widget/custom_title.dart';
 import 'bloc/profile_view_user_bloc.dart';
 
@@ -97,7 +103,10 @@ class ScreenProfileUser extends StatelessWidget {
                     ),
                     AppSize.gapW05,
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => navigateToUpdateProfile(
+                        context: context,
+                        profile: profile,
+                      ),
                       icon: const Icon(Icons.edit_note),
                     ),
                   ],
@@ -138,7 +147,7 @@ class ScreenProfileUser extends StatelessWidget {
                   ),
                 ),
 
-                AppSize.gapH150,
+                AppSize.gapH80,
                 CustomButton(
                   onPressed: () {
                     // context.push(AppRouter.screenProfileUpdatePassword);
@@ -164,5 +173,31 @@ class ScreenProfileUser extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<void> navigateToUpdateProfile({
+    required BuildContext context,
+    required ModelProfileViewUser profile,
+  }) async {
+    try {
+      final bool? isUpdated = await context.push<bool>(
+        AppRouter.screenProfileUpdateUser,
+        extra: {
+          AppConstant.firstName: profile.firstName,
+          AppConstant.lastName: profile.lastName,
+          AppConstant.address: profile.address,
+        },
+      );
+      if (isUpdated == true && context.mounted) {
+        context.read<ProfileViewUserBloc>().add(ProfileViewUserEventFetch());
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackBar.primary(
+          context: context,
+          contentText: AppValidator.validatorProfileFetchFail,
+        );
+      }
+    }
   }
 }
