@@ -7,6 +7,9 @@ class AppConstant {
   static const String shopId = "shopId";
   static const String items = "items";
   static const String deliveryCharge = "deliveryCharge";
+  static const String firstName = "firstName";
+  static const String lastName = "lastName";
+  static const String address = "address";
 }
 
 enum Role { user, shop }

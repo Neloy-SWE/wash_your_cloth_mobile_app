@@ -10,8 +10,11 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_place_order.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_update_user.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/shop/api_get_shop_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
+import 'package:wash_your_cloth_mobile_app/data/repository/repository_profile.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
@@ -98,6 +101,16 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiPlaceOrder(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiProfileViewUser>(
+            create: (context) =>
+                ApiProfileViewUser(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiProfileUpdateUser>(
+            create: (context) =>
+                ApiProfileUpdateUser(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -124,6 +137,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
+          RepositoryProvider<IRepositoryProfile>(
+            create: (context) => RepositoryProfile(
+              apiProfileViewUser: context.read<IApiProfileViewUser>(),
+              apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
+            ),
+          ),
+
           // RepositoryProvider<AppRouter>(create: (context) => AppRouter()),
         ],
         child: MultiBlocProvider(
@@ -139,12 +159,6 @@ class MyApp extends StatelessWidget {
               create: (context) => OrderListUserBloc(
                 repositoryOrder: context.read<IRepositoryOrder>(),
               )..add(OrderListUserEventFetch()),
-            ),
-
-            BlocProvider<ShopListBloc>(
-              create: (context) =>
-                  ShopListBloc(repositoryShop: context.read<IRepositoryShop>())
-                    ..add(ShopListEventFetch()),
             ),
           ],
           child: MaterialApp.router(
