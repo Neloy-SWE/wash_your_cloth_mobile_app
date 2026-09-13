@@ -17,26 +17,26 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
 
   GlobalBloc({required this.repositoryAuthentication}) : super(GlobalState()) {
     on<GlobalEventSetRole>(_onSetRole);
-    on<GlobalEventSetOTPNavigation>(_onSetOTPNavigation);
-    on<GlobalEventSetPhone>(_onSetPhone);
+    // on<GlobalEventSetOTPNavigation>(_onSetOTPNavigation);
+    // on<GlobalEventSetPhone>(_onSetPhone);
     on<GlobalEventGetLoginStatus>(_onGetLoginStatus);
-    on<GlobalEventSetOTPInfo>(_onSetOTPInfo);
+    // on<GlobalEventSetOTPInfo>(_onSetOTPInfo);
   }
 
   void _onSetRole(GlobalEventSetRole event, Emitter<GlobalState> emit) {
     emit(state.copyWith(role: event.role));
   }
 
-  void _onSetOTPNavigation(
-    GlobalEventSetOTPNavigation event,
-    Emitter<GlobalState> emit,
-  ) {
-    emit(state.copyWith(otpNavigation: event.otpNavigation));
-  }
-
-  void _onSetPhone(GlobalEventSetPhone event, Emitter<GlobalState> emit) {
-    emit(state.copyWith(phone: event.phone));
-  }
+  // void _onSetOTPNavigation(
+  //   GlobalEventSetOTPNavigation event,
+  //   Emitter<GlobalState> emit,
+  // ) {
+  //   emit(state.copyWith(otpNavigation: event.otpNavigation));
+  // }
+  //
+  // void _onSetPhone(GlobalEventSetPhone event, Emitter<GlobalState> emit) {
+  //   emit(state.copyWith(phone: event.phone));
+  // }
 
   Future<void> _onGetLoginStatus(
     GlobalEventGetLoginStatus event,
@@ -52,15 +52,15 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     }
   }
 
-  Future<void> _onSetOTPInfo(
-    GlobalEventSetOTPInfo event,
-    Emitter<GlobalState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        otpRequestId: event.otpRequestId,
-        recordId: event.recordId,
-      ),
-    );
-  }
+  // Future<void> _onSetOTPInfo(
+  //   GlobalEventSetOTPInfo event,
+  //   Emitter<GlobalState> emit,
+  // ) async {
+  //   emit(
+  //     state.copyWith(
+  //       otpRequestId: event.otpRequestId,
+  //       recordId: event.recordId,
+  //     ),
+  //   );
+  // }
 }

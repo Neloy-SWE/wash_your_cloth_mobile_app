@@ -89,17 +89,17 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
               CallDialogue.showLoader(context);
             } else if (state is RegistrationStateNavigateOTP) {
               CallDialogue.hideLoader(context);
-              context.read<GlobalBloc>().add(
-                GlobalEventSetOTPInfo(
-                  otpRequestId: state.otpRequestId,
-                  recordId: state.recordId,
-                ),
-              );
               CustomSnackBar.primary(
                 context: context,
                 contentText: state.message,
               );
-              context.push(AppRouter.screenOTP);
+              context.push(
+                AppRouter.screenOTP,
+                extra: {
+                  AppConstant.otpRequestId: state.otpRequestId,
+                  AppConstant.recordId: state.recordId,
+                },
+              );
             } else if (state is RegistrationStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(

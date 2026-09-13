@@ -95,12 +95,18 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRouter.screenOTP,
-        builder: (context, state) => BlocProvider<OTPBloc>(
-          create: (_) => OTPBloc(
-            repositoryAuthentication: context.read<IRepositoryAuthentication>(),
-          ),
-          child: ScreenOTP(),
-        ),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final otpRequestId = extra[AppConstant.otpRequestId] as String;
+          final recordId = extra[AppConstant.recordId] as String;
+          return BlocProvider<OTPBloc>(
+            create: (_) => OTPBloc(
+              repositoryAuthentication: context
+                  .read<IRepositoryAuthentication>(),
+            ),
+            child: ScreenOTP(otpRequestId: otpRequestId, recordId: recordId),
+          );
+        },
       ),
 
       GoRoute(

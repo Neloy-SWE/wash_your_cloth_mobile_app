@@ -13,27 +13,27 @@ class GlobalEventSetRole extends GlobalEvent {
   GlobalEventSetRole({required this.role});
 }
 
-class GlobalEventSetOTPNavigation extends GlobalEvent {
-  final OTPNavigation otpNavigation;
+// class GlobalEventSetOTPNavigation extends GlobalEvent {
+//   final OTPNavigation otpNavigation;
+//
+//   GlobalEventSetOTPNavigation({required this.otpNavigation});
+// }
 
-  GlobalEventSetOTPNavigation({required this.otpNavigation});
-}
-
-class GlobalEventSetPhone extends GlobalEvent {
-  final String phone;
-
-  GlobalEventSetPhone({required this.phone});
-}
+// class GlobalEventSetPhone extends GlobalEvent {
+//   final String phone;
+//
+//   GlobalEventSetPhone({required this.phone});
+// }
 
 class GlobalEventGetLoginStatus extends GlobalEvent {}
 
-class GlobalEventSetProfile extends GlobalEvent {}
+// class GlobalEventSetProfile extends GlobalEvent {}
 
-class GlobalEventUpdateProfile extends GlobalEvent {}
+// class GlobalEventUpdateProfile extends GlobalEvent {}
 
-class GlobalEventSetOTPInfo extends GlobalEvent {
-  final String otpRequestId;
-  final String recordId;
-
-  GlobalEventSetOTPInfo({required this.otpRequestId, required this.recordId});
-}
+// class GlobalEventSetOTPInfo extends GlobalEvent {
+//   final String otpRequestId;
+//   final String recordId;
+//
+//   GlobalEventSetOTPInfo({required this.otpRequestId, required this.recordId});
+// }

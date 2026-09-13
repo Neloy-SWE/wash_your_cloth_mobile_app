@@ -54,7 +54,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               CallDialogue.showLoader(context);
             } else if (state is LoginStateNavigateLogin) {
               CallDialogue.hideLoader(context);
-              if (selectedRole == Role.user){
+              if (selectedRole == Role.user) {
                 // context.go(AppRouter.screenHomeUser);
                 context.go(AppRouter.screenOrderListUser);
               } else {
@@ -62,17 +62,17 @@ class _ScreenLoginState extends State<ScreenLogin> {
               }
             } else if (state is LoginStateNavigateOTP) {
               CallDialogue.hideLoader(context);
-              context.read<GlobalBloc>().add(
-                GlobalEventSetOTPInfo(
-                  otpRequestId: state.otpRequestId,
-                  recordId: state.recordId,
-                ),
-              );
               CustomSnackBar.primary(
                 context: context,
                 contentText: state.message,
               );
-              context.push(AppRouter.screenOTP);
+              context.push(
+                AppRouter.screenOTP,
+                extra: {
+                  AppConstant.otpRequestId: state.otpRequestId,
+                  AppConstant.recordId: state.recordId,
+                },
+              );
             } else if (state is LoginStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(
