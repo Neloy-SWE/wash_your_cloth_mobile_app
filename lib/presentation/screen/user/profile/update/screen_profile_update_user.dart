@@ -6,9 +6,8 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 
-import '../../../../../router/app_router.dart';
+import '../../../../../utilities/app_color.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
 import '../../../../../utilities/app_tool.dart';
