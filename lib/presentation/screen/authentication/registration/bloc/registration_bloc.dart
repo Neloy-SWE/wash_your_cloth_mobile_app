@@ -5,10 +5,11 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_registration.dart';
 
 import '../../../../../data/client/client_constant.dart';
 import '../../../../../data/repository/repository_authentication.dart';
+import '../../../../../data/use_case/authentication/use_case_otp_request.dart';
+import '../../../../../data/use_case/authentication/use_case_registration.dart';
 
 part 'registration_state.dart';
 
@@ -42,7 +43,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         deliveryCharge: event.deliveryCharge,
       );
 
-      UseCaseRegistration useCaseRegistration = await repositoryAuthentication
+      UseCaseOTPRequest useCaseRegistration = await repositoryAuthentication
           .registration(registrationData: registrationData);
 
       if (useCaseRegistration.isNavigateOTP) {

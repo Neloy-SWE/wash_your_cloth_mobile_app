@@ -3,20 +3,24 @@ Created by Neloy on 29 June, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_otp_verify.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_otp_verify.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/authentication/use_case_registration.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
-
+import '../../utilities/app_constant.dart';
+import '../client/client_constant.dart';
 import '../local/local_storage_service.dart';
+import '../network/api_call/authentication/api_change_password.dart';
+import '../network/api_call/authentication/api_login.dart';
+import '../network/api_call/authentication/api_otp_verify.dart';
 import '../network/api_call/authentication/api_refresh_token.dart';
+import '../network/api_call/authentication/api_registration.dart';
+import '../request/request_change_password.dart';
+import '../use_case/authentication/use_case_login.dart';
+import '../use_case/authentication/use_case_otp_request.dart';
+import '../use_case/authentication/use_case_otp_verify.dart';
+import '../use_case/authentication/use_case_registration.dart';
+import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryAuthentication {
   Future<bool> getLoginStatus();
+
   Future<String> getRole();
 
   Future<UseCaseLogin> login({
@@ -25,11 +29,15 @@ abstract class IRepositoryAuthentication {
     required String role,
   });
 
-  Future<UseCaseRegistration> registration({
+  Future<UseCaseOTPRequest> registration({
     required RegistrationData registrationData,
   });
 
   Future<UseCaseOtpVerify> otpVerify({required OTPVerifyData otpVerifyData});
+
+  Future<UseCaseOTPRequest> changePassword({
+    required RequestChangePassword requestBody,
+  });
 }
 
 class RepositoryAuthentication implements IRepositoryAuthentication {
@@ -38,6 +46,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
   final IApiLogin apiLogin;
   final IApiRegistration apiRegistration;
   final IApiOTPVerify apiOTPVerify;
+  final IApiChangePassword apiChangePassword;
 
   const RepositoryAuthentication({
     required this.localStorageService,
@@ -45,6 +54,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
     required this.apiLogin,
     required this.apiRegistration,
     required this.apiOTPVerify,
+    required this.apiChangePassword,
   });
 
   @override
@@ -104,19 +114,19 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         ClientConstant.password: password,
         ClientConstant.role: role,
       };
-      var (modelLogin, modelLoginUnverified, modelError) = await apiLogin.login(
+      var (modelLogin, modelOTPRequest, modelError) = await apiLogin.login(
         data: data,
       );
 
       if (modelLogin != null) {
         await localStorageService.saveAuthData(modelLogin: modelLogin);
         return UseCaseLogin(isOTPRequired: false, isLogin: true);
-      } else if (modelLoginUnverified != null) {
+      } else if (modelOTPRequest != null) {
         final result = await _loginFailedResult(
-          message: modelLoginUnverified.message,
+          message: modelOTPRequest.message,
           isOTP: true,
-          otpRequestId: modelLoginUnverified.otpRequestId,
-          recordId: modelLoginUnverified.recordId,
+          otpRequestId: modelOTPRequest.otpRequestId,
+          recordId: modelOTPRequest.recordId,
         );
         return result;
       } else {
@@ -169,7 +179,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
   }
 
   @override
-  Future<UseCaseRegistration> registration({
+  Future<UseCaseOTPRequest> registration({
     required RegistrationData registrationData,
   }) async {
     Map<String, dynamic> data;
@@ -180,18 +190,19 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         data = registrationData.toMapShop();
       }
 
-      var (modelLoginUnverified, modelError) = await apiRegistration
-          .registration(data: data);
+      var (modelOTPRequest, modelError) = await apiRegistration.registration(
+        data: data,
+      );
 
       if (modelError == null) {
-        return UseCaseRegistration(
-          message: modelLoginUnverified!.message,
-          recordId: modelLoginUnverified.recordId,
-          otpRequestId: modelLoginUnverified.otpRequestId,
+        return UseCaseOTPRequest(
+          message: modelOTPRequest!.message,
+          recordId: modelOTPRequest.recordId,
+          otpRequestId: modelOTPRequest.otpRequestId,
           isNavigateOTP: true,
         );
       } else {
-        return UseCaseRegistration(
+        return UseCaseOTPRequest(
           message: modelError.error?.isNotEmpty == true
               ? modelError.error!.first
               : ClientConstant.serverError,
@@ -199,7 +210,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         );
       }
     } catch (e) {
-      return UseCaseRegistration(
+      return UseCaseOTPRequest(
         message: ClientConstant.serverError,
         isNavigateOTP: false,
       );
@@ -235,7 +246,38 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
 
   @override
   Future<String> getRole() async {
-    String? role =  await localStorageService.getRole();
+    String? role = await localStorageService.getRole();
     return role.toString();
+  }
+
+  @override
+  Future<UseCaseOTPRequest> changePassword({
+    required RequestChangePassword requestBody,
+  }) async {
+    try {
+      var (modelOTPRequest, modelError) = await apiChangePassword
+          .changePassword(data: requestBody.toMap());
+
+      if (modelError == null) {
+        return UseCaseOTPRequest(
+          message: modelOTPRequest!.message,
+          recordId: modelOTPRequest.recordId,
+          otpRequestId: modelOTPRequest.otpRequestId,
+          isNavigateOTP: true,
+        );
+      } else {
+        return UseCaseOTPRequest(
+          message: modelError.error?.isNotEmpty == true
+              ? modelError.error!.first
+              : ClientConstant.serverError,
+          isNavigateOTP: false,
+        );
+      }
+    } catch (e) {
+      return UseCaseOTPRequest(
+        message: ClientConstant.serverError,
+        isNavigateOTP: false,
+      );
+    }
   }
 }

@@ -6,13 +6,13 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:dio/dio.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 import 'package:wash_your_cloth_mobile_app/data/model/model_error.dart';
-import 'package:wash_your_cloth_mobile_app/data/model/model_login_unverified.dart';
+import 'package:wash_your_cloth_mobile_app/data/model/model_otp_request.dart';
 
 import '../../../client/client.dart';
 import '../../api_path.dart';
 
 abstract class IApiRegistration {
-  Future<(ModelLoginUnverified?, ModelError?)> registration({
+  Future<(ModelOTPRequest?, ModelError?)> registration({
     required Map<String, dynamic> data,
   });
 }
@@ -23,7 +23,7 @@ class ApiRegistration implements IApiRegistration {
   const ApiRegistration({required this.client});
 
   @override
-  Future<(ModelLoginUnverified?, ModelError?)> registration({
+  Future<(ModelOTPRequest?, ModelError?)> registration({
     required Map<String, dynamic> data,
   }) async {
     try {
@@ -33,10 +33,10 @@ class ApiRegistration implements IApiRegistration {
       );
 
       if (response.statusCode == ClientConstant.statusCode201Created) {
-        ModelLoginUnverified modelLoginUnverified =
-            ModelLoginUnverified.fromJson(response.data);
+        ModelOTPRequest modelOTPRequest =
+            ModelOTPRequest.fromJson(response.data);
 
-        return (modelLoginUnverified, null);
+        return (modelOTPRequest, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, modelError);
