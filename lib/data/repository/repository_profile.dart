@@ -43,7 +43,7 @@ class RepositoryProfile implements IRepositoryProfile {
   }
 
   @override
-  Future<UseCaseGeneric<dynamic>> updateProfile({
+  Future<UseCaseGeneric> updateProfile({
     required RequestProfileUpdateUser update,
   }) async {
     try {

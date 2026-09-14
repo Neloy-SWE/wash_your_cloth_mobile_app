@@ -5,24 +5,24 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'dart:convert';
 
-class ModelLoginUnverified {
+class ModelOTPRequest {
   final String status;
   final String message;
   final String otpRequestId;
   final String recordId;
 
-  ModelLoginUnverified({
+  ModelOTPRequest({
     required this.status,
     required this.message,
     required this.otpRequestId,
     required this.recordId,
   });
 
-  factory ModelLoginUnverified.fromRawJson(String str) => ModelLoginUnverified.fromJson(json.decode(str));
+  factory ModelOTPRequest.fromRawJson(String str) => ModelOTPRequest.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModelLoginUnverified.fromJson(Map<String, dynamic> json) => ModelLoginUnverified(
+  factory ModelOTPRequest.fromJson(Map<String, dynamic> json) => ModelOTPRequest(
     status: json["status"],
     message: json["message"],
     otpRequestId: json["otpRequestId"],

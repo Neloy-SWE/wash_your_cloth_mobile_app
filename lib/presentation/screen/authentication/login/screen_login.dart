@@ -18,7 +18,7 @@ import '../../../../utilities/app_color.dart';
 import '../../../../utilities/app_constant.dart';
 import '../../../../utilities/app_validator.dart';
 import '../../../custom_widget/custom_button.dart';
-import '../../../custom_widget/custom_textfield.dart';
+import '../../../custom_widget/custom_text_field.dart';
 import '../../../custom_widget/custom_titled_divider.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -54,7 +54,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               CallDialogue.showLoader(context);
             } else if (state is LoginStateNavigateLogin) {
               CallDialogue.hideLoader(context);
-              if (selectedRole == Role.user){
+              if (selectedRole == Role.user) {
                 // context.go(AppRouter.screenHomeUser);
                 context.go(AppRouter.screenOrderListUser);
               } else {
@@ -62,17 +62,21 @@ class _ScreenLoginState extends State<ScreenLogin> {
               }
             } else if (state is LoginStateNavigateOTP) {
               CallDialogue.hideLoader(context);
-              context.read<GlobalBloc>().add(
-                GlobalEventSetOTPInfo(
-                  otpRequestId: state.otpRequestId,
-                  recordId: state.recordId,
-                ),
-              );
               CustomSnackBar.primary(
                 context: context,
                 contentText: state.message,
               );
-              context.push(AppRouter.screenOTP);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (context.mounted) {
+                  context.push(
+                    AppRouter.screenOTP,
+                    extra: {
+                      AppConstant.otpRequestId: state.otpRequestId,
+                      AppConstant.recordId: state.recordId,
+                    },
+                  );
+                }
+              });
             } else if (state is LoginStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(

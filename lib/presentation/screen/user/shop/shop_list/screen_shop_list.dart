@@ -43,6 +43,9 @@ class ScreenShopList extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is ShopListStateFetch) {
+          if (state.shopList.isEmpty) {
+            return CustomNotFound();
+          }
           return ListView.separated(
             padding: AppSize.paddingAll25,
             itemBuilder: (context, index) {

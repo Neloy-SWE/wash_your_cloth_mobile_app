@@ -7,24 +7,24 @@ part of 'global_bloc.dart';
 
 class GlobalState {
   final Role? role;
-  final OTPNavigation? otpNavigation;
-  final String? phone;
+  // final OTPNavigation? otpNavigation;
+  // final String? phone;
   final bool? isLogin;
-  final String? otpRequestId;
-  final String? recordId;
+  // final String? otpRequestId;
+  // final String? recordId;
 
   GlobalState({
     this.role,
-    this.otpNavigation,
-    this.phone,
+    // this.otpNavigation,
+    // this.phone,
     this.isLogin,
-    this.otpRequestId,
-    this.recordId,
+    // this.otpRequestId,
+    // this.recordId,
   });
 
   GlobalState copyWith({
     Role? role,
-    OTPNavigation? otpNavigation,
+    // OTPNavigation? otpNavigation,
     String? email,
     String? phone,
     bool? isLogin,
@@ -33,11 +33,11 @@ class GlobalState {
   }) {
     return GlobalState(
       role: role ?? this.role,
-      otpNavigation: otpNavigation ?? this.otpNavigation,
-      phone: phone ?? this.phone,
+      // otpNavigation: otpNavigation ?? this.otpNavigation,
+      // phone: phone ?? this.phone,
       isLogin: isLogin ?? this.isLogin,
-      otpRequestId: otpRequestId ?? this.otpRequestId,
-      recordId: recordId ?? this.recordId,
+      // otpRequestId: otpRequestId ?? this.otpRequestId,
+      // recordId: recordId ?? this.recordId,
     );
   }
 }

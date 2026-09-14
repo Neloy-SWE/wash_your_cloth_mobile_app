@@ -17,10 +17,17 @@ import '../../../bloc_global/global_bloc.dart';
 import '../../../custom_widget/custom_button.dart';
 import '../../../custom_widget/custom_dialogue.dart';
 import '../../../custom_widget/custom_snack_bar.dart';
-import '../../../custom_widget/custom_textfield.dart';
+import '../../../custom_widget/custom_text_field.dart';
 
 class ScreenOTP extends StatefulWidget {
-  const ScreenOTP({super.key});
+  final String otpRequestId;
+  final String recordId;
+
+  const ScreenOTP({
+    super.key,
+    required this.otpRequestId,
+    required this.recordId,
+  });
 
   @override
   State<ScreenOTP> createState() => _ScreenOTPState();
@@ -80,9 +87,6 @@ class _ScreenOTPState extends State<ScreenOTP> {
 
   @override
   Widget build(BuildContext context) {
-    var otpRequestId = context.read<GlobalBloc>().state.otpRequestId;
-    var recordId = context.read<GlobalBloc>().state.recordId;
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -160,8 +164,8 @@ class _ScreenOTPState extends State<ScreenOTP> {
                             AppSize.gapH10,
                             CustomButton(
                               onPressed: () => _confirmOTP(
-                                otpRequestId: otpRequestId!,
-                                recordId: recordId!,
+                                otpRequestId: widget.otpRequestId,
+                                recordId: widget.recordId,
                               ),
                               buttonText: AppText.verify,
                             ),

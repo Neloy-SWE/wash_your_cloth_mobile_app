@@ -10,11 +10,13 @@ class AppConstant {
   static const String firstName = "firstName";
   static const String lastName = "lastName";
   static const String address = "address";
+  static const String otpRequestId = "otpRequestId";
+  static const String recordId = "recordId";
 }
 
 enum Role { user, shop }
 
-enum OTPNavigation { updatePhone, updatePassword, registration }
+// enum OTPNavigation { updatePhone, updatePassword, registration }
 
 enum DialogueType { loader, question, result }
 

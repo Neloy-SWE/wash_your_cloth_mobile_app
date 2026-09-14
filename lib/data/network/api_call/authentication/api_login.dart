@@ -9,11 +9,11 @@ import '../../../client/client.dart';
 import '../../../client/client_constant.dart';
 import '../../../model/model_error.dart';
 import '../../../model/model_login.dart';
-import '../../../model/model_login_unverified.dart';
+import '../../../model/model_otp_request.dart';
 import '../../api_path.dart';
 
 abstract class IApiLogin {
-  Future<(ModelLogin?, ModelLoginUnverified?, ModelError?)> login({
+  Future<(ModelLogin?, ModelOTPRequest?, ModelError?)> login({
     required Map<String, dynamic> data,
   });
 }
@@ -32,9 +32,9 @@ class ApiLogin implements IApiLogin {
         ModelLogin modelLogin = ModelLogin.fromJson(response.data);
         return (modelLogin, null, null);
       } else if (response.statusCode == ClientConstant.statusCode202Accepted) {
-        ModelLoginUnverified modelLoginUnverified =
-            ModelLoginUnverified.fromJson(response.data);
-        return (null, modelLoginUnverified, null);
+        ModelOTPRequest modelOTPRequest =
+            ModelOTPRequest.fromJson(response.data);
+        return (null, modelOTPRequest, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, null, modelError);

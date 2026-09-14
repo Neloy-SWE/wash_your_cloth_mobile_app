@@ -61,17 +61,3 @@ class RegistrationData {
     };
   }
 }
-
-class UseCaseRegistration {
-  String? message;
-  String? otpRequestId;
-  String? recordId;
-  bool isNavigateOTP;
-
-  UseCaseRegistration({
-    this.recordId,
-    this.otpRequestId,
-    this.message,
-    required this.isNavigateOTP,
-  });
-}

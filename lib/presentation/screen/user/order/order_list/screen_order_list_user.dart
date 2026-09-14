@@ -43,6 +43,9 @@ class ScreenOrderListUser extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is OrderListUserStateFetch) {
+          if (state.orderList.isEmpty) {
+            return CustomNotFound();
+          }
           return ListView.separated(
             padding: AppSize.paddingAll25,
             itemBuilder: (context, index) {

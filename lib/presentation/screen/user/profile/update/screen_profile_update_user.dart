@@ -6,9 +6,8 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 
-import '../../../../../router/app_router.dart';
+import '../../../../../utilities/app_color.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
 import '../../../../../utilities/app_tool.dart';
@@ -16,7 +15,7 @@ import '../../../../../utilities/app_validator.dart';
 import '../../../../custom_widget/custom_button.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_snack_bar.dart';
-import '../../../../custom_widget/custom_textfield.dart';
+import '../../../../custom_widget/custom_text_field.dart';
 import 'bloc/profile_update_user_bloc.dart';
 
 class ScreenProfileUpdateUser extends StatefulWidget {
