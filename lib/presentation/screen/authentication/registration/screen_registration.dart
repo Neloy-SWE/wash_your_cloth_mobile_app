@@ -6,7 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_textfield.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_text_field.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_title.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
@@ -93,13 +93,17 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                 context: context,
                 contentText: state.message,
               );
-              context.push(
-                AppRouter.screenOTP,
-                extra: {
-                  AppConstant.otpRequestId: state.otpRequestId,
-                  AppConstant.recordId: state.recordId,
-                },
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (context.mounted) {
+                  context.push(
+                    AppRouter.screenOTP,
+                    extra: {
+                      AppConstant.otpRequestId: state.otpRequestId,
+                      AppConstant.recordId: state.recordId,
+                    },
+                  );
+                }
+              });
             } else if (state is RegistrationStateResult) {
               CallDialogue.hideLoader(context);
               CallDialogue.showResult(

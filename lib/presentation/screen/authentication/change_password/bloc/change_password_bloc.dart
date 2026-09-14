@@ -28,6 +28,7 @@ class ChangePasswordBloc
     ChangePasswordEventProceed event,
     Emitter<ChangePasswordState> emit,
   ) async {
+    emit(ChangePasswordStateLoading());
     try {
       RequestChangePassword requestBody = RequestChangePassword(
         oldPassword: event.oldPassword,

@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/screen_change_password.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
@@ -58,6 +60,7 @@ class AppRouter {
   static const String screenProfileUser = "/ScreenProfileUser";
   static const String screenCart = "/screenCart";
   static const String screenProfileUpdateUser = "/screenProfileUpdateUser";
+  static const String screenChangePassword = "/screenChangePassword";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -246,6 +249,19 @@ class AppRouter {
               lastName: lastName,
               address: address,
             ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenChangePassword,
+        builder: (context, state) {
+          return BlocProvider<ChangePasswordBloc>(
+            create: (context) => ChangePasswordBloc(
+              repositoryAuthentication: context
+                  .read<IRepositoryAuthentication>(),
+            ),
+            child: ScreenChangePassword(),
           );
         },
       ),

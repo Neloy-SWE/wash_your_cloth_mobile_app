@@ -17,7 +17,7 @@ import '../../../bloc_global/global_bloc.dart';
 import '../../../custom_widget/custom_button.dart';
 import '../../../custom_widget/custom_dialogue.dart';
 import '../../../custom_widget/custom_snack_bar.dart';
-import '../../../custom_widget/custom_textfield.dart';
+import '../../../custom_widget/custom_text_field.dart';
 
 class ScreenOTP extends StatefulWidget {
   final String otpRequestId;

@@ -150,9 +150,9 @@ class ScreenProfileUser extends StatelessWidget {
                 AppSize.gapH80,
                 CustomButton(
                   onPressed: () {
-                    // context.push(AppRouter.screenProfileUpdatePassword);
+                    context.push(AppRouter.screenChangePassword);
                   },
-                  buttonText: AppText.updatePassword,
+                  buttonText: AppText.changePassword,
                 ),
                 AppSize.gapH20,
                 CustomButton(
