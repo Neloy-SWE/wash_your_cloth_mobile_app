@@ -3,6 +3,8 @@ Created by Neloy on 29 June, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_change_phone.dart';
+
 import '../../utilities/app_constant.dart';
 import '../client/client_constant.dart';
 import '../local/local_storage_service.dart';
@@ -12,11 +14,11 @@ import '../network/api_call/authentication/api_otp_verify.dart';
 import '../network/api_call/authentication/api_refresh_token.dart';
 import '../network/api_call/authentication/api_registration.dart';
 import '../request/request_change_password.dart';
+import '../request/request_change_phone.dart';
 import '../use_case/authentication/use_case_login.dart';
 import '../use_case/authentication/use_case_otp_request.dart';
 import '../use_case/authentication/use_case_otp_verify.dart';
 import '../use_case/authentication/use_case_registration.dart';
-import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryAuthentication {
   Future<bool> getLoginStatus();
@@ -38,6 +40,10 @@ abstract class IRepositoryAuthentication {
   Future<UseCaseOTPRequest> changePassword({
     required RequestChangePassword requestBody,
   });
+
+  Future<UseCaseOTPRequest> changePhone({
+    required RequestChangePhone requestBody,
+  });
 }
 
 class RepositoryAuthentication implements IRepositoryAuthentication {
@@ -47,6 +53,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
   final IApiRegistration apiRegistration;
   final IApiOTPVerify apiOTPVerify;
   final IApiChangePassword apiChangePassword;
+  final IApiChangePhone apiChangePhone;
 
   const RepositoryAuthentication({
     required this.localStorageService,
@@ -55,6 +62,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
     required this.apiRegistration,
     required this.apiOTPVerify,
     required this.apiChangePassword,
+    required this.apiChangePhone,
   });
 
   @override
@@ -257,6 +265,38 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
     try {
       var (modelOTPRequest, modelError) = await apiChangePassword
           .changePassword(data: requestBody.toMap());
+
+      if (modelError == null) {
+        return UseCaseOTPRequest(
+          message: modelOTPRequest!.message,
+          recordId: modelOTPRequest.recordId,
+          otpRequestId: modelOTPRequest.otpRequestId,
+          isNavigateOTP: true,
+        );
+      } else {
+        return UseCaseOTPRequest(
+          message: modelError.error?.isNotEmpty == true
+              ? modelError.error!.first
+              : ClientConstant.serverError,
+          isNavigateOTP: false,
+        );
+      }
+    } catch (e) {
+      return UseCaseOTPRequest(
+        message: ClientConstant.serverError,
+        isNavigateOTP: false,
+      );
+    }
+  }
+
+  @override
+  Future<UseCaseOTPRequest> changePhone({
+    required RequestChangePhone requestBody,
+  }) async {
+    try {
+      var (modelOTPRequest, modelError) = await apiChangePhone.changePhone(
+        data: requestBody.toMap(),
+      );
 
       if (modelError == null) {
         return UseCaseOTPRequest(
