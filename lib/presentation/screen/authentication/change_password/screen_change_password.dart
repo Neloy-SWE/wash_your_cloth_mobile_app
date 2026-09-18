@@ -144,7 +144,7 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                         if (value == null || value.isEmpty) {
                           return AppValidator.validatorPassword;
                         } else if (value == controllerOldPassword.text) {
-                          return AppValidator.validatorIsMatched;
+                          return AppValidator.validatorIsPasswordMatched;
                         } else {
                           return null;
                         }

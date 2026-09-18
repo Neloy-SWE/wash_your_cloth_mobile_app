@@ -6,7 +6,8 @@ Email: taufiqneloy.swe@gmail.com
 class AppValidator {
   static const String validatePhone = "Please enter correct phone number";
   static const String validatorPassword = "Please check password";
-  static const String validatorIsMatched = "Old & new password cannot be same";
+  static const String validatorIsPasswordMatched = "Old & new password cannot be same";
+  static const String validatorIsPhoneMatched = "Old & new phone cannot be same";
   static const String validatorPasswordIsNotMatched = "Password is not matched";
   static const String validatorName = "Please enter your name";
   static const String validatorShopName = "Please enter your shop name";

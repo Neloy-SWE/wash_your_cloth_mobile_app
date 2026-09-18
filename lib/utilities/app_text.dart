@@ -81,9 +81,12 @@ class AppText {
   static const String updateProfile = "Update profile";
   static const String update = "Update";
   static const String updatePassword = "Update password";
-  static const String changePassword = "Update password";
+  static const String changePassword = "Change password";
   static const String oldPassword = "Old password";
   static const String newPassword = "New password";
   static const String confirmNewPassword = "Confirm new password";
   static const String logout = "Logout";
+  static const String updatePhone = "Update phone";
+  static const String oldPhone = "Old phone";
+  static const String newPhone = "New phone";
 }

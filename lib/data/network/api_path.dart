@@ -31,4 +31,5 @@ class ApiPath {
   static const viewUser = "$user/view";
   static const updateUser = "$user/update";
   static const changePassword = "$user/change-password";
+  static const changePhone = "$user/change-phone";
 }

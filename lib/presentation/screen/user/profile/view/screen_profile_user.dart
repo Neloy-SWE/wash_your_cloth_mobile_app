@@ -129,7 +129,9 @@ class ScreenProfileUser extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(AppRouter.screenChangePhone);
+                            },
                             icon: const Icon(
                               Icons.edit,
                               color: AppColor.colorPrimary,

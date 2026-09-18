@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/screen_change_password.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_phone/screen_change_phone.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
@@ -30,6 +31,7 @@ import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
 import '../data/use_case/order/use_case_order_place.dart';
+import '../presentation/screen/authentication/change_phone/bloc/change_phone_bloc.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
@@ -61,6 +63,7 @@ class AppRouter {
   static const String screenCart = "/screenCart";
   static const String screenProfileUpdateUser = "/screenProfileUpdateUser";
   static const String screenChangePassword = "/screenChangePassword";
+  static const String screenChangePhone = "/screenChangePhone";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -262,6 +265,19 @@ class AppRouter {
                   .read<IRepositoryAuthentication>(),
             ),
             child: ScreenChangePassword(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenChangePhone,
+        builder: (context, state) {
+          return BlocProvider<ChangePhoneBloc>(
+            create: (context) => ChangePhoneBloc(
+              repositoryAuthentication: context
+                  .read<IRepositoryAuthentication>(),
+            ),
+            child: ScreenChangePhone(),
           );
         },
       ),

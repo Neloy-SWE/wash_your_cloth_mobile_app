@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_change_password.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_change_phone.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
@@ -117,6 +118,10 @@ class MyApp extends StatelessWidget {
                 ApiChangePassword(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiChangePhone>(
+            create: (context) => ApiChangePhone(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -125,6 +130,7 @@ class MyApp extends StatelessWidget {
               apiRegistration: context.read<IApiRegistration>(),
               apiOTPVerify: context.read<IApiOTPVerify>(),
               apiChangePassword: context.read<IApiChangePassword>(),
+              apiChangePhone: context.read<IApiChangePhone>(),
             ),
           ),
 
