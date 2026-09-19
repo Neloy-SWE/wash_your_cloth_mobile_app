@@ -10,6 +10,7 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/shop/api_get_order_list_shop.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_place_order.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_view_user.dart';
@@ -116,6 +117,11 @@ class MyApp extends StatelessWidget {
                 ApiChangePassword(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetOrderListShop>(
+            create: (context) =>
+                ApiGetOrderListShop(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -132,6 +138,7 @@ class MyApp extends StatelessWidget {
               apiGetOrderListUser: context.read<IApiGetOrderListUser>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
               apiPlaceOrder: context.read<IApiPlaceOrder>(),
+              apiGetOrderListShop: context.read<IApiGetOrderListShop>(),
             ),
           ),
 
