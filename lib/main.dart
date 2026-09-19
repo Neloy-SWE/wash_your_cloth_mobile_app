@@ -18,7 +18,6 @@ import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentica
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_profile.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';

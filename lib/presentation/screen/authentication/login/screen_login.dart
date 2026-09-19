@@ -58,7 +58,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 // context.go(AppRouter.screenHomeUser);
                 context.go(AppRouter.screenOrderListUser);
               } else {
-                context.go(AppRouter.screenHomeShop);
+                context.go(AppRouter.screenOrderListShop);
               }
             } else if (state is LoginStateNavigateOTP) {
               CallDialogue.hideLoader(context);

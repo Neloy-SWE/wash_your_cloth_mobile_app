@@ -57,7 +57,7 @@ class _ScreenSplashState extends State<ScreenSplash>
             // context.go(AppRouter.screenHomeUser);
             context.go(AppRouter.screenOrderListUser);
           } else {
-            context.go(AppRouter.screenHomeShop);
+            context.go(AppRouter.screenOrderListShop);
           }
 
         } else if (state.isLogin == false) {
