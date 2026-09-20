@@ -18,6 +18,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import '../../../../../data/model/model_order_list.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_order_item_card.dart';
 
 class ScreenOrderListUser extends StatelessWidget {
   const ScreenOrderListUser({super.key});
@@ -50,7 +51,13 @@ class ScreenOrderListUser extends StatelessWidget {
             padding: AppSize.paddingAll25,
             itemBuilder: (context, index) {
               final order = state.orderList[index];
-              return _orderListItemCard(order: order, context: context);
+              return CustomOrderItemCard(
+                order: order,
+                onTap: () => context.push(
+                  AppRouter.screenOrderDetailsUser,
+                  extra: order.id,
+                ),
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return AppSize.gapH20;
@@ -61,69 +68,6 @@ class ScreenOrderListUser extends StatelessWidget {
           return CustomNotFound();
         }
       },
-    );
-  }
-
-  Widget _orderListItemCard({
-    required ModelOrderList order,
-    required BuildContext context,
-  }) {
-    return CustomCardWithAction(
-      onTap: () {
-        context.push(AppRouter.screenOrderDetailsUser, extra: order.id);
-      },
-      child: Row(
-        children: [
-          CustomIconFrame(
-            size: 48,
-            iconData: Icons.local_laundry_service_rounded,
-          ),
-          AppSize.gapW15,
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  order.trackingId,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppText.style.titleSmall!.copyWith(fontSize: 15),
-                ),
-
-                AppSize.gapH10,
-
-                Text(AppText.totalAmount, style: AppText.style.bodySmall),
-
-                AppSize.gapH03,
-
-                Text(
-                  "${order.totalPrice} ${AppText.bdtCapital}",
-                  style: AppText.style.titleMedium!.copyWith(
-                    color: AppColor.colorPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          AppSize.gapW05,
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomStatusBadge(status: order.status),
-
-              AppSize.gapH15,
-
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.grey,
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
