@@ -30,7 +30,7 @@ class OrderListUserBloc extends Bloc<OrderListUserEvent, OrderListUserState> {
     emit(OrderListUserStateLoading());
     try {
       UseCaseGeneric<List<ModelOrderList>> useCaseOrderList =
-          await repositoryOrder.getOrderListUser();
+          await repositoryOrder.getOrderList();
       if (useCaseOrderList.isSuccess) {
         emit(OrderListUserStateFetch(orderList: useCaseOrderList.data!));
       } else {

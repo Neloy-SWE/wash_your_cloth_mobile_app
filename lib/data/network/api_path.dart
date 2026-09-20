@@ -13,10 +13,9 @@ class ApiPath {
 
   // order
   static const String order = "/order";
-  static const String orderListUser = "$order/list-user";
+  static const String orderList = "$order/list";
   static const String orderDetailsUser = "$order/details-user/";
   static const String place = "$order/place/";
-  static const String orderListShop = "$order/list-shop";
 
   // shop
   static const String shop = "/shop";

@@ -5,17 +5,14 @@ Email: taufiqneloy.swe@gmail.com
 
 import '../model/model_order_details_user.dart';
 import '../model/model_order_list.dart';
-import '../network/api_call/order/shop/api_get_order_list_shop.dart';
 import '../network/api_call/order/user/api_get_order_details_user.dart';
-import '../network/api_call/order/user/api_get_order_list_user.dart';
+import '../network/api_call/order/api_get_order_list.dart';
 import '../network/api_call/order/user/api_place_order.dart';
 import '../use_case/order/use_case_order_place.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryOrder {
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser();
-
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListShop();
+  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderList();
 
   Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetailsUser({
     required String orderId,
@@ -25,23 +22,20 @@ abstract class IRepositoryOrder {
 }
 
 class RepositoryOrder implements IRepositoryOrder {
-  final IApiGetOrderListUser apiGetOrderListUser;
-  final IApiGetOrderListShop apiGetOrderListShop;
+  final IApiGetOrderList apiGetOrderList;
   final IApiGetOrderDetailsUser apiGetOrderDetailsUser;
   final IApiPlaceOrder apiPlaceOrder;
 
   const RepositoryOrder({
-    required this.apiGetOrderListUser,
+    required this.apiGetOrderList,
     required this.apiGetOrderDetailsUser,
     required this.apiPlaceOrder,
-    required this.apiGetOrderListShop,
   });
 
   @override
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListUser() async {
+  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderList() async {
     try {
-      var (modelOrderList, modelError) = await apiGetOrderListUser
-          .getOrderList();
+      var (modelOrderList, modelError) = await apiGetOrderList.getOrderList();
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelOrderList);
       } else {
@@ -55,21 +49,6 @@ class RepositoryOrder implements IRepositoryOrder {
       }
     } catch (e) {
       // return UseCaseOrder(message: ClientConstant.serverError, isSuccess: false);
-      return UseCaseGeneric.serverError();
-    }
-  }
-
-  @override
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderListShop() async {
-    try {
-      var (modelOrderList, modelError) = await apiGetOrderListShop
-          .getOrderList();
-      if (modelError == null) {
-        return UseCaseGeneric(isSuccess: true, data: modelOrderList);
-      } else {
-        return UseCaseGeneric.fromModelError(modelError);
-      }
-    } catch (e) {
       return UseCaseGeneric.serverError();
     }
   }
