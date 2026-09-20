@@ -26,6 +26,7 @@ import 'data/repository/repository_order.dart';
 import 'data/repository/repository_profile.dart';
 import 'data/repository/repository_shop.dart';
 import 'presentation/bloc_global/global_bloc.dart';
+import 'presentation/screen/shop/order/bloc/order_list_shop_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 import 'router/app_router.dart';
 import 'utilities/app_text.dart';
@@ -165,6 +166,11 @@ class MyApp extends StatelessWidget {
               create: (context) => OrderListUserBloc(
                 repositoryOrder: context.read<IRepositoryOrder>(),
               )..add(OrderListUserEventFetch()),
+            ),
+            BlocProvider<OrderListShopBloc>(
+              create: (context) => OrderListShopBloc(
+                repositoryOrder: context.read<IRepositoryOrder>(),
+              )..add(OrderListShopEventFetch()),
             ),
           ],
           child: MaterialApp.router(
