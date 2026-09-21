@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'dart:convert';
 
 class ModelOrderDetailsShop {
+  final String id;
   final String trackingId;
   final String status;
   final int totalPrice;
@@ -18,6 +19,7 @@ class ModelOrderDetailsShop {
   final List<OrderItem> orderItems;
 
   ModelOrderDetailsShop({
+    required this.id,
     required this.trackingId,
     required this.status,
     required this.totalPrice,
@@ -37,6 +39,7 @@ class ModelOrderDetailsShop {
 
   factory ModelOrderDetailsShop.fromJson(Map<String, dynamic> json) =>
       ModelOrderDetailsShop(
+        id: json["id"],
         trackingId: json["trackingId"],
         status: json["status"],
         totalPrice: json["totalPrice"],
@@ -52,6 +55,7 @@ class ModelOrderDetailsShop {
       );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "trackingId": trackingId,
     "status": status,
     "totalPrice": totalPrice,

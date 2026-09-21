@@ -52,8 +52,10 @@ class AppText {
     static const String bdtCapital = "BDT";
   static const String orderDetails = "Order details";
   static const String shopInformation = "Shop information";
+  static const String userInformation = "User information";
   static const String shop = "Shop";
   static const String owner = "Owner";
+  static const String orderBy = "Order by";
   static const String pleaseSelectARole = "Please select a role.";
   static const String orderItems = "Order Items";
   static const String yes = "Yes";

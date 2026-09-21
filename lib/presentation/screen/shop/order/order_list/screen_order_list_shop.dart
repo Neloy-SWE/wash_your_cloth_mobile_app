@@ -5,11 +5,13 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../utilities/app_size.dart';
-import '../../../custom_widget/custom_dialogue.dart';
-import '../../../custom_widget/custom_not_found.dart';
-import '../../../custom_widget/custom_order_item_card.dart';
+import '../../../../../router/app_router.dart';
+import '../../../../../utilities/app_size.dart';
+import '../../../../custom_widget/custom_dialogue.dart';
+import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_order_item_card.dart';
 import 'bloc/order_list_shop_bloc.dart';
 
 class ScreenOrderListShop extends StatelessWidget {
@@ -45,11 +47,10 @@ class ScreenOrderListShop extends StatelessWidget {
               final order = state.orderList[index];
               return CustomOrderItemCard(
                 order: order,
-                // onTap: () => context.push(
-                //   AppRouter.screenOrderDetailsShop,
-                //   extra: order.id,
-                // ),
-                onTap: () {},
+                onTap: () => context.push(
+                  AppRouter.screenOrderDetailsShop,
+                  extra: order.id,
+                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) {

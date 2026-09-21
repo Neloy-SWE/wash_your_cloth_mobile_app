@@ -33,7 +33,9 @@ import '../data/repository/repository_shop.dart';
 import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
-import '../presentation/screen/shop/order/screen_order_list_shop.dart';
+import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
+import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
+import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
 import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
@@ -58,6 +60,7 @@ class AppRouter {
   static const String screenOrderListUser = "/screenOrderListUser";
   static const String screenShopList = "/screenShopList";
   static const String screenOrderDetailsUser = "/screenOrderDetailsUser";
+  static const String screenOrderDetailsShop = "/screenOrderDetailsShop";
   static const String screenShopDetailsUser = "/screenShopDetailsUser";
   static const String screenProfileUser = "/ScreenProfileUser";
   static const String screenCart = "/screenCart";
@@ -286,6 +289,19 @@ class AppRouter {
                   .read<IRepositoryAuthentication>(),
             ),
             child: ScreenChangePassword(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenOrderDetailsShop,
+        builder: (context, state) {
+          final orderId = state.extra as String;
+          return BlocProvider<OrderDetailsShopBloc>(
+            create: (context) => OrderDetailsShopBloc(
+              repositoryOrder: context.read<IRepositoryOrder>(),
+            )..add(OrderDetailsShopEventFetch(orderId: orderId)),
+            child: ScreenOrderDetailsShop(),
           );
         },
       ),

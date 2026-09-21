@@ -16,7 +16,7 @@ class CustomNotFound extends StatelessWidget {
       child: Icon(
         Icons.not_interested,
         size: 50,
-        color: AppColor.colorBackgroundCard,
+        color: AppColor.colorDangerHint,
       ),
     );
   }
