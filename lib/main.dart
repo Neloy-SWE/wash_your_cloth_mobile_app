@@ -5,33 +5,34 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/client/client.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_change_password.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_change_phone.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_login.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_refresh_token.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/api_registration.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/order/user/api_place_order.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_update_user.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_view_user.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/shop/api_get_shop_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_authentication.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_profile.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_theme.dart';
 
+import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
+import 'data/network/api_call/authentication/api_change_password.dart';
+import 'data/network/api_call/authentication/api_change_phone.dart';
+import 'data/network/api_call/authentication/api_login.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
+import 'data/network/api_call/authentication/api_refresh_token.dart';
+import 'data/network/api_call/authentication/api_registration.dart';
+import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
-import 'data/network/api_call/order/user/api_get_order_list_user.dart';
+import 'data/network/api_call/order/api_get_order_list.dart';
+import 'data/network/api_call/order/user/api_place_order.dart';
+import 'data/network/api_call/profile/user/api_profile_update_user.dart';
+import 'data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
+import 'data/network/api_call/shop/api_get_shop_list.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
+import 'data/repository/repository_authentication.dart';
 import 'data/repository/repository_order.dart';
+import 'data/repository/repository_profile.dart';
 import 'data/repository/repository_shop.dart';
+import 'presentation/bloc_global/global_bloc.dart';
+import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
+import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
+import 'router/app_router.dart';
+import 'utilities/app_text.dart';
+import 'utilities/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,14 +76,19 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiOTPVerify(client: context.read<Client>()),
           ),
 
-          RepositoryProvider<IApiGetOrderListUser>(
+          RepositoryProvider<IApiGetOrderList>(
             create: (context) =>
-                ApiGetOrderListUser(client: context.read<Client>()),
+                ApiGetOrderList(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiGetOrderDetailsUser>(
             create: (context) =>
                 ApiGetOrderDetailsUser(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetOrderDetailsShop>(
+            create: (context) =>
+                ApiGetOrderDetailsShop(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiGetShopList>(
@@ -136,9 +142,10 @@ class MyApp extends StatelessWidget {
 
           RepositoryProvider<IRepositoryOrder>(
             create: (context) => RepositoryOrder(
-              apiGetOrderListUser: context.read<IApiGetOrderListUser>(),
+              apiGetOrderList: context.read<IApiGetOrderList>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
               apiPlaceOrder: context.read<IApiPlaceOrder>(),
+              apiGetOrderDetailsShop: context.read<IApiGetOrderDetailsShop>(),
             ),
           ),
 
@@ -172,6 +179,11 @@ class MyApp extends StatelessWidget {
               create: (context) => OrderListUserBloc(
                 repositoryOrder: context.read<IRepositoryOrder>(),
               )..add(OrderListUserEventFetch()),
+            ),
+            BlocProvider<OrderListShopBloc>(
+              create: (context) => OrderListShopBloc(
+                repositoryOrder: context.read<IRepositoryOrder>(),
+              )..add(OrderListShopEventFetch()),
             ),
           ],
           child: MaterialApp.router(

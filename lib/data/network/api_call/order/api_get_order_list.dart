@@ -5,25 +5,25 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:dio/dio.dart';
 
-import '../../../../client/client.dart';
-import '../../../../client/client_constant.dart';
-import '../../../../model/model_error.dart';
-import '../../../../model/model_order_list.dart';
-import '../../../api_path.dart';
+import '../../../client/client.dart';
+import '../../../client/client_constant.dart';
+import '../../../model/model_error.dart';
+import '../../../model/model_order_list.dart';
+import '../../api_path.dart';
 
-abstract class IApiGetOrderListUser {
+abstract class IApiGetOrderList {
   Future<(List<ModelOrderList>?, ModelError?)> getOrderList();
 }
 
-class ApiGetOrderListUser implements IApiGetOrderListUser {
+class ApiGetOrderList implements IApiGetOrderList {
   final Client client;
 
-  const ApiGetOrderListUser({required this.client});
+  const ApiGetOrderList({required this.client});
 
   @override
   Future<(List<ModelOrderList>?, ModelError?)> getOrderList() async {
     try {
-      Response response = await client.request.get(ApiPath.orderListUser);
+      Response response = await client.request.get(ApiPath.orderList);
 
       if (response.statusCode == ClientConstant.statusCode200OK) {
         var modelOrderList = List<ModelOrderList>.from(

@@ -16,6 +16,7 @@ import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/ot
 import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/home/screen_home_shop.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/profile/view/screen_profile_shop.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/bloc/order_place_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/screen_cart.dart';
@@ -34,6 +35,9 @@ import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/change_phone/bloc/change_phone_bloc.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
+import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
+import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
+import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
 import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
@@ -58,12 +62,15 @@ class AppRouter {
   static const String screenOrderListUser = "/screenOrderListUser";
   static const String screenShopList = "/screenShopList";
   static const String screenOrderDetailsUser = "/screenOrderDetailsUser";
+  static const String screenOrderDetailsShop = "/screenOrderDetailsShop";
   static const String screenShopDetailsUser = "/screenShopDetailsUser";
   static const String screenProfileUser = "/ScreenProfileUser";
   static const String screenCart = "/screenCart";
   static const String screenProfileUpdateUser = "/screenProfileUpdateUser";
   static const String screenChangePassword = "/screenChangePassword";
   static const String screenChangePhone = "/screenChangePhone";
+  static const String screenOrderListShop = "/screenOrderListShop";
+  static const String screenProfileShop = "/screenProfileShop";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -198,9 +205,29 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
-        path: AppRouter.screenHomeShop,
-        builder: (context, state) => ScreenHomeShop(),
+
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScreenHomeShop(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouter.screenOrderListShop,
+                builder: (context, state) => const ScreenOrderListShop(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouter.screenProfileShop,
+                builder: (context, state) => const ScreenProfileShop(),
+              ),
+            ],
+          ),
+        ],
       ),
 
       GoRoute(
@@ -278,6 +305,19 @@ class AppRouter {
                   .read<IRepositoryAuthentication>(),
             ),
             child: ScreenChangePhone(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenOrderDetailsShop,
+        builder: (context, state) {
+          final orderId = state.extra as String;
+          return BlocProvider<OrderDetailsShopBloc>(
+            create: (context) => OrderDetailsShopBloc(
+              repositoryOrder: context.read<IRepositoryOrder>(),
+            )..add(OrderDetailsShopEventFetch(orderId: orderId)),
+            child: ScreenOrderDetailsShop(),
           );
         },
       ),

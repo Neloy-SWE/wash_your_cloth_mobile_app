@@ -11,33 +11,33 @@ import '../../../../../../data/client/client_constant.dart';
 import '../../../../../../data/model/model_order_list.dart';
 import '../../../../../../data/use_case/use_case_generic.dart';
 
-part 'order_list_user_event.dart';
+part 'order_list_shop_event.dart';
 
-part 'order_list_user_state.dart';
+part 'order_list_shop_state.dart';
 
-class OrderListUserBloc extends Bloc<OrderListUserEvent, OrderListUserState> {
+class OrderListShopBloc extends Bloc<OrderListShopEvent, OrderListShopState> {
   final IRepositoryOrder repositoryOrder;
 
-  OrderListUserBloc({required this.repositoryOrder})
-    : super(OrderListUserStateInitial()) {
-    on<OrderListUserEventFetch>(_onOrderListUserEventFetch);
+  OrderListShopBloc({required this.repositoryOrder})
+    : super(OrderListShopStateInitial()) {
+    on<OrderListShopEventFetch>(_onOrderListShopEventFetch);
   }
 
-  Future<void> _onOrderListUserEventFetch(
-    OrderListUserEventFetch event,
-    Emitter<OrderListUserState> emit,
+  Future<void> _onOrderListShopEventFetch(
+    OrderListShopEventFetch event,
+    Emitter<OrderListShopState> emit,
   ) async {
-    emit(OrderListUserStateLoading());
+    emit(OrderListShopStateLoading());
     try {
       UseCaseGeneric<List<ModelOrderList>> useCaseOrderList =
           await repositoryOrder.getOrderList();
       if (useCaseOrderList.isSuccess) {
-        emit(OrderListUserStateFetch(orderList: useCaseOrderList.data!));
+        emit(OrderListShopStateFetch(orderList: useCaseOrderList.data!));
       } else {
-        emit(OrderListUserStateResult(message: useCaseOrderList.message!));
+        emit(OrderListShopStateResult(message: useCaseOrderList.message!));
       }
     } catch (e) {
-      emit(OrderListUserStateResult(message: ClientConstant.serverError));
+      emit(OrderListShopStateResult(message: ClientConstant.serverError));
     }
   }
 }
