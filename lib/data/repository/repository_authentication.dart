@@ -16,7 +16,6 @@ import '../use_case/authentication/use_case_login.dart';
 import '../use_case/authentication/use_case_otp_request.dart';
 import '../use_case/authentication/use_case_otp_verify.dart';
 import '../use_case/authentication/use_case_registration.dart';
-import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryAuthentication {
   Future<bool> getLoginStatus();

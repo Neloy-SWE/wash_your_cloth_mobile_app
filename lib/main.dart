@@ -13,6 +13,7 @@ import 'data/network/api_call/authentication/api_login.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/authentication/api_refresh_token.dart';
 import 'data/network/api_call/authentication/api_registration.dart';
+import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/api_get_order_list.dart';
 import 'data/network/api_call/order/user/api_place_order.dart';
@@ -84,6 +85,11 @@ class MyApp extends StatelessWidget {
                 ApiGetOrderDetailsUser(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetOrderDetailsShop>(
+            create: (context) =>
+                ApiGetOrderDetailsShop(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IApiGetShopList>(
             create: (context) => ApiGetShopList(client: context.read<Client>()),
           ),
@@ -133,6 +139,7 @@ class MyApp extends StatelessWidget {
               apiGetOrderList: context.read<IApiGetOrderList>(),
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
               apiPlaceOrder: context.read<IApiPlaceOrder>(),
+              apiGetOrderDetailsShop: context.read<IApiGetOrderDetailsShop>(),
             ),
           ),
 

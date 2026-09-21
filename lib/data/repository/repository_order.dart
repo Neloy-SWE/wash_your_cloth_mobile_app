@@ -3,8 +3,10 @@ Created by Neloy on 15 July, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
+import '../model/model_order_details_shop.dart';
 import '../model/model_order_details_user.dart';
 import '../model/model_order_list.dart';
+import '../network/api_call/order/shop/api_get_order_details_shop.dart';
 import '../network/api_call/order/user/api_get_order_details_user.dart';
 import '../network/api_call/order/api_get_order_list.dart';
 import '../network/api_call/order/user/api_place_order.dart';
@@ -18,18 +20,24 @@ abstract class IRepositoryOrder {
     required String orderId,
   });
 
+  Future<UseCaseGeneric<ModelOrderDetailsShop>> getOrderDetailsShop({
+    required String orderId,
+  });
+
   Future<UseCaseGeneric> placeOrder({required OrderPlaceData orderPlaceData});
 }
 
 class RepositoryOrder implements IRepositoryOrder {
   final IApiGetOrderList apiGetOrderList;
   final IApiGetOrderDetailsUser apiGetOrderDetailsUser;
+  final IApiGetOrderDetailsShop apiGetOrderDetailsShop;
   final IApiPlaceOrder apiPlaceOrder;
 
   const RepositoryOrder({
     required this.apiGetOrderList,
     required this.apiGetOrderDetailsUser,
     required this.apiPlaceOrder,
+    required this.apiGetOrderDetailsShop,
   });
 
   @override
@@ -83,6 +91,23 @@ class RepositoryOrder implements IRepositoryOrder {
           isSuccess: true,
           message: modelOrderPlace?.message,
         );
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<ModelOrderDetailsShop>> getOrderDetailsShop({
+    required String orderId,
+  }) async {
+    try {
+      var (modelOrderDetails, modelError) = await apiGetOrderDetailsShop
+          .getDetails(orderId: orderId);
+      if (modelError == null) {
+        return UseCaseGeneric(isSuccess: true, data: modelOrderDetails);
       } else {
         return UseCaseGeneric.fromModelError(modelError);
       }
