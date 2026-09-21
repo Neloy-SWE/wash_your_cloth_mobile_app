@@ -5,7 +5,6 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/model/model_order_details_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/use_case/use_case_generic.dart';
 
 import '../../../../../../data/client/client_constant.dart';

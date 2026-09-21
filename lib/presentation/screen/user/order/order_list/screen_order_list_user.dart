@@ -6,19 +6,13 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_card.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_status_badge.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
-import '../../../../../data/model/model_order_list.dart';
+import '../../../../../router/app_router.dart';
+import '../../../../../utilities/app_size.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_not_found.dart';
 import '../../../../custom_widget/custom_order_item_card.dart';
+import 'bloc/order_list_user_bloc.dart';
 
 class ScreenOrderListUser extends StatelessWidget {
   const ScreenOrderListUser({super.key});
