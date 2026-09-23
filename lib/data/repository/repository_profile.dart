@@ -7,6 +7,8 @@ import 'package:wash_your_cloth_mobile_app/data/model/model_profile_view_user.da
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'package:wash_your_cloth_mobile_app/data/use_case/use_case_generic.dart';
 
+import '../model/model_profile_view_shop.dart';
+import '../network/api_call/profile/shop/api_profile_view_shop.dart';
 import '../network/api_call/profile/user/api_profile_update_user.dart';
 import '../request/request_profile_update_user.dart';
 
@@ -16,14 +18,18 @@ abstract class IRepositoryProfile {
   Future<UseCaseGeneric> updateProfile({
     required RequestProfileUpdateUser update,
   });
+
+  Future<UseCaseGeneric<ModelProfileViewShop>> getProfileShop();
 }
 
 class RepositoryProfile implements IRepositoryProfile {
   final IApiProfileViewUser apiProfileViewUser;
+  final IApiProfileViewShop apiProfileViewShop;
   final IApiProfileUpdateUser apiProfileUpdateUser;
 
   const RepositoryProfile({
     required this.apiProfileViewUser,
+    required this.apiProfileViewShop,
     required this.apiProfileUpdateUser,
   });
 
@@ -55,6 +61,21 @@ class RepositoryProfile implements IRepositoryProfile {
           isSuccess: true,
           message: modelProfileUpdateUser?.message,
         );
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<ModelProfileViewShop>> getProfileShop() async {
+    try {
+      var (modelProfileViewShop, modelError) = await apiProfileViewShop
+          .getProfileView();
+      if (modelError == null) {
+        return UseCaseGeneric(isSuccess: true, data: modelProfileViewShop);
       } else {
         return UseCaseGeneric.fromModelError(modelError);
       }

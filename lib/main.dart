@@ -5,6 +5,7 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/shop/api_profile_view_shop.dart';
 
 import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
@@ -128,6 +129,11 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiChangePhone(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiProfileViewShop>(
+            create: (context) =>
+                ApiProfileViewShop(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -160,6 +166,7 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<IRepositoryProfile>(
             create: (context) => RepositoryProfile(
               apiProfileViewUser: context.read<IApiProfileViewUser>(),
+              apiProfileViewShop: context.read<IApiProfileViewShop>(),
               apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
             ),
           ),
