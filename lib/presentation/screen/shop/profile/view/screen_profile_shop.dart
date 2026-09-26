@@ -8,18 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../data/model/model_profile_view_shop.dart';
 import '../../../../../router/app_router.dart';
 import '../../../../../utilities/app_color.dart';
+import '../../../../../utilities/app_constant.dart';
 import '../../../../../utilities/app_helper.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
+import '../../../../../utilities/app_validator.dart';
 import '../../../../custom_widget/custom_button.dart';
 import '../../../../custom_widget/custom_card.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_icon_frame.dart';
 import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_snack_bar.dart';
 import '../../../../custom_widget/custom_title.dart';
 import '../../../../custom_widget/custom_titled_divider.dart';
+import '../../../../custom_widget/custom_weekend_selector.dart';
 import 'bloc/profile_view_shop_bloc.dart';
 
 class ScreenProfileShop extends StatefulWidget {
@@ -57,7 +62,7 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
           return SingleChildScrollView(
             padding: AppSize.paddingAll25,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomCard(
                   padding: const EdgeInsets.all(16),
@@ -110,9 +115,10 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                       ),
                       AppSize.gapW10,
                       IconButton(
-                        onPressed: () {
-                          // Navigate to Shop Profile Edit Screen
-                        },
+                        onPressed: () => navigateToUpdateProfile(
+                          context: context,
+                          profile: profile,
+                        ),
                         icon: const Icon(Icons.edit_note),
                       ),
                     ],
@@ -175,10 +181,7 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                     return Container(
                       padding: AppSize.paddingAll10,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: item.color,
-                          width: 1,
-                        ),
+                        border: Border.all(color: item.color, width: 1),
                         borderRadius: AppSize.borderRadiusAll8,
                       ),
                       child: Column(
@@ -196,7 +199,6 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                               color: item.color,
                             ),
                           ),
-
                         ],
                       ),
                     );
@@ -211,13 +213,6 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      CustomTitleWithIconValue(
-                        iconData: Icons.account_circle_outlined,
-                        title: AppText.owner,
-                        value:
-                            "${profile.ownerFirstName} ${profile.ownerLastName}",
-                      ),
-                      const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -243,6 +238,13 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                       ),
                       const Divider(),
                       CustomTitleWithIconValue(
+                        iconData: Icons.account_circle_outlined,
+                        title: AppText.owner,
+                        value:
+                            "${profile.ownerFirstName} ${profile.ownerLastName}",
+                      ),
+                      const Divider(),
+                      CustomTitleWithIconValue(
                         iconData: Icons.location_on,
                         title: AppText.address,
                         value: profile.shopAddress,
@@ -255,12 +257,6 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                       ),
                       const Divider(),
                       CustomTitleWithIconValue(
-                        iconData: Icons.calendar_month_outlined,
-                        title: AppText.weekends,
-                        value: profile.weekends,
-                      ),
-                      const Divider(),
-                      CustomTitleWithIconValue(
                         iconData: Icons.local_shipping_outlined,
                         title: AppText.deliveryCharge,
                         value:
@@ -269,6 +265,11 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                     ],
                   ),
                 ),
+                AppSize.gapH10,
+
+                CustomTitledDivider(title: AppText.weekends),
+                CustomWeekendSelector(initialSelectedDays: profile.weekends),
+
                 AppSize.gapH50,
                 CustomButton(
                   onPressed: () {
@@ -297,5 +298,36 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
         }
       },
     );
+  }
+
+  Future<void> navigateToUpdateProfile({
+    required BuildContext context,
+    required ModelProfileViewShop profile,
+  }) async {
+    try {
+      final bool? isUpdated = await context.push<bool>(
+        AppRouter.screenProfileUpdateShop,
+        extra: {
+          AppConstant.ownerFirstName: profile.ownerFirstName,
+          AppConstant.ownerLastName: profile.ownerLastName,
+          AppConstant.shopAddress: profile.shopAddress,
+          AppConstant.shopName: profile.shopName,
+          AppConstant.openTime: profile.openTime,
+          AppConstant.closeTime: profile.closeTime,
+          AppConstant.weekends: profile.weekends,
+          AppConstant.deliveryCharge: profile.deliveryCharge,
+        },
+      );
+      if (isUpdated == true && context.mounted) {
+        context.read<ProfileViewShopBloc>().add(ProfileViewShopEventFetch());
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackBar.primary(
+          context: context,
+          contentText: AppValidator.validatorProfileFetchFail,
+        );
+      }
+    }
   }
 }

@@ -36,7 +36,7 @@ class ScreenProfileUpdateUser extends StatefulWidget {
 }
 
 class _ScreenProfileUpdateUserState extends State<ScreenProfileUpdateUser> {
-  final _profileBuyerEditKey = GlobalKey<FormState>();
+  final _profileUserEditKey = GlobalKey<FormState>();
   final TextEditingController controllerFirstName = TextEditingController();
   final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerAddress = TextEditingController();
@@ -112,7 +112,7 @@ class _ScreenProfileUpdateUserState extends State<ScreenProfileUpdateUser> {
             return SingleChildScrollView(
               padding: AppSize.paddingAll25,
               child: Form(
-                key: _profileBuyerEditKey,
+                key: _profileUserEditKey,
                 child: Column(
                   children: [
                     CustomFieldPrimary(
@@ -168,7 +168,7 @@ class _ScreenProfileUpdateUserState extends State<ScreenProfileUpdateUser> {
                         return CustomButton(
                           onPressed: () {
                             if (isChanged) {
-                              if (_profileBuyerEditKey.currentState!
+                              if (_profileUserEditKey.currentState!
                                   .validate()) {
                                 context.read<ProfileUpdateUserBloc>().add(
                                   ProfileUpdateUserEventSubmit(

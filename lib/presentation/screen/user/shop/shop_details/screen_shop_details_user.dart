@@ -7,12 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/data/use_case/order/use_case_order_place.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_titled_divider.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_weekend_selector.dart';
 
 import '../../../../../data/model/model_price_list_user.dart';
+import '../../../../../data/use_case/order/use_case_order_place.dart';
 import '../../../../../router/app_router.dart';
 import '../../../../../utilities/app_color.dart';
 import '../../../../../utilities/app_constant.dart';
@@ -20,9 +17,12 @@ import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
 import '../../../../custom_widget/custom_card.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
+import '../../../../custom_widget/custom_icon_frame.dart';
 import '../../../../custom_widget/custom_not_found.dart';
 import '../../../../custom_widget/custom_status_badge.dart';
 import '../../../../custom_widget/custom_title.dart';
+import '../../../../custom_widget/custom_titled_divider.dart';
+import '../../../../custom_widget/custom_weekend_selector.dart';
 import 'bloc/shop_details_user_bloc.dart';
 
 class ScreenShopDetailsUser extends StatefulWidget {

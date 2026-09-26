@@ -93,4 +93,5 @@ class AppText {
   static const String newPhone = "New phone";
   static const String shopActiveStatus = "Shop active status";
   static const String ordersOverview = "Orders Overview";
+  static const String shopAddress = "Shop address";
 }
