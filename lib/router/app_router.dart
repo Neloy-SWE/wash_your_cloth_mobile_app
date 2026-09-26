@@ -38,6 +38,8 @@ import '../presentation/screen/authentication/registration/screen_registration.d
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
+import '../presentation/screen/shop/profile/update/bloc/profile_update_shop_bloc.dart';
+import '../presentation/screen/shop/profile/update/screen_profile_update_shop.dart';
 import '../presentation/screen/shop/profile/view/bloc/profile_view_shop_bloc.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
@@ -72,6 +74,7 @@ class AppRouter {
   static const String screenChangePhone = "/screenChangePhone";
   static const String screenOrderListShop = "/screenOrderListShop";
   static const String screenProfileShop = "/screenProfileShop";
+  static const String screenProfileUpdateShop = "/screenProfileUpdateShop";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -324,6 +327,36 @@ class AppRouter {
               repositoryOrder: context.read<IRepositoryOrder>(),
             )..add(OrderDetailsShopEventFetch(orderId: orderId)),
             child: ScreenOrderDetailsShop(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenProfileUpdateShop,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final ownerFirstName = extra[AppConstant.ownerFirstName] as String;
+          final ownerLastName = extra[AppConstant.ownerLastName] as String;
+          final shopAddress = extra[AppConstant.shopAddress] as String;
+          final shopName = extra[AppConstant.shopName] as String;
+          final openTime = extra[AppConstant.openTime] as String;
+          final closeTime = extra[AppConstant.closeTime] as String;
+          final weekends = extra[AppConstant.weekends] as String;
+          final deliveryCharge = extra[AppConstant.deliveryCharge] as double;
+          return BlocProvider<ProfileUpdateShopBloc>(
+            create: (context) => ProfileUpdateShopBloc(
+              repositoryProfile: context.read<IRepositoryProfile>(),
+            ),
+            child: ScreenProfileUpdateShop(
+              ownerFirstName: ownerFirstName,
+              ownerLastName: ownerLastName,
+              shopAddress: shopAddress,
+              shopName: shopName,
+              openTime: openTime,
+              closeTime: closeTime,
+              weekends: weekends,
+              deliveryCharge: deliveryCharge,
+            ),
           );
         },
       ),

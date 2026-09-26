@@ -5,7 +5,6 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/profile/shop/api_profile_view_shop.dart';
 
 import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
@@ -19,6 +18,8 @@ import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/api_get_order_list.dart';
 import 'data/network/api_call/order/user/api_place_order.dart';
+import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
+import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
 import 'data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
@@ -134,6 +135,11 @@ class MyApp extends StatelessWidget {
                 ApiProfileViewShop(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiProfileUpdateShop>(
+            create: (context) =>
+                ApiProfileUpdateShop(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -168,6 +174,7 @@ class MyApp extends StatelessWidget {
               apiProfileViewUser: context.read<IApiProfileViewUser>(),
               apiProfileViewShop: context.read<IApiProfileViewShop>(),
               apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
+              apiProfileUpdateShop: context.read<IApiProfileUpdateShop>(),
             ),
           ),
 
