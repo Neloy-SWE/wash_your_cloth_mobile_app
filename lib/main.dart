@@ -18,6 +18,8 @@ import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/api_get_order_list.dart';
 import 'data/network/api_call/order/user/api_place_order.dart';
+import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
+import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
 import 'data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
@@ -128,6 +130,16 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiChangePhone(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiProfileViewShop>(
+            create: (context) =>
+                ApiProfileViewShop(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiProfileUpdateShop>(
+            create: (context) =>
+                ApiProfileUpdateShop(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -160,7 +172,9 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<IRepositoryProfile>(
             create: (context) => RepositoryProfile(
               apiProfileViewUser: context.read<IApiProfileViewUser>(),
+              apiProfileViewShop: context.read<IApiProfileViewShop>(),
               apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
+              apiProfileUpdateShop: context.read<IApiProfileUpdateShop>(),
             ),
           ),
 

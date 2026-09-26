@@ -9,7 +9,7 @@ class ModelOrderDetailsUser {
   final String id;
   final String trackingId;
   final String status;
-  final int totalPrice;
+  final double totalPrice;
   final String shopName;
   final String ownerFirstName;
   final String ownerLastName;
@@ -30,7 +30,8 @@ class ModelOrderDetailsUser {
     required this.shopAddress,
     required this.shopPhone,
     required this.deliveryCharge,
-    required this.orderItems, required this.note,
+    required this.orderItems,
+    required this.note,
   });
 
   factory ModelOrderDetailsUser.fromRawJson(String str) =>
@@ -43,7 +44,7 @@ class ModelOrderDetailsUser {
         id: json["id"],
         trackingId: json["trackingId"],
         status: json["status"],
-        totalPrice: json["totalPrice"],
+        totalPrice: json["totalPrice"]?.toDouble(),
         shopName: json["shopName"],
         ownerFirstName: json["ownerFirstName"],
         ownerLastName: json["ownerLastName"],
@@ -77,10 +78,10 @@ class OrderItem {
   final String serviceName;
   final String itemName;
   final int quantity;
-  final int unitPrice;
+  final double unitPrice;
   final bool isIronPress;
-  final int ironPressPrice;
-  final int totalPrice;
+  final double ironPressPrice;
+  final double totalPrice;
 
   OrderItem({
     required this.id,
@@ -103,10 +104,10 @@ class OrderItem {
     serviceName: json["serviceName"],
     itemName: json["itemName"],
     quantity: json["quantity"],
-    unitPrice: json["unitPrice"],
+    unitPrice: json["unitPrice"]?.toDouble(),
     isIronPress: json["isIronPress"],
-    ironPressPrice: json["ironPressPrice"],
-    totalPrice: json["totalPrice"],
+    ironPressPrice: json["ironPressPrice"]?.toDouble(),
+    totalPrice: json["totalPrice"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {

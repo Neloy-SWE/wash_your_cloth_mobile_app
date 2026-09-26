@@ -85,9 +85,7 @@ class ScreenOrderDetailsShop extends StatelessWidget {
 
                           Text(
                             "${order.totalPrice} ${AppText.bdtCapital}",
-                            style: AppText.style.titleLarge?.copyWith(
-                              color: AppColor.colorPrimary,
-                            ),
+                            style: AppText.style.titleLarge,
                           ),
                         ],
                       ),

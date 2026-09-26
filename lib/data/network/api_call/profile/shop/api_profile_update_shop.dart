@@ -1,5 +1,5 @@
 /* 
-Created by Neloy on 12 September, 2026.
+Created by Neloy on 26 September, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
@@ -11,16 +11,16 @@ import '../../../../model/model_error.dart';
 import '../../../../model/model_profile_update.dart';
 import '../../../api_path.dart';
 
-abstract class IApiProfileUpdateUser {
+abstract class IApiProfileUpdateShop {
   Future<(ModelProfileUpdate?, ModelError?)> updateProfile({
     required Map<String, dynamic> data,
   });
 }
 
-class ApiProfileUpdateUser implements IApiProfileUpdateUser {
+class ApiProfileUpdateShop implements IApiProfileUpdateShop {
   final Client client;
 
-  const ApiProfileUpdateUser({required this.client});
+  const ApiProfileUpdateShop({required this.client});
 
   @override
   Future<(ModelProfileUpdate?, ModelError?)> updateProfile({
@@ -28,13 +28,11 @@ class ApiProfileUpdateUser implements IApiProfileUpdateUser {
   }) async {
     try {
       Response response = await client.request.patch(
-        ApiPath.updateUser,
+        ApiPath.updateShop,
         data: data,
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelProfileUpdate result = ModelProfileUpdate.fromJson(
-          response.data,
-        );
+        ModelProfileUpdate result = ModelProfileUpdate.fromJson(response.data);
         return (result, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);

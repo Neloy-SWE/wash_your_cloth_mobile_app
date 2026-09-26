@@ -12,6 +12,13 @@ class AppConstant {
   static const String address = "address";
   static const String otpRequestId = "otpRequestId";
   static const String recordId = "recordId";
+  static const String ownerFirstName = "ownerFirstName";
+  static const String ownerLastName = "ownerLastName";
+  static const String shopAddress = "shopAddress";
+  static const String shopName = "shopName";
+  static const String openTime = "openTime";
+  static const String closeTime = "closeTime";
+  static const String weekends = "weekends";
 }
 
 enum Role { user, shop }
