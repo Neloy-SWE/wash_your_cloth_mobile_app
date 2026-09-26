@@ -35,7 +35,7 @@ class ProfileUpdateUserBloc
         lastName: event.lastName,
         address: event.address,
       );
-      UseCaseGeneric useCaseGeneric = await repositoryProfile.updateProfile(
+      UseCaseGeneric useCaseGeneric = await repositoryProfile.updateProfileUser(
         update: updateUser,
       );
       emit(
