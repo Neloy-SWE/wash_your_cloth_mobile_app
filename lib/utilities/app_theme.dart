@@ -97,6 +97,12 @@ class AppTheme {
         fontSize: 16,
       ),
 
+      bodyLarge: TextStyle(
+        fontFamily: AppAsset.fontBold,
+        color: Colors.black,
+        fontSize: 14,
+      ),
+
       bodyMedium: TextStyle(
         fontFamily: AppAsset.fontRegular,
         color: Colors.black,

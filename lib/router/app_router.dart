@@ -38,6 +38,7 @@ import '../presentation/screen/authentication/registration/screen_registration.d
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
+import '../presentation/screen/shop/profile/view/bloc/profile_view_shop_bloc.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
 import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
@@ -223,7 +224,12 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRouter.screenProfileShop,
-                builder: (context, state) => const ScreenProfileShop(),
+                builder: (context, state) => BlocProvider<ProfileViewShopBloc>(
+                  create: (context) => ProfileViewShopBloc(
+                    repositoryProfile: context.read<IRepositoryProfile>(),
+                  )..add(ProfileViewShopEventFetch()),
+                  child: const ScreenProfileShop(),
+                ),
               ),
             ],
           ),

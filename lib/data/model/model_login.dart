@@ -20,7 +20,8 @@ class ModelLogin {
     required this.token,
     required this.refreshToken,
     required this.expirationToken,
-    required this.expirationRefreshToken, required this.role,
+    required this.expirationRefreshToken,
+    required this.role,
   });
 
   factory ModelLogin.fromRawJson(String str) =>

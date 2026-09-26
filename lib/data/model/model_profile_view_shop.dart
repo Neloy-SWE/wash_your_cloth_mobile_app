@@ -7,6 +7,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../utilities/app_color.dart';
+
 class ModelProfileViewShop {
   final String id;
   final String shopName;
@@ -19,7 +21,7 @@ class ModelProfileViewShop {
   final String openTime;
   final String closeTime;
   final String weekends;
-  final bool status;
+  bool status;
   final double deliveryCharge;
   final OrdersSummary ordersSummary;
   final double totalIncome;
@@ -130,13 +132,33 @@ class OrdersSummary {
       SummaryItem(
         title: 'Total Orders',
         count: totalOrders,
-        color: Colors.blue,
+        color: AppColor.colorPrimary,
       ),
-      SummaryItem(title: 'Pending', count: pending, color: Colors.amber),
-      SummaryItem(title: 'Accepted', count: accepted, color: Colors.purple),
-      SummaryItem(title: 'Ready', count: ready, color: Colors.cyan),
-      SummaryItem(title: 'Delivered', count: delivered, color: Colors.green),
-      SummaryItem(title: 'Rejected', count: rejected, color: Colors.red),
+      SummaryItem(
+        title: 'Pending',
+        count: pending,
+        color: AppColor.colorBorderStatusPending,
+      ),
+      SummaryItem(
+        title: 'Accepted',
+        count: accepted,
+        color: AppColor.colorBorderStatusAccepted,
+      ),
+      SummaryItem(
+        title: 'Ready',
+        count: ready,
+        color: AppColor.colorBorderStatusReady,
+      ),
+      SummaryItem(
+        title: 'Delivered',
+        count: delivered,
+        color: AppColor.colorPrimary,
+      ),
+      SummaryItem(
+        title: 'Rejected',
+        count: rejected,
+        color: AppColor.colorDanger,
+      ),
     ];
   }
 }
