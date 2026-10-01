@@ -37,7 +37,9 @@ class ScreenOrderListUser extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is OrderListUserStateFetch) {
+        if (state is OrderListUserStateLoading || state is OrderListUserStateInitial) {
+          return AppSize.noGap;
+        } else if (state is OrderListUserStateFetch) {
           if (state.orderList.isEmpty) {
             return CustomNotFound();
           }

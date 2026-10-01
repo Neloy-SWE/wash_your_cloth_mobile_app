@@ -42,7 +42,9 @@ class ScreenShopList extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is ShopListStateFetch) {
+        if (state is ShopListStateLoading || state is ShopListStateInitial) {
+          return AppSize.noGap;
+        } else if (state is ShopListStateFetch) {
           if (state.shopList.isEmpty) {
             return CustomNotFound();
           }
