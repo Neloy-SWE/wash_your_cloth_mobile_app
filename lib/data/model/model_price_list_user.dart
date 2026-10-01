@@ -8,6 +8,7 @@ import 'dart:convert';
 class ModelPriceListUser {
   final String id;
   final String serviceName;
+  final String description;
   final String itemName;
   final double price;
   final double discountPrice;
@@ -16,6 +17,7 @@ class ModelPriceListUser {
   ModelPriceListUser({
     required this.id,
     required this.serviceName,
+    required this.description,
     required this.itemName,
     required this.price,
     required this.discountPrice,
@@ -31,6 +33,7 @@ class ModelPriceListUser {
       ModelPriceListUser(
         id: json["id"],
         serviceName: json["serviceName"],
+        description: json["description"],
         itemName: json["itemName"],
         price: json["price"]?.toDouble(),
         discountPrice: json["discountPrice"]?.toDouble(),
@@ -40,6 +43,7 @@ class ModelPriceListUser {
   Map<String, dynamic> toJson() => {
     "id": id,
     "serviceName": serviceName,
+    "description": description,
     "itemName": itemName,
     "price": price,
     "discountPrice": discountPrice,

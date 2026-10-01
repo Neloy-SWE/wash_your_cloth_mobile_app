@@ -77,6 +77,7 @@ class OrderItem {
   final String id;
   final String serviceName;
   final String itemName;
+  final String description;
   final int quantity;
   final double unitPrice;
   final bool isIronPress;
@@ -87,6 +88,7 @@ class OrderItem {
     required this.id,
     required this.serviceName,
     required this.itemName,
+    required this.description,
     required this.quantity,
     required this.unitPrice,
     required this.isIronPress,
@@ -103,6 +105,7 @@ class OrderItem {
     id: json["id"],
     serviceName: json["serviceName"],
     itemName: json["itemName"],
+    description: json["description"],
     quantity: json["quantity"],
     unitPrice: json["unitPrice"]?.toDouble(),
     isIronPress: json["isIronPress"],
@@ -114,6 +117,7 @@ class OrderItem {
     "id": id,
     "serviceName": serviceName,
     "itemName": itemName,
+    "description": description,
     "quantity": quantity,
     "unitPrice": unitPrice,
     "isIronPress": isIronPress,
