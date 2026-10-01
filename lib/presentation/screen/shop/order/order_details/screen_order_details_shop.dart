@@ -203,12 +203,30 @@ class ScreenOrderDetailsShop extends StatelessWidget {
                                     : AppText.no,
                               ),
 
-                              if (item.isIronPress)
+                              if (item.isIronPress) ...[
                                 CustomDetailsItem(
                                   title: AppText.ironCharge,
                                   value:
                                       "${item.ironPressPrice} ${AppText.bdtCapital}",
                                 ),
+                              ],
+                              const Divider(),
+
+                              ExpansionTile(
+                                splashColor: Colors.transparent,
+                                title: Text(
+                                  AppText.description,
+                                  style: AppText.style.titleSmall,
+                                ),
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      item.description,
+                                      style: AppText.style.bodyMedium,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),

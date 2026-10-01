@@ -78,6 +78,12 @@ class AppTheme {
       height: 65,
     ),
 
+    expansionTileTheme: .new(
+      shape: Border(),
+      tilePadding: EdgeInsets.zero,
+      iconColor: AppColor.colorPrimary,
+    ),
+
     textTheme: .new(
       titleLarge: TextStyle(
         fontFamily: AppAsset.fontBold,

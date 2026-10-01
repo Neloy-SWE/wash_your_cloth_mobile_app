@@ -285,160 +285,181 @@ class _PriceListItemCardState extends State<PriceListItemCard> {
 
     return CustomCard(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          // Left Column Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${price.itemName}: ${price.serviceName}",
-                  style: AppText.style.titleMedium,
-                ),
-                AppSize.gapH10,
-                Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Left Column Details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${AppText.unitPrice}: ",
-                      style: AppText.style.titleMedium?.copyWith(fontSize: 16),
+                      "${price.itemName}: ${price.serviceName}",
+                      style: AppText.style.titleMedium,
                     ),
-                    Text(
-                      "${effectivePrice.toStringAsFixed(2)} ${AppText.bdtCapital}",
-                      style: AppText.style.titleMedium?.copyWith(
-                        color: AppColor.colorPrimary,
-                        fontSize: 16,
-                      ),
-                    ),
-                    if (hasDiscount) ...[
-                      AppSize.gapW05,
-                      Text(
-                        "${price.price.toStringAsFixed(2)} ${AppText.bdtCapital}",
-                        style: AppText.style.bodySmall?.copyWith(
-                          decoration: TextDecoration.lineThrough,
+                    AppSize.gapH10,
+                    Row(
+                      children: [
+                        Text(
+                          "${AppText.unitPrice}: ",
+                          style: AppText.style.titleMedium?.copyWith(fontSize: 16),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
-                if (_isIronPressOn) ...[
-                  AppSize.gapH05,
-                  Row(
-                    children: [
-                      Text(
-                        "${AppText.ironCharge}: ",
-                        style: AppText.style.titleMedium?.copyWith(
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        "${price.ironPressPrice.toStringAsFixed(2)} ${AppText.bdtCapital}",
-                        style: AppText.style.titleMedium?.copyWith(
-                          color: AppColor.colorPrimary,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                AppSize.gapH05,
-              ],
-            ),
-          ),
-          AppSize.gapW05,
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              AppSize.gapH05,
-              _quantity == 0
-                  ? Container(
-                      height: 36,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: AppSize.borderRadiusAll10,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: InkWell(
-                        borderRadius: AppSize.borderRadiusAll10,
-                        onTap: _increment,
-                        child: const Center(
-                          child: Icon(Icons.add, color: Colors.black, size: 20),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: AppSize.borderRadiusAll10,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 36,
-                            ),
-                            icon: const Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 18,
-                            ),
-                            onPressed: _decrement,
+                        Text(
+                          "${effectivePrice.toStringAsFixed(2)} ${AppText.bdtCapital}",
+                          style: AppText.style.titleMedium?.copyWith(
+                            color: AppColor.colorPrimary,
+                            fontSize: 16,
                           ),
+                        ),
+                        if (hasDiscount) ...[
+                          AppSize.gapW05,
                           Text(
-                            '$_quantity',
+                            "${price.price.toStringAsFixed(2)} ${AppText.bdtCapital}",
+                            style: AppText.style.bodySmall?.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    if (_isIronPressOn) ...[
+                      AppSize.gapH05,
+                      Row(
+                        children: [
+                          Text(
+                            "${AppText.ironCharge}: ",
                             style: AppText.style.titleMedium?.copyWith(
-                              color: Colors.black,
                               fontSize: 14,
                             ),
                           ),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 36,
+                          Text(
+                            "${price.ironPressPrice.toStringAsFixed(2)} ${AppText.bdtCapital}",
+                            style: AppText.style.titleMedium?.copyWith(
+                              color: AppColor.colorPrimary,
+                              fontSize: 14,
                             ),
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 18,
-                            ),
-                            onPressed: _increment,
                           ),
                         ],
                       ),
-                    ),
-              AppSize.gapH05,
-              _quantity != 0
-                  ? Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          AppText.ironPressColon,
-                          style: AppText.style.bodyMedium?.copyWith(
-                            fontSize: 12,
+                    ],
+                    AppSize.gapH05,
+                  ],
+                ),
+              ),
+              AppSize.gapW05,
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AppSize.gapH05,
+                  _quantity == 0
+                      ? Container(
+                          height: 36,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: AppSize.borderRadiusAll10,
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: InkWell(
+                            borderRadius: AppSize.borderRadiusAll10,
+                            onTap: _increment,
+                            child: const Center(
+                              child: Icon(Icons.add, color: Colors.black, size: 20),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: AppSize.borderRadiusAll10,
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 30,
+                                  minHeight: 36,
+                                ),
+                                icon: const Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 18,
+                                ),
+                                onPressed: _decrement,
+                              ),
+                              Text(
+                                '$_quantity',
+                                style: AppText.style.titleMedium?.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 30,
+                                  minHeight: 36,
+                                ),
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 18,
+                                ),
+                                onPressed: _increment,
+                              ),
+                            ],
                           ),
                         ),
-                        AppSize.gapW05,
-                        Transform.scale(
-                          scale: 0.7,
-                          child: CupertinoSwitch(
-                            value: _isIronPressOn,
-                            activeTrackColor: AppColor.colorPrimary,
-                            onChanged: _toggleIronPress,
-                          ),
-                        ),
-                      ],
-                    )
-                  : AppSize.noGap,
+                  AppSize.gapH05,
+                  _quantity != 0
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              AppText.ironPressColon,
+                              style: AppText.style.bodyMedium?.copyWith(
+                                fontSize: 12,
+                              ),
+                            ),
+                            AppSize.gapW05,
+                            Transform.scale(
+                              scale: 0.7,
+                              child: CupertinoSwitch(
+                                value: _isIronPressOn,
+                                activeTrackColor: AppColor.colorPrimary,
+                                onChanged: _toggleIronPress,
+                              ),
+                            ),
+                          ],
+                        )
+                      : AppSize.noGap,
+                ],
+              ),
+            ],
+          ),
+          const Divider(),
+
+          ExpansionTile(
+            splashColor: Colors.transparent,
+            title: Text(
+              AppText.description,
+              style: AppText.style.titleSmall,
+            ),
+            children: [
+              ListTile(
+                title: Text(
+                  price.description,
+                  style: AppText.style.bodyMedium,
+                ),
+              ),
             ],
           ),
         ],

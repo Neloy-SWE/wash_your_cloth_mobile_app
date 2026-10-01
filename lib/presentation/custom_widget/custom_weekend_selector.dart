@@ -69,6 +69,7 @@ class _CustomWeekendSelectorState extends State<CustomWeekendSelector> {
     return Wrap(
       spacing: 8.0,
       runSpacing: 4.0,
+      alignment: WrapAlignment.center,
       children: _daysOfWeek.map((day) {
         final isChecked = _selectedDays.contains(day);
         return FilterChip(
