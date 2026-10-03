@@ -5,11 +5,11 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:dio/dio.dart';
 
-import '../../../../client/client.dart';
-import '../../../../client/client_constant.dart';
-import '../../../../model/model_error.dart';
-import '../../../../model/model_price_list_shop.dart';
-import '../../../api_path.dart';
+import '../../../../../client/client.dart';
+import '../../../../../client/client_constant.dart';
+import '../../../../../model/model_error.dart';
+import '../../../../../model/model_price_list_shop.dart';
+import '../../../../api_path.dart';
 
 abstract class IApiGetPriceListShop {
   Future<(List<ModelPriceListShop>?, ModelError?)> getPriceList();

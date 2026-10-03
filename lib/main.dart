@@ -5,6 +5,9 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_price_activation.dart';
+import 'package:wash_your_cloth_mobile_app/data/repository/repository_shop_inventory.dart';
 
 import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
@@ -140,6 +143,16 @@ class MyApp extends StatelessWidget {
                 ApiProfileUpdateShop(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetPriceListShop>(
+            create: (context) =>
+                ApiGetPriceListShop(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiPriceActivation>(
+            create: (context) =>
+                ApiPriceActivation(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -175,6 +188,13 @@ class MyApp extends StatelessWidget {
               apiProfileViewShop: context.read<IApiProfileViewShop>(),
               apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
               apiProfileUpdateShop: context.read<IApiProfileUpdateShop>(),
+            ),
+          ),
+
+          RepositoryProvider<IRepositoryShopInventory>(
+            create: (context) => RepositoryShopInventory(
+              apiGetPriceListShop: context.read<IApiGetPriceListShop>(),
+              apiPriceActivation: context.read<IApiPriceActivation>(),
             ),
           ),
 

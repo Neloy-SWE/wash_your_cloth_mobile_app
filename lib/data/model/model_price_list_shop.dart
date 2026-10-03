@@ -61,4 +61,30 @@ class ModelPriceListShop {
     "isItemActive": isItemActive,
     "isActive": isActive,
   };
+
+  ModelPriceListShop copyWith({
+    String? id,
+    String? serviceName,
+    String? description,
+    String? itemName,
+    double? price,
+    double? discountPrice,
+    double? ironPressPrice,
+    bool? isServiceActive,
+    bool? isItemActive,
+    bool? isActive,
+  }) {
+    return ModelPriceListShop(
+      id: id ?? this.id,
+      serviceName: serviceName ?? this.serviceName,
+      description: description ?? this.description,
+      itemName: itemName ?? this.itemName,
+      price: price ?? this.price,
+      discountPrice: discountPrice ?? this.discountPrice,
+      ironPressPrice: ironPressPrice ?? this.ironPressPrice,
+      isServiceActive: isServiceActive ?? this.isServiceActive,
+      isItemActive: isItemActive ?? this.isItemActive,
+      isActive: isActive ?? this.isActive,
+    );
+  }
 }
