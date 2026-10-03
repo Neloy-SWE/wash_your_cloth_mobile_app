@@ -6,47 +6,50 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/screen_change_password.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_phone/screen_change_phone.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/registration/bloc/registration_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/home/screen_home_shop.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/profile/view/screen_profile_shop.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/bloc/order_place_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/screen_cart.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_home_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/screen_order_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/profile/view/bloc/profile_view_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_details/screen_shop_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
+import 'package:wash_your_cloth_mobile_app/data/repository/repository_shop_inventory.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/price/bloc/price_list_shop_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
+import '../data/repository/repository_order.dart';
 import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
 import '../data/use_case/order/use_case_order_place.dart';
+import '../presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
+import '../presentation/screen/authentication/change_password/screen_change_password.dart';
 import '../presentation/screen/authentication/change_phone/bloc/change_phone_bloc.dart';
+import '../presentation/screen/authentication/change_phone/screen_change_phone.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
+import '../presentation/screen/authentication/login/screen_login.dart';
+import '../presentation/screen/authentication/otp/bloc/otp_bloc.dart';
+import '../presentation/screen/authentication/otp/screen_otp.dart';
+import '../presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
+import '../presentation/screen/role/screen_role.dart';
+import '../presentation/screen/shop/home/screen_home_shop.dart';
+import '../presentation/screen/shop/inventory/price/screen_inventory_price_list.dart';
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
 import '../presentation/screen/shop/profile/update/bloc/profile_update_shop_bloc.dart';
 import '../presentation/screen/shop/profile/update/screen_profile_update_shop.dart';
 import '../presentation/screen/shop/profile/view/bloc/profile_view_shop_bloc.dart';
+import '../presentation/screen/shop/profile/view/screen_profile_shop.dart';
+import '../presentation/screen/splash/screen_splash.dart';
+import '../presentation/screen/user/cart/bloc/order_place_bloc.dart';
+import '../presentation/screen/user/cart/screen_cart.dart';
+import '../presentation/screen/user/home/screen_home_user.dart';
+import '../presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
+import '../presentation/screen/user/order/order_details/screen_order_details_user.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
 import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
+import '../presentation/screen/user/profile/view/bloc/profile_view_user_bloc.dart';
 import '../presentation/screen/user/profile/view/screen_profile_user.dart';
 import '../presentation/screen/user/shop/shop_details/bloc/shop_details_user_bloc.dart';
+import '../presentation/screen/user/shop/shop_details/screen_shop_details_user.dart';
+import '../presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 import '../presentation/screen/user/shop/shop_list/screen_shop_list.dart';
+import '../utilities/app_constant.dart';
 
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
@@ -75,6 +78,7 @@ class AppRouter {
   static const String screenOrderListShop = "/screenOrderListShop";
   static const String screenProfileShop = "/screenProfileShop";
   static const String screenProfileUpdateShop = "/screenProfileUpdateShop";
+  static const String screenInventoryPriceList = "/screenInventoryPriceList";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -357,6 +361,18 @@ class AppRouter {
               weekends: weekends,
               deliveryCharge: deliveryCharge,
             ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenInventoryPriceList,
+        builder: (context, state) {
+          return BlocProvider<PriceListShopBloc>(
+            create: (context) => PriceListShopBloc(
+              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
+            )..add(PriceListShopEventFetch()),
+            child: ScreenInventoryPriceList(),
           );
         },
       ),

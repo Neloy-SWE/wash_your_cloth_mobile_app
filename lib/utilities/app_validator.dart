@@ -19,6 +19,7 @@ class AppValidator {
   static const String validatorDeliveryCharge = "Please add delivery charge amount";
   static const String validatorProfileUpdate = "You haven't updated any profile data yet";
   static const String validatorProfileFetchFail = "Failed to get updated profile";
+  static const String validatorPrice = "You are looking for an invalid price";
 
   static bool isPhone(String? phone) {
     if (phone == null || phone.isEmpty || phone[0] == " ") return false;

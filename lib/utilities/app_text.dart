@@ -49,7 +49,7 @@ class AppText {
   static const String shopList = "Shop list";
   static const String profile = "Profile";
   static const String totalAmount = "Total amount";
-    static const String bdtCapital = "BDT";
+  static const String bdtCapital = "BDT";
   static const String orderDetails = "Order details";
   static const String shopInformation = "Shop information";
   static const String userInformation = "User information";
@@ -96,4 +96,12 @@ class AppText {
   static const String shopAddress = "Shop address";
   static const String inventory = "Inventory";
   static const String description = "Description";
+  static const String manageService = "Manage service";
+  static const String manageItem = "Manage item";
+  static const String addNewPrice = "Add new price";
+  static const String discount = "Discount";
+  static const String active = "Active";
+  static const String inactive = "Inactive";
+  static const String priceActivationAlertMessage =
+      "Ultimate price visibility to user depends on both service and item visibility";
 }
