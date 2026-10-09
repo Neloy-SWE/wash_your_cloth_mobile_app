@@ -6,11 +6,11 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../data/client/client_constant.dart';
-import '../../../../../../data/model/model_price_list_shop.dart';
-import '../../../../../../data/repository/repository_shop_inventory.dart';
-import '../../../../../../data/use_case/use_case_generic.dart';
-import '../../../../../../utilities/app_validator.dart';
+import '../../../../../../../data/client/client_constant.dart';
+import '../../../../../../../data/model/model_price_list_shop.dart';
+import '../../../../../../../data/repository/repository_shop_inventory.dart';
+import '../../../../../../../data/use_case/use_case_generic.dart';
+import '../../../../../../../utilities/app_validator.dart';
 
 part 'price_list_shop_event.dart';
 
@@ -23,6 +23,7 @@ class PriceListShopBloc extends Bloc<PriceListShopEvent, PriceListShopState> {
     : super(PriceListShopStateInitial()) {
     on<PriceListShopEventFetch>(_onPriceListShopEventFetch);
     on<PriceListShopEventActivation>(_onPriceListShopEventActivation);
+    on<PriceListShopEventUpdate>(_onPriceListShopEventUpdate);
   }
 
   Future<void> _onPriceListShopEventFetch(
@@ -70,10 +71,14 @@ class PriceListShopBloc extends Bloc<PriceListShopEvent, PriceListShopState> {
         // }).toList();
 
         // Find index and update directly
-        final index = currentList.indexWhere((item) => item.id == event.priceId);
+        final index = currentList.indexWhere(
+          (item) => item.id == event.priceId,
+        );
         if (index != -1) {
           final updatedList = List<ModelPriceListShop>.from(currentList);
-          updatedList[index] = updatedList[index].copyWith(isActive: !updatedList[index].isActive);
+          updatedList[index] = updatedList[index].copyWith(
+            isActive: !updatedList[index].isActive,
+          );
 
           emit(
             PriceListShopStateActionResult(
@@ -84,13 +89,15 @@ class PriceListShopBloc extends Bloc<PriceListShopEvent, PriceListShopState> {
 
           // Re-emit updated list immediately
           emit(
-            PriceListShopStateFetch(priceList: updatedList, isActivating: false),
+            PriceListShopStateFetch(
+              priceList: updatedList,
+              isActivating: false,
+            ),
           );
-        }
-        else {
+        } else {
           emit(
             PriceListShopStateActionResult(
-              message: AppValidator.validatorPrice,
+              message: AppValidator.validatorInvalidPrice,
               isSuccess: false,
             ),
           );
@@ -99,7 +106,6 @@ class PriceListShopBloc extends Bloc<PriceListShopEvent, PriceListShopState> {
         }
 
         // Emit success message side-effect
-
       } else {
         emit(
           PriceListShopStateActionResult(
@@ -118,6 +124,43 @@ class PriceListShopBloc extends Bloc<PriceListShopEvent, PriceListShopState> {
         ),
       );
       emit(currentState.copyWith(isActivating: false));
+    }
+  }
+
+  Future<void> _onPriceListShopEventUpdate(
+    PriceListShopEventUpdate event,
+    Emitter<PriceListShopState> emit,
+  ) async {
+    try {
+      if (state is! PriceListShopStateFetch) return;
+      final currentState = state as PriceListShopStateFetch;
+      final currentList = currentState.priceList;
+
+      final index = currentList.indexWhere((item) => item.id == event.priceId);
+      if (index != -1) {
+        final updatedList = List<ModelPriceListShop>.from(currentList);
+        updatedList[index] = updatedList[index].copyWith(
+          price: event.price,
+          discountPrice: event.discountPrice,
+          ironPressPrice: event.ironPressPrice,
+        );
+
+        emit(PriceListShopStateFetch(priceList: updatedList, isUpdating: true));
+      } else {
+        emit(
+          PriceListShopStateActionResult(
+            message: AppValidator.validatorInvalidPrice,
+            isSuccess: false,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        const PriceListShopStateActionResult(
+          message: ClientConstant.serverError,
+          isSuccess: false,
+        ),
+      );
     }
   }
 }

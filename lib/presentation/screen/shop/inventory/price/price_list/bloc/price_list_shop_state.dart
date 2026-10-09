@@ -19,19 +19,23 @@ class PriceListShopStateLoading extends PriceListShopState {}
 class PriceListShopStateFetch extends PriceListShopState {
   final List<ModelPriceListShop> priceList;
   final bool isActivating;
+  final bool isUpdating;
 
   const PriceListShopStateFetch({
     required this.priceList,
     this.isActivating = false,
+    this.isUpdating = false,
   });
 
   PriceListShopStateFetch copyWith({
     List<ModelPriceListShop>? priceList,
     bool? isActivating,
+    bool? isUpdating,
   }) {
     return PriceListShopStateFetch(
       priceList: priceList ?? this.priceList,
       isActivating: isActivating ?? this.isActivating,
+      isUpdating: isUpdating ?? this.isUpdating,
     );
   }
 

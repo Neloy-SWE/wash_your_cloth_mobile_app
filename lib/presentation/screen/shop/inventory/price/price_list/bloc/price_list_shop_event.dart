@@ -22,3 +22,20 @@ class PriceListShopEventActivation extends PriceListShopEvent {
   @override
   List<Object?> get props => [priceId];
 }
+
+class PriceListShopEventUpdate extends PriceListShopEvent {
+  final double price;
+  final double discountPrice;
+  final double ironPressPrice;
+  final String priceId;
+
+  const PriceListShopEventUpdate({
+    required this.price,
+    required this.discountPrice,
+    required this.ironPressPrice,
+    required this.priceId,
+  });
+
+  @override
+  List<Object?> get props => [price, discountPrice, ironPressPrice, priceId];
+}
