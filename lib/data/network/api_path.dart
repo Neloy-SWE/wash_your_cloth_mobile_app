@@ -30,6 +30,7 @@ class ApiPath {
   static const String priceListUser = "$resource/price-list-user/";
   static const String priceListShop = "$resource/price-list-shop";
   static const String priceActivation = "$resource/price-activation/";
+  static const String priceUpdate = "$resource/price-update/";
 
   // user
   static const String user = "/user";

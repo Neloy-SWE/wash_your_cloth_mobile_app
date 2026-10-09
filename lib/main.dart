@@ -5,9 +5,6 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_price_activation.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_shop_inventory.dart';
 
 import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
@@ -25,6 +22,9 @@ import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
 import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
 import 'data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'data/network/api_call/profile/user/api_profile_view_user.dart';
+import 'data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
+import 'data/network/api_call/resource/shop/price/api_price_activation.dart';
+import 'data/network/api_call/resource/shop/price/api_price_update.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
 import 'data/network/api_call/shop/api_get_shop_list.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
@@ -32,6 +32,7 @@ import 'data/repository/repository_authentication.dart';
 import 'data/repository/repository_order.dart';
 import 'data/repository/repository_profile.dart';
 import 'data/repository/repository_shop.dart';
+import 'data/repository/repository_shop_inventory.dart';
 import 'presentation/bloc_global/global_bloc.dart';
 import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
@@ -153,6 +154,11 @@ class MyApp extends StatelessWidget {
                 ApiPriceActivation(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiPriceUpdate>(
+            create: (context) =>
+                ApiPriceUpdate(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -195,6 +201,7 @@ class MyApp extends StatelessWidget {
             create: (context) => RepositoryShopInventory(
               apiGetPriceListShop: context.read<IApiGetPriceListShop>(),
               apiPriceActivation: context.read<IApiPriceActivation>(),
+              apiPriceUpdate: context.read<IApiPriceUpdate>(),
             ),
           ),
 
