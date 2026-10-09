@@ -6,13 +6,12 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_shop_inventory.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/price/bloc/price_list_shop_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_order.dart';
 import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
+import '../data/repository/repository_shop_inventory.dart';
 import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
 import '../presentation/screen/authentication/change_password/screen_change_password.dart';
@@ -26,7 +25,10 @@ import '../presentation/screen/authentication/registration/bloc/registration_blo
 import '../presentation/screen/authentication/registration/screen_registration.dart';
 import '../presentation/screen/role/screen_role.dart';
 import '../presentation/screen/shop/home/screen_home_shop.dart';
-import '../presentation/screen/shop/inventory/price/screen_inventory_price_list.dart';
+import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_shop_bloc.dart';
+import '../presentation/screen/shop/inventory/price/price_list/screen_inventory_price_list.dart';
+import '../presentation/screen/shop/inventory/price/price_update/bloc/price_update_bloc.dart';
+import '../presentation/screen/shop/inventory/price/price_update/screen_price_update.dart';
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
@@ -79,6 +81,7 @@ class AppRouter {
   static const String screenProfileShop = "/screenProfileShop";
   static const String screenProfileUpdateShop = "/screenProfileUpdateShop";
   static const String screenInventoryPriceList = "/screenInventoryPriceList";
+  static const String screenPriceUpdate = "/screenPriceUpdate";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -373,6 +376,28 @@ class AppRouter {
               repositoryShopInventory: context.read<IRepositoryShopInventory>(),
             )..add(PriceListShopEventFetch()),
             child: ScreenInventoryPriceList(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRouter.screenPriceUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final price = extra[AppConstant.price] as double;
+          final discountPrice = extra[AppConstant.discountPrice] as double;
+          final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
+          final priceId = extra[AppConstant.priceId] as String;
+          return BlocProvider<PriceUpdateBloc>(
+            create: (context) => PriceUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenPriceUpdate(
+              price: price,
+              discountPrice: discountPrice,
+              ironPressPrice: ironPressPrice,
+              priceId: priceId,
+            ),
           );
         },
       ),

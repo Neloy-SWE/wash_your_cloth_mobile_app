@@ -292,7 +292,7 @@ class _ScreenProfileUpdateShopState extends State<ScreenProfileUpdateShop> {
                       textInputType: TextInputType.numberWithOptions(),
                       textInputAction: TextInputAction.next,
                       title: AppText.deliveryChargeBDT,
-                      label: AppText.deliveryChargeHint,
+                      label: AppText.priceHint,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return AppValidator.validatorDeliveryCharge;

@@ -254,7 +254,7 @@ class _ScreenRegistrationState extends State<ScreenRegistration> {
                                     TextInputType.numberWithOptions(),
                                 textInputAction: TextInputAction.next,
                                 title: AppText.deliveryChargeBDT,
-                                label: AppText.deliveryChargeHint,
+                                label: AppText.priceHint,
                                 validator: (value) {
                                   if (selectedRole == Role.shop) {
                                     if (value!.isEmpty) {

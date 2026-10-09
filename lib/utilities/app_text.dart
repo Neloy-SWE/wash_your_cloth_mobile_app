@@ -72,7 +72,7 @@ class AppText {
   static const String priceList = "Price list";
   static const String deliveryCharge = "Delivery charge";
   static const String deliveryChargeBDT = "Delivery charge (BDT)";
-  static const String deliveryChargeHint = "10";
+  static const String priceHint = "10";
   static const String ironPressColon = "Iron Press:";
   static const String cart = "Cart";
   static const String placeOrder = "Place order";
@@ -104,4 +104,8 @@ class AppText {
   static const String inactive = "Inactive";
   static const String priceActivationAlertMessage =
       "Ultimate price visibility to user depends on both service and item visibility";
+  static const String updatePrice = "Update price";
+  static const String priceBDT = "Price (BDT)";
+  static const String discountPriceBDT = "Discount price (BDT)";
+  static const String ironPressPriceBDT = "Iron press rice (BDT)";
 }

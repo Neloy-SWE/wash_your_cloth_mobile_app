@@ -6,8 +6,10 @@ Email: taufiqneloy.swe@gmail.com
 class AppValidator {
   static const String validatePhone = "Please enter correct phone number";
   static const String validatorPassword = "Please check password";
-  static const String validatorIsPasswordMatched = "Old & new password cannot be same";
-  static const String validatorIsPhoneMatched = "Old & new phone cannot be same";
+  static const String validatorIsPasswordMatched =
+      "Old & new password cannot be same";
+  static const String validatorIsPhoneMatched =
+      "Old & new phone cannot be same";
   static const String validatorPasswordIsNotMatched = "Password is not matched";
   static const String validatorName = "Please enter your name";
   static const String validatorShopName = "Please enter your shop name";
@@ -16,10 +18,28 @@ class AppValidator {
   static const String validatorAddress = "Please add address";
   static const String validatorWeekends = "Please select Weekend";
   static const String validatorOTP = "Please add full otp code";
-  static const String validatorDeliveryCharge = "Please add delivery charge amount";
-  static const String validatorProfileUpdate = "You haven't updated any profile data yet";
-  static const String validatorProfileFetchFail = "Failed to get updated profile";
-  static const String validatorPrice = "You are looking for an invalid price";
+  static const String validatorDeliveryCharge =
+      "Please add delivery charge amount";
+  static const String validatorPrice = "Please add price";
+  static const String validatorDiscountPrice = "Please add discount price";
+  static const String validatorIronPressPrice = "Please add iron press price";
+  static const String validatorProfileUpdate =
+      "You haven't updated any profile data yet";
+  static const String validatorPriceUpdate =
+      "You haven't updated any price data yet";
+  static const String validatorProfileFetchFail =
+      "Failed to get updated profile";
+  static const String validatorInvalidPrice =
+      "You are looking for an invalid price";
+  static const String validatorPriceUpdateFail =
+      "Failed to get update price";
+
+  // bool checkInitialNullEmpty(String? value) {
+  //   if (value == null || value.isEmpty || value[0] == " ") {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   static bool isPhone(String? phone) {
     if (phone == null || phone.isEmpty || phone[0] == " ") return false;
@@ -33,4 +53,8 @@ class AppValidator {
     return nameRegex.hasMatch(name);
   }
 
+  static bool isAmount(String? amount) {
+    if (amount == null || amount.isEmpty || amount[0] == " ") return false;
+    return double.tryParse(amount) != null;
+  }
 }
