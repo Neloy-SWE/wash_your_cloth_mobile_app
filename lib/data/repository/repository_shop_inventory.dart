@@ -3,15 +3,16 @@ Created by Neloy on 02 October, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/shop/price/api_price_activation.dart';
-
 import '../model/model_price_list_shop.dart';
 import '../model/model_service_list.dart';
+import '../network/api_call/resource/shop/price/api_get_price_list_shop.dart';
+import '../network/api_call/resource/shop/price/api_price_activation.dart';
 import '../network/api_call/resource/shop/price/api_price_update.dart';
 import '../network/api_call/resource/shop/service/api_get_service_list.dart';
 import '../network/api_call/resource/shop/service/api_service_activation.dart';
+import '../network/api_call/resource/shop/service/api_service_update.dart';
 import '../request/request_update_price.dart';
+import '../request/request_update_service.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryShopInventory {
@@ -27,6 +28,11 @@ abstract class IRepositoryShopInventory {
     required RequestUpdatePrice updatePrice,
     required String priceId,
   });
+
+  Future<UseCaseGeneric> serviceUpdate({
+    required RequestUpdateService updateService,
+    required String serviceId,
+  });
 }
 
 class RepositoryShopInventory implements IRepositoryShopInventory {
@@ -35,13 +41,14 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   final IApiServiceActivation apiServiceActivation;
   final IApiPriceUpdate apiPriceUpdate;
   final IApiGetServiceList apiGetServiceList;
+  final IApiServiceUpdate apiServiceUpdate;
 
   RepositoryShopInventory({
     required this.apiGetPriceListShop,
     required this.apiPriceActivation,
     required this.apiServiceActivation,
     required this.apiPriceUpdate,
-    required this.apiGetServiceList,
+    required this.apiGetServiceList, required this.apiServiceUpdate,
   });
 
   @override
@@ -122,13 +129,34 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
     required String serviceId,
   }) async {
     try {
-      var (modelPriceActivation, modelError) = await apiServiceActivation
+      var (modelServiceActivation, modelError) = await apiServiceActivation
           .serviceActivation(serviceId: serviceId);
 
       if (modelError == null) {
         return UseCaseGeneric(
           isSuccess: true,
-          message: modelPriceActivation?.message,
+          message: modelServiceActivation?.message,
+        );
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<dynamic>> serviceUpdate({required RequestUpdateService updateService, required String serviceId}) async {
+    try {
+      var (modelServiceUpdate, modelError) = await apiServiceUpdate.serviceUpdate(
+        data: updateService.toMap(),
+        serviceId: serviceId,
+      );
+
+      if (modelError == null) {
+        return UseCaseGeneric(
+          isSuccess: true,
+          message: modelServiceUpdate?.message,
         );
       } else {
         return UseCaseGeneric.fromModelError(modelError);
