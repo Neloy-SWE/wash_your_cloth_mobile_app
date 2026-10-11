@@ -9,10 +9,10 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_path.dart';
 import '../../../../../client/client.dart';
 import '../../../../../client/client_constant.dart';
 import '../../../../../model/model_error.dart';
-import '../../../../../model/model_activation.dart';
+import '../../../../../model/model_service_activation.dart';
 
 abstract class IApiServiceActivation {
-  Future<(ModelActivation?, ModelError?)> serviceActivation({
+  Future<(ModelServiceActivation?, ModelError?)> serviceActivation({
     required String serviceId,
   });
 }
@@ -23,7 +23,7 @@ class ApiServiceActivation implements IApiServiceActivation {
   const ApiServiceActivation({required this.client});
 
   @override
-  Future<(ModelActivation?, ModelError?)> serviceActivation({
+  Future<(ModelServiceActivation?, ModelError?)> serviceActivation({
     required String serviceId,
   }) async {
     try {
@@ -31,7 +31,7 @@ class ApiServiceActivation implements IApiServiceActivation {
         ApiPath.serviceActivation + serviceId,
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelActivation activation = ModelActivation.fromJson(
+        ModelServiceActivation activation = ModelServiceActivation.fromJson(
           response.data,
         );
         return (activation, null);
