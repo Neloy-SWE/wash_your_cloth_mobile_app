@@ -10,6 +10,7 @@ import '../model/model_price_list_shop.dart';
 import '../model/model_service_list.dart';
 import '../network/api_call/resource/shop/price/api_price_update.dart';
 import '../network/api_call/resource/shop/service/api_get_service_list.dart';
+import '../network/api_call/resource/shop/service/api_service_activation.dart';
 import '../request/request_update_price.dart';
 import '../use_case/use_case_generic.dart';
 
@@ -20,6 +21,8 @@ abstract class IRepositoryShopInventory {
 
   Future<UseCaseGeneric> priceActivation({required String priceId});
 
+  Future<UseCaseGeneric> serviceActivation({required String serviceId});
+
   Future<UseCaseGeneric> priceUpdate({
     required RequestUpdatePrice updatePrice,
     required String priceId,
@@ -29,12 +32,14 @@ abstract class IRepositoryShopInventory {
 class RepositoryShopInventory implements IRepositoryShopInventory {
   final IApiGetPriceListShop apiGetPriceListShop;
   final IApiPriceActivation apiPriceActivation;
+  final IApiServiceActivation apiServiceActivation;
   final IApiPriceUpdate apiPriceUpdate;
   final IApiGetServiceList apiGetServiceList;
 
   RepositoryShopInventory({
     required this.apiGetPriceListShop,
     required this.apiPriceActivation,
+    required this.apiServiceActivation,
     required this.apiPriceUpdate,
     required this.apiGetServiceList,
   });
@@ -104,6 +109,27 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
           .getServiceList();
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelServiceList);
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<dynamic>> serviceActivation({
+    required String serviceId,
+  }) async {
+    try {
+      var (modelPriceActivation, modelError) = await apiServiceActivation
+          .serviceActivation(serviceId: serviceId);
+
+      if (modelError == null) {
+        return UseCaseGeneric(
+          isSuccess: true,
+          message: modelPriceActivation?.message,
+        );
       } else {
         return UseCaseGeneric.fromModelError(modelError);
       }

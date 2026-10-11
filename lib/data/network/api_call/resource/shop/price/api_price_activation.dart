@@ -9,10 +9,10 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_path.dart';
 import '../../../../../client/client.dart';
 import '../../../../../client/client_constant.dart';
 import '../../../../../model/model_error.dart';
-import '../../../../../model/model_price_activation.dart';
+import '../../../../../model/model_activation.dart';
 
 abstract class IApiPriceActivation {
-  Future<(ModelPriceActivation?, ModelError?)> priceActivation({
+  Future<(ModelActivation?, ModelError?)> priceActivation({
     required String priceId,
   });
 }
@@ -23,7 +23,7 @@ class ApiPriceActivation implements IApiPriceActivation {
   const ApiPriceActivation({required this.client});
 
   @override
-  Future<(ModelPriceActivation?, ModelError?)> priceActivation({
+  Future<(ModelActivation?, ModelError?)> priceActivation({
     required String priceId,
   }) async {
     try {
@@ -31,7 +31,7 @@ class ApiPriceActivation implements IApiPriceActivation {
         ApiPath.priceActivation + priceId,
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelPriceActivation activation = ModelPriceActivation.fromJson(
+        ModelActivation activation = ModelActivation.fromJson(
           response.data,
         );
         return (activation, null);
