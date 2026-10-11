@@ -108,4 +108,14 @@ class AppText {
   static const String priceBDT = "Price (BDT)";
   static const String discountPriceBDT = "Discount price (BDT)";
   static const String ironPressPriceBDT = "Iron press rice (BDT)";
+  static const String search = "Search...";
+  static const String noOptionFound = "No options found";
+  static const String serviceList = "Service list";
+  static const String addNewService = "Add new service";
+  static const String serviceActivationAlertMessage =
+      "Deactivate service will also remove associate price visibility";
+  static const String updateService = "Update service";
+  static const String serviceName = "Service name";
+  static const String serviceNameHint = "Dry wash";
+  static const String descriptionHint = "Add a description of the service...";
 }

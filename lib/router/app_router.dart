@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_update/screen_service_update.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_order.dart';
@@ -25,10 +26,14 @@ import '../presentation/screen/authentication/registration/bloc/registration_blo
 import '../presentation/screen/authentication/registration/screen_registration.dart';
 import '../presentation/screen/role/screen_role.dart';
 import '../presentation/screen/shop/home/screen_home_shop.dart';
+import '../presentation/screen/shop/inventory/price/price_add/screen_price_add.dart';
 import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_shop_bloc.dart';
-import '../presentation/screen/shop/inventory/price/price_list/screen_inventory_price_list.dart';
+import '../presentation/screen/shop/inventory/price/price_list/screen_price_list.dart';
 import '../presentation/screen/shop/inventory/price/price_update/bloc/price_update_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_update/screen_price_update.dart';
+import '../presentation/screen/shop/inventory/service/service_list/bloc/service_list_bloc.dart';
+import '../presentation/screen/shop/inventory/service/service_list/screen_service_list.dart';
+import '../presentation/screen/shop/inventory/service/service_update/bloc/service_update_bloc.dart';
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
@@ -80,12 +85,15 @@ class AppRouter {
   static const String screenOrderListShop = "/screenOrderListShop";
   static const String screenProfileShop = "/screenProfileShop";
   static const String screenProfileUpdateShop = "/screenProfileUpdateShop";
-  static const String screenInventoryPriceList = "/screenInventoryPriceList";
+  static const String screenPriceList = "/screenPriceList";
   static const String screenPriceUpdate = "/screenPriceUpdate";
+  static const String screenPriceAdd = "/screenPriceAdd";
+  static const String screenServiceList = "/screenServiceList";
+  static const String screenServiceUpdate = "/screenServiceUpdate";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
-    initialLocation: AppRouter.screenSplash,
+    initialLocation: screenSplash,
     // refreshListenable: GoRouterRefreshStream(globalBloc.stream),
     // redirect: (context, state) {
     //   final currentState = globalBloc.state;
@@ -100,16 +108,10 @@ class AppRouter {
     //   return null;
     // },
     routes: [
+      GoRoute(path: screenSplash, builder: (context, state) => ScreenSplash()),
+      GoRoute(path: screenRole, builder: (context, state) => ScreenRole()),
       GoRoute(
-        path: AppRouter.screenSplash,
-        builder: (context, state) => ScreenSplash(),
-      ),
-      GoRoute(
-        path: AppRouter.screenRole,
-        builder: (context, state) => ScreenRole(),
-      ),
-      GoRoute(
-        path: AppRouter.screenLogin,
+        path: screenLogin,
         builder: (context, state) => BlocProvider<LoginBloc>(
           create: (_) => LoginBloc(
             repositoryAuthentication: context.read<IRepositoryAuthentication>(),
@@ -118,7 +120,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRouter.screenOTP,
+        path: screenOTP,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final otpRequestId = extra[AppConstant.otpRequestId] as String;
@@ -134,7 +136,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenRegistration,
+        path: screenRegistration,
         builder: (context, state) => BlocProvider<RegistrationBloc>(
           create: (_) => RegistrationBloc(
             repositoryAuthentication: context.read<IRepositoryAuthentication>(),
@@ -151,7 +153,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenOrderListUser,
+                path: screenOrderListUser,
                 builder: (context, state) => const ScreenOrderListUser(),
               ),
             ],
@@ -159,7 +161,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenShopList,
+                path: screenShopList,
                 builder: (context, state) => BlocProvider<ShopListBloc>(
                   create: (context) => ShopListBloc(
                     repositoryShop: context.read<IRepositoryShop>(),
@@ -172,7 +174,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenProfileUser,
+                path: screenProfileUser,
                 builder: (context, state) => BlocProvider<ProfileViewUserBloc>(
                   create: (context) => ProfileViewUserBloc(
                     repositoryProfile: context.read<IRepositoryProfile>(),
@@ -186,7 +188,7 @@ class AppRouter {
       ),
 
       // GoRoute(
-      //   path: AppRouter.screenHomeUser,
+      //   path: screenHomeUser,
       //   builder: (context, state) => MultiBlocProvider(
       //     providers: [
       //       BlocProvider<OrderListUserBloc>(
@@ -205,7 +207,7 @@ class AppRouter {
       //   ),
       // ),
       GoRoute(
-        path: AppRouter.screenOrderDetailsUser,
+        path: screenOrderDetailsUser,
         builder: (context, state) {
           final orderId = state.extra as String;
           return BlocProvider<OrderDetailsUserBloc>(
@@ -225,7 +227,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenOrderListShop,
+                path: screenOrderListShop,
                 builder: (context, state) => const ScreenOrderListShop(),
               ),
             ],
@@ -233,7 +235,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenProfileShop,
+                path: screenProfileShop,
                 builder: (context, state) => BlocProvider<ProfileViewShopBloc>(
                   create: (context) => ProfileViewShopBloc(
                     repositoryProfile: context.read<IRepositoryProfile>(),
@@ -247,7 +249,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenShopDetailsUser,
+        path: screenShopDetailsUser,
         builder: (context, state) {
           final shopId = state.extra as String;
           return BlocProvider<ShopDetailsUserBloc>(
@@ -260,7 +262,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenCart,
+        path: screenCart,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final shopId = extra[AppConstant.shopId] as String;
@@ -280,7 +282,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenProfileUpdateUser,
+        path: screenProfileUpdateUser,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final firstName = extra[AppConstant.firstName] as String;
@@ -300,7 +302,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenChangePassword,
+        path: screenChangePassword,
         builder: (context, state) {
           return BlocProvider<ChangePasswordBloc>(
             create: (context) => ChangePasswordBloc(
@@ -313,7 +315,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenChangePhone,
+        path: screenChangePhone,
         builder: (context, state) {
           return BlocProvider<ChangePhoneBloc>(
             create: (context) => ChangePhoneBloc(
@@ -326,7 +328,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenOrderDetailsShop,
+        path: screenOrderDetailsShop,
         builder: (context, state) {
           final orderId = state.extra as String;
           return BlocProvider<OrderDetailsShopBloc>(
@@ -339,7 +341,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenProfileUpdateShop,
+        path: screenProfileUpdateShop,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final ownerFirstName = extra[AppConstant.ownerFirstName] as String;
@@ -369,19 +371,19 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenInventoryPriceList,
+        path: screenPriceList,
         builder: (context, state) {
           return BlocProvider<PriceListShopBloc>(
             create: (context) => PriceListShopBloc(
               repositoryShopInventory: context.read<IRepositoryShopInventory>(),
             )..add(PriceListShopEventFetch()),
-            child: ScreenInventoryPriceList(),
+            child: ScreenPriceList(),
           );
         },
       ),
 
       GoRoute(
-        path: AppRouter.screenPriceUpdate,
+        path: screenPriceUpdate,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final price = extra[AppConstant.price] as double;
@@ -397,6 +399,45 @@ class AppRouter {
               discountPrice: discountPrice,
               ironPressPrice: ironPressPrice,
               priceId: priceId,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenPriceAdd,
+        builder: (context, state) {
+          return ScreenPriceAdd();
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceList,
+        builder: (context, state) {
+          return BlocProvider<ServiceListBloc>(
+            create: (context) => ServiceListBloc(
+              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
+            )..add(ServiceListEventFetch()),
+            child: ScreenServiceList(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final serviceName = extra[AppConstant.serviceName] as String;
+          final description = extra[AppConstant.description] as String;
+          final serviceId = extra[AppConstant.serviceId] as String;
+          return BlocProvider<ServiceUpdateBloc>(
+            create: (context) => ServiceUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenServiceUpdate(
+              serviceName: serviceName,
+              description: description,
+              serviceId: serviceId,
             ),
           );
         },

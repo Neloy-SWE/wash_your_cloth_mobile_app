@@ -79,6 +79,7 @@ class _ScreenPriceUpdateState extends State<ScreenPriceUpdate> {
     controllerPrice.dispose();
     controllerDiscountPrice.dispose();
     controllerIronPressPrice.dispose();
+    isFormChanged.dispose();
     super.dispose();
   }
 

@@ -23,6 +23,9 @@ class AppConstant {
   static const String discountPrice = "discountPrice";
   static const String ironPressPrice = "ironPressPrice";
   static const String priceId = "priceId";
+  static const String serviceName = "serviceName";
+  static const String description = "description";
+  static const String serviceId = "serviceId";
 }
 
 enum Role { user, shop }
