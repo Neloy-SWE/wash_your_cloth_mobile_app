@@ -25,6 +25,7 @@ import 'data/network/api_call/profile/user/api_profile_view_user.dart';
 import 'data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
 import 'data/network/api_call/resource/shop/price/api_price_activation.dart';
 import 'data/network/api_call/resource/shop/price/api_price_update.dart';
+import 'data/network/api_call/resource/shop/service/api_get_service_list.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
 import 'data/network/api_call/shop/api_get_shop_list.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
@@ -155,8 +156,12 @@ class MyApp extends StatelessWidget {
           ),
 
           RepositoryProvider<IApiPriceUpdate>(
+            create: (context) => ApiPriceUpdate(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetServiceList>(
             create: (context) =>
-                ApiPriceUpdate(client: context.read<Client>()),
+                ApiGetServiceList(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IRepositoryAuthentication>(
@@ -202,6 +207,7 @@ class MyApp extends StatelessWidget {
               apiGetPriceListShop: context.read<IApiGetPriceListShop>(),
               apiPriceActivation: context.read<IApiPriceActivation>(),
               apiPriceUpdate: context.read<IApiPriceUpdate>(),
+              apiGetServiceList: context.read<IApiGetServiceList>(),
             ),
           ),
 
