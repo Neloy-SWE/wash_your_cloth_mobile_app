@@ -34,10 +34,10 @@ class ApiServiceUpdate implements IApiServiceUpdate {
         data: data,
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelServiceUpdate activation = ModelServiceUpdate.fromJson(
+        ModelServiceUpdate serviceUpdate = ModelServiceUpdate.fromJson(
           response.data,
         );
-        return (activation, null);
+        return (serviceUpdate, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, modelError);

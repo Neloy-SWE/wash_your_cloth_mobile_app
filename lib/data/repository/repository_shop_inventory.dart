@@ -10,9 +10,10 @@ import '../network/api_call/resource/shop/price/api_price_activation.dart';
 import '../network/api_call/resource/shop/price/api_price_update.dart';
 import '../network/api_call/resource/shop/service/api_get_service_list.dart';
 import '../network/api_call/resource/shop/service/api_service_activation.dart';
+import '../network/api_call/resource/shop/service/api_service_add.dart';
 import '../network/api_call/resource/shop/service/api_service_update.dart';
 import '../request/request_update_price.dart';
-import '../request/request_update_service.dart';
+import '../request/request_service.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryShopInventory {
@@ -30,9 +31,11 @@ abstract class IRepositoryShopInventory {
   });
 
   Future<UseCaseGeneric> serviceUpdate({
-    required RequestUpdateService updateService,
+    required RequestService updateService,
     required String serviceId,
   });
+
+  Future<UseCaseGeneric> serviceAdd({required RequestService serviceAdd});
 }
 
 class RepositoryShopInventory implements IRepositoryShopInventory {
@@ -42,13 +45,16 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   final IApiPriceUpdate apiPriceUpdate;
   final IApiGetServiceList apiGetServiceList;
   final IApiServiceUpdate apiServiceUpdate;
+  final IApiServiceAdd apiServiceAdd;
 
   RepositoryShopInventory({
     required this.apiGetPriceListShop,
     required this.apiPriceActivation,
     required this.apiServiceActivation,
     required this.apiPriceUpdate,
-    required this.apiGetServiceList, required this.apiServiceUpdate,
+    required this.apiGetServiceList,
+    required this.apiServiceUpdate,
+    required this.apiServiceAdd,
   });
 
   @override
@@ -146,17 +152,40 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   }
 
   @override
-  Future<UseCaseGeneric<dynamic>> serviceUpdate({required RequestUpdateService updateService, required String serviceId}) async {
+  Future<UseCaseGeneric<dynamic>> serviceUpdate({
+    required RequestService updateService,
+    required String serviceId,
+  }) async {
     try {
-      var (modelServiceUpdate, modelError) = await apiServiceUpdate.serviceUpdate(
-        data: updateService.toMap(),
-        serviceId: serviceId,
-      );
+      var (modelServiceUpdate, modelError) = await apiServiceUpdate
+          .serviceUpdate(data: updateService.toMap(), serviceId: serviceId);
 
       if (modelError == null) {
         return UseCaseGeneric(
           isSuccess: true,
           message: modelServiceUpdate?.message,
+        );
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<dynamic>> serviceAdd({
+    required RequestService serviceAdd,
+  }) async {
+    try {
+      var (modelServiceAdd, modelError) = await apiServiceAdd.serviceAdd(
+        data: serviceAdd.toMap(),
+      );
+
+      if (modelError == null) {
+        return UseCaseGeneric(
+          isSuccess: true,
+          message: modelServiceAdd?.message,
         );
       } else {
         return UseCaseGeneric.fromModelError(modelError);

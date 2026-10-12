@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../data/client/client_constant.dart';
 import '../../../../../../../data/repository/repository_shop_inventory.dart';
-import '../../../../../../../data/request/request_update_service.dart';
+import '../../../../../../../data/request/request_service.dart';
 import '../../../../../../../data/use_case/use_case_generic.dart';
 
 part 'service_update_event.dart';
@@ -29,7 +29,7 @@ class ServiceUpdateBloc extends Bloc<ServiceUpdateEvent, ServiceUpdateState> {
   ) async {
     emit(ServiceUpdateStateLoading());
     try {
-      RequestUpdateService updateService = RequestUpdateService(
+      RequestService updateService = RequestService(
         serviceName: event.serviceName,
         description: event.description,
       );
