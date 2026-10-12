@@ -370,46 +370,57 @@ class AppRouter {
         },
       ),
 
-      GoRoute(
-        path: screenPriceList,
-        builder: (context, state) {
+      ShellRoute(
+        builder: (context, state, child) {
           return BlocProvider<PriceListShopBloc>(
             create: (context) => PriceListShopBloc(
               repositoryShopInventory: context.read<IRepositoryShopInventory>(),
             )..add(PriceListShopEventFetch()),
-            child: ScreenPriceList(),
+            child: child,
           );
         },
+        routes: [
+          GoRoute(
+            path: screenPriceList,
+            builder: (context, state) {
+              return ScreenPriceList();
+            },
+          ),
+
+          GoRoute(
+            path: screenPriceUpdate,
+            builder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>;
+              final price = extra[AppConstant.price] as double;
+              final discountPrice = extra[AppConstant.discountPrice] as double;
+              final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
+              final priceId = extra[AppConstant.priceId] as String;
+              return BlocProvider<PriceUpdateBloc>(
+                create: (context) => PriceUpdateBloc(
+                  repositoryInventory: context.read<IRepositoryShopInventory>(),
+                ),
+                child: ScreenPriceUpdate(
+                  price: price,
+                  discountPrice: discountPrice,
+                  ironPressPrice: ironPressPrice,
+                  priceId: priceId,
+                ),
+              );
+            },
+          ),
+
+          GoRoute(
+            path: screenPriceAdd,
+            builder: (context, state) {
+              return ScreenPriceAdd();
+            },
+          ),
+        ],
       ),
 
-      GoRoute(
-        path: screenPriceUpdate,
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final price = extra[AppConstant.price] as double;
-          final discountPrice = extra[AppConstant.discountPrice] as double;
-          final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
-          final priceId = extra[AppConstant.priceId] as String;
-          return BlocProvider<PriceUpdateBloc>(
-            create: (context) => PriceUpdateBloc(
-              repositoryInventory: context.read<IRepositoryShopInventory>(),
-            ),
-            child: ScreenPriceUpdate(
-              price: price,
-              discountPrice: discountPrice,
-              ironPressPrice: ironPressPrice,
-              priceId: priceId,
-            ),
-          );
-        },
-      ),
 
-      GoRoute(
-        path: screenPriceAdd,
-        builder: (context, state) {
-          return ScreenPriceAdd();
-        },
-      ),
+
+
 
       GoRoute(
         path: screenServiceList,
