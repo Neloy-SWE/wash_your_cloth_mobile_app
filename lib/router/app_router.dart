@@ -30,6 +30,7 @@ import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_s
 import '../presentation/screen/shop/inventory/price/price_list/screen_price_list.dart';
 import '../presentation/screen/shop/inventory/price/price_update/bloc/price_update_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_update/screen_price_update.dart';
+import '../presentation/screen/shop/inventory/service/service_add/screen_service_add.dart';
 import '../presentation/screen/shop/inventory/service/service_list/bloc/service_list_bloc.dart';
 import '../presentation/screen/shop/inventory/service/service_list/screen_service_list.dart';
 import '../presentation/screen/shop/inventory/service/service_update/bloc/service_update_bloc.dart';
@@ -90,6 +91,7 @@ class AppRouter {
   static const String screenPriceAdd = "/screenPriceAdd";
   static const String screenServiceList = "/screenServiceList";
   static const String screenServiceUpdate = "/screenServiceUpdate";
+  static const String screenServiceAdd = "/screenServiceAdd";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -440,6 +442,13 @@ class AppRouter {
               serviceId: serviceId,
             ),
           );
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceAdd,
+        builder: (context, state) {
+          return ScreenServiceAdd();
         },
       ),
     ],

@@ -37,7 +37,7 @@ class ScreenServiceList extends StatelessWidget {
               CustomListHeader(
                 textListName: AppText.serviceList,
                 onTap: () {
-                  // context.push(AppRouter.screenPriceAdd)
+                  context.push(AppRouter.screenServiceAdd);
                 },
                 textAddNewListName: AppText.addNewService,
               ),

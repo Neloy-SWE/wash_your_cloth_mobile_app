@@ -301,7 +301,8 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
               ],
             ),
           );
-        } else if (state is ProfileViewShopStateLoading) {
+        } else if (state is ProfileViewShopStateLoading ||
+            state is ProfileViewShopStateInitial) {
           return AppSize.noGap;
         } else {
           return const CustomNotFound();

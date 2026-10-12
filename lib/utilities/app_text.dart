@@ -118,4 +118,5 @@ class AppText {
   static const String serviceName = "Service name";
   static const String serviceNameHint = "Dry wash";
   static const String descriptionHint = "Add a description of the service...";
+  static const String add = "Add";
 }
