@@ -6,7 +6,6 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_update/screen_service_update.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_order.dart';
@@ -34,6 +33,7 @@ import '../presentation/screen/shop/inventory/price/price_update/screen_price_up
 import '../presentation/screen/shop/inventory/service/service_list/bloc/service_list_bloc.dart';
 import '../presentation/screen/shop/inventory/service/service_list/screen_service_list.dart';
 import '../presentation/screen/shop/inventory/service/service_update/bloc/service_update_bloc.dart';
+import '../presentation/screen/shop/inventory/service/service_update/screen_service_update.dart';
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
@@ -370,57 +370,46 @@ class AppRouter {
         },
       ),
 
-      ShellRoute(
-        builder: (context, state, child) {
+      GoRoute(
+        path: screenPriceList,
+        builder: (context, state) {
           return BlocProvider<PriceListShopBloc>(
             create: (context) => PriceListShopBloc(
               repositoryShopInventory: context.read<IRepositoryShopInventory>(),
             )..add(PriceListShopEventFetch()),
-            child: child,
+            child: ScreenPriceList(),
           );
         },
-        routes: [
-          GoRoute(
-            path: screenPriceList,
-            builder: (context, state) {
-              return ScreenPriceList();
-            },
-          ),
-
-          GoRoute(
-            path: screenPriceUpdate,
-            builder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>;
-              final price = extra[AppConstant.price] as double;
-              final discountPrice = extra[AppConstant.discountPrice] as double;
-              final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
-              final priceId = extra[AppConstant.priceId] as String;
-              return BlocProvider<PriceUpdateBloc>(
-                create: (context) => PriceUpdateBloc(
-                  repositoryInventory: context.read<IRepositoryShopInventory>(),
-                ),
-                child: ScreenPriceUpdate(
-                  price: price,
-                  discountPrice: discountPrice,
-                  ironPressPrice: ironPressPrice,
-                  priceId: priceId,
-                ),
-              );
-            },
-          ),
-
-          GoRoute(
-            path: screenPriceAdd,
-            builder: (context, state) {
-              return ScreenPriceAdd();
-            },
-          ),
-        ],
       ),
 
+      GoRoute(
+        path: screenPriceUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final price = extra[AppConstant.price] as double;
+          final discountPrice = extra[AppConstant.discountPrice] as double;
+          final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
+          final priceId = extra[AppConstant.priceId] as String;
+          return BlocProvider<PriceUpdateBloc>(
+            create: (context) => PriceUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenPriceUpdate(
+              price: price,
+              discountPrice: discountPrice,
+              ironPressPrice: ironPressPrice,
+              priceId: priceId,
+            ),
+          );
+        },
+      ),
 
-
-
+      GoRoute(
+        path: screenPriceAdd,
+        builder: (context, state) {
+          return ScreenPriceAdd();
+        },
+      ),
 
       GoRoute(
         path: screenServiceList,

@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../data/model/model_price_list_shop.dart';
 import '../../../../../../router/app_router.dart';
 import '../../../../../../utilities/app_color.dart';
 import '../../../../../../utilities/app_constant.dart';
 import '../../../../../../utilities/app_size.dart';
 import '../../../../../../utilities/app_text.dart';
+import '../../../../../../utilities/app_validator.dart';
 import '../../../../../custom_widget/custom_button.dart';
 import '../../../../../custom_widget/custom_card.dart';
 import '../../../../../custom_widget/custom_details_item.dart';
@@ -28,15 +30,7 @@ class ScreenPriceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppText.inventory),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.pop();
-          },
-        ),
-      ),
+      appBar: AppBar(title: Text(AppText.inventory)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: AppSize.paddingAll25,
@@ -165,19 +159,10 @@ class ScreenPriceList extends StatelessWidget {
                                         ],
                                       ),
                                       IconButton(
-                                        onPressed: () {
-                                          context.push(
-                                            AppRouter.screenPriceUpdate,
-                                            extra: {
-                                              AppConstant.price: price.price,
-                                              AppConstant.discountPrice:
-                                                  price.discountPrice,
-                                              AppConstant.ironPressPrice:
-                                                  price.ironPressPrice,
-                                              AppConstant.priceId: price.id,
-                                            },
-                                          );
-                                        },
+                                        onPressed: () => navigateToUpdatePrice(
+                                          context: context,
+                                          price: price,
+                                        ),
                                         icon: Icon(Icons.edit, size: 16),
                                       ),
                                     ],
@@ -254,5 +239,40 @@ class ScreenPriceList extends StatelessWidget {
         CallDialogue.showLoader(context);
       },
     );
+  }
+
+  Future<void> navigateToUpdatePrice({
+    required BuildContext context,
+    required ModelPriceListShop price,
+  }) async {
+    try {
+      final Map? result = await context.push(
+        AppRouter.screenPriceUpdate,
+        extra: {
+          AppConstant.price: price.price,
+          AppConstant.discountPrice: price.discountPrice,
+          AppConstant.ironPressPrice: price.ironPressPrice,
+          AppConstant.priceId: price.id,
+        },
+      );
+
+      if (result != null && context.mounted) {
+        context.read<PriceListShopBloc>().add(
+          PriceListShopEventUpdate(
+            price: result[AppConstant.price],
+            discountPrice: result[AppConstant.discountPrice],
+            ironPressPrice: result[AppConstant.ironPressPrice],
+            priceId: price.id,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackBar.primary(
+          context: context,
+          contentText: AppValidator.validatorPriceUpdateFail,
+        );
+      }
+    }
   }
 }

@@ -6,16 +6,16 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
 import '../../../../../../utilities/app_color.dart';
+import '../../../../../../utilities/app_constant.dart';
+import '../../../../../../utilities/app_size.dart';
+import '../../../../../../utilities/app_text.dart';
 import '../../../../../../utilities/app_validator.dart';
 import '../../../../../custom_widget/custom_button.dart';
 import '../../../../../custom_widget/custom_dialogue.dart';
 import '../../../../../custom_widget/custom_snack_bar.dart';
 import '../../../../../custom_widget/custom_text_field.dart';
-import '../price_list/bloc/price_list_shop_bloc.dart';
 import 'bloc/price_update_bloc.dart';
 
 class ScreenPriceUpdate extends StatefulWidget {
@@ -99,20 +99,20 @@ class _ScreenPriceUpdateState extends State<ScreenPriceUpdate> {
                   context: context,
                   contentText: state.message,
                 );
-                context.read<PriceListShopBloc>().add(
-                  PriceListShopEventUpdate(
-                    price: double.parse(controllerPrice.text.trim()),
-                    discountPrice: double.parse(
-                      controllerDiscountPrice.text.trim(),
-                    ),
-                    ironPressPrice: double.parse(
-                      controllerIronPressPrice.text.trim(),
-                    ),
-                    priceId: widget.priceId,
-                  ),
-                );
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  context.pop();
+                  if (context.mounted && context.canPop()) {
+                    context.pop({
+                      AppConstant.price: double.parse(
+                        controllerPrice.text.trim(),
+                      ),
+                      AppConstant.discountPrice: double.parse(
+                        controllerDiscountPrice.text.trim(),
+                      ),
+                      AppConstant.ironPressPrice: double.parse(
+                        controllerIronPressPrice.text.trim(),
+                      ),
+                    });
+                  }
                 });
               } else {
                 CallDialogue.showResult(
