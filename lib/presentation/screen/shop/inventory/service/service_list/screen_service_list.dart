@@ -36,9 +36,7 @@ class ScreenServiceList extends StatelessWidget {
             children: [
               CustomListHeader(
                 textListName: AppText.serviceList,
-                onTap: () {
-                  context.push(AppRouter.screenServiceAdd);
-                },
+                onTap: () => navigateToAddService(context: context),
                 textAddNewListName: AppText.addNewService,
               ),
               AppSize.gapH20,
@@ -226,6 +224,23 @@ class ScreenServiceList extends StatelessWidget {
         CustomSnackBar.primary(
           context: context,
           contentText: AppValidator.validatorServiceUpdateFail,
+        );
+      }
+    }
+  }
+
+  Future<void> navigateToAddService({required BuildContext context}) async {
+    try {
+      final bool? result = await context.push(AppRouter.screenServiceAdd);
+
+      if (result != null && result && context.mounted) {
+        context.read<ServiceListBloc>().add(ServiceListEventFetch());
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackBar.primary(
+          context: context,
+          contentText: AppValidator.validatorServiceAddFail,
         );
       }
     }

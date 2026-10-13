@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_add/bloc/service_add_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_order.dart';
@@ -62,9 +63,7 @@ import '../utilities/app_constant.dart';
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
 class AppRouter {
-  // final GlobalBloc globalBloc;
-  //
-  // AppRouter({required this.globalBloc});
+  // to get current path: final currentPath = GoRouterState.of(context).uri.path;
 
   static const String screenSplash = "/screenSplash";
   static const String screenRole = "/screenRole";
@@ -448,7 +447,12 @@ class AppRouter {
       GoRoute(
         path: screenServiceAdd,
         builder: (context, state) {
-          return ScreenServiceAdd();
+          return BlocProvider<ServiceAddBloc>(
+            create: (context) => ServiceAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenServiceAdd(),
+          );
         },
       ),
     ],

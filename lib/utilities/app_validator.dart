@@ -38,6 +38,8 @@ class AppValidator {
   static const String validatorPriceUpdateFail = "Failed to get update price";
   static const String validatorServiceUpdateFail =
       "Failed to get update service";
+  static const String validatorServiceAddFail =
+      "Failed to add new service";
   static const String validatorInvalidDropdownSelect =
       "Please select a valid option from the list";
   static const String validatorServiceName = "Please enter service name";
