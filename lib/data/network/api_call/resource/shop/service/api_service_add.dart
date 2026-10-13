@@ -31,7 +31,7 @@ class ApiServiceAdd implements IApiServiceAdd {
         ApiPath.serviceAdd,
         data: data,
       );
-      if (response.statusCode == ClientConstant.statusCode200OK) {
+      if (response.statusCode == ClientConstant.statusCode201Created) {
         ModelServiceAdd serviceAdd = ModelServiceAdd.fromJson(response.data);
         return (serviceAdd, null);
       } else {
