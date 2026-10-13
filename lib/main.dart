@@ -22,6 +22,10 @@ import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
 import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
 import 'data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'data/network/api_call/profile/user/api_profile_view_user.dart';
+import 'data/network/api_call/resource/shop/item/api_get_item_list.dart';
+import 'data/network/api_call/resource/shop/item/api_item_activation.dart';
+import 'data/network/api_call/resource/shop/item/api_item_add.dart';
+import 'data/network/api_call/resource/shop/item/api_item_update.dart';
 import 'data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
 import 'data/network/api_call/resource/shop/price/api_price_activation.dart';
 import 'data/network/api_call/resource/shop/price/api_price_update.dart';
@@ -178,8 +182,24 @@ class MyApp extends StatelessWidget {
           ),
 
           RepositoryProvider<IApiServiceAdd>(
+            create: (context) => ApiServiceAdd(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetItemList>(
+            create: (context) => ApiGetItemList(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemActivation>(
             create: (context) =>
-                ApiServiceAdd(client: context.read<Client>()),
+                ApiItemActivation(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemUpdate>(
+            create: (context) => ApiItemUpdate(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemAdd>(
+            create: (context) => ApiItemAdd(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IRepositoryAuthentication>(
@@ -229,6 +249,10 @@ class MyApp extends StatelessWidget {
               apiServiceActivation: context.read<IApiServiceActivation>(),
               apiServiceUpdate: context.read<IApiServiceUpdate>(),
               apiServiceAdd: context.read<IApiServiceAdd>(),
+              apiGetItemList: context.read<IApiGetItemList>(),
+              apiItemActivation: context.read<IApiItemActivation>(),
+              apiItemUpdate: context.read<IApiItemUpdate>(),
+              apiItemAdd: context.read<IApiItemAdd>(),
             ),
           ),
 
