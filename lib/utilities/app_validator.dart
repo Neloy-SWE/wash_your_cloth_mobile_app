@@ -29,21 +29,28 @@ class AppValidator {
       "You haven't updated any price data yet";
   static const String validatorServiceUpdate =
       "You haven't updated any service data yet";
+  static const String validatorItemUpdate =
+      "You haven't updated any item data yet";
   static const String validatorProfileFetchFail =
       "Failed to get updated profile";
   static const String validatorInvalidPrice =
       "You are looking for an invalid price";
   static const String validatorInvalidService =
       "You are looking for an invalid service";
+  static const String validatorInvalidItem =
+      "You are looking for an invalid item";
   static const String validatorPriceUpdateFail = "Failed to get update price";
   static const String validatorServiceUpdateFail =
       "Failed to get update service";
-  static const String validatorServiceAddFail =
-      "Failed to add new service";
+  static const String validatorItemUpdateFail = "Failed to get update item";
+  static const String validatorServiceAddFail = "Failed to add new service";
+  static const String validatorItemAddFail = "Failed to add new item";
   static const String validatorInvalidDropdownSelect =
       "Please select a valid option from the list";
   static const String validatorServiceName = "Please enter service name";
-  static const String validatorDescription = "Description must be between 10 and 500 characters.";
+  static const String validatorItemName = "Please enter item name";
+  static const String validatorDescription =
+      "Description must be between 10 and 500 characters.";
 
   // bool checkInitialNullEmpty(String? value) {
   //   if (value == null || value.isEmpty || value[0] == " ") {
@@ -53,25 +60,32 @@ class AppValidator {
   // }
 
   static bool isPhone(String? phone) {
-    if (phone == null || phone.isEmpty || phone[0] == " ") return false;
+    if (phone == null || phone.isEmpty || phone[0] == " ") {
+      return false;
+    }
     final RegExp phoneRegex = RegExp(r'^01\d{9}$');
     return phoneRegex.hasMatch(phone);
   }
 
   static bool isName(String? name) {
-    if (name == null || name.isEmpty || name[0] == " ") return false;
+    if (name == null || name.isEmpty || name[0] == " ") {
+      return false;
+    }
     final RegExp nameRegex = RegExp(r"^[a-zA-Z\p{L} .]+$", unicode: true);
     return nameRegex.hasMatch(name);
   }
 
   static bool isAmount(String? amount) {
-    if (amount == null || amount.isEmpty || amount[0] == " ") return false;
+    if (amount == null || amount.isEmpty || amount[0] == " ") {
+      return false;
+    }
     return double.tryParse(amount) != null;
   }
 
   static bool isValidDescription(String? description) {
-    if (description == null || description.isEmpty || description[0] == " ")
+    if (description == null || description.isEmpty || description[0] == " ") {
       return false;
+    }
     final int length = description.trim().length;
     return length >= 10 && length <= 500;
   }

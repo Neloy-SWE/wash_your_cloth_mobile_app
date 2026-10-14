@@ -51,7 +51,8 @@ class ScreenPriceList extends StatelessWidget {
                   AppSize.gapW10,
                   Expanded(
                     child: CustomButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          context.push(AppRouter.screenItemList),
                       buttonText: AppText.manageItem,
                       colorBorder: AppColor.colorPrimary,
                       colorButton: Colors.white,

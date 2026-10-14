@@ -113,10 +113,17 @@ class AppText {
   static const String serviceList = "Service list";
   static const String addNewService = "Add new service";
   static const String serviceActivationAlertMessage =
-      "Deactivate service will also remove associate price visibility";
+      "Modifying this service will automatically show or hide its associated pricing";
   static const String updateService = "Update service";
   static const String serviceName = "Service name";
   static const String serviceNameHint = "Dry wash";
   static const String descriptionHint = "Add a description of the service...";
   static const String add = "Add";
+  static const String itemList = "Item list";
+  static const String addNewItem = "Add new item";
+  static const String itemActivationAlertMessage =
+      "Modifying this item will automatically show or hide its associated pricing";
+  static const String updateItem = "Update item";
+  static const String itemName = "Item name";
+  static const String itemNameHint = "T-shirt";
 }

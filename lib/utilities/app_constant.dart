@@ -26,6 +26,8 @@ class AppConstant {
   static const String serviceName = "serviceName";
   static const String description = "description";
   static const String serviceId = "serviceId";
+  static const String itemName = "itemName";
+  static const String itemId = "itemId";
 }
 
 enum Role { user, shop }

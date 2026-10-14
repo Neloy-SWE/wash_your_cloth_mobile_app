@@ -7,14 +7,12 @@ import 'dart:convert';
 
 class ModelItemList {
   final String id;
-  final String serviceName;
-  final String description;
+  final String itemName;
   final bool isActive;
 
   ModelItemList({
     required this.id,
-    required this.serviceName,
-    required this.description,
+    required this.itemName,
     required this.isActive,
   });
 
@@ -26,28 +24,25 @@ class ModelItemList {
   factory ModelItemList.fromJson(Map<String, dynamic> json) =>
       ModelItemList(
         id: json["id"],
-        serviceName: json["serviceName"],
-        description: json["description"],
+        itemName: json["itemName"],
         isActive: json["isActive"],
       );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "serviceName": serviceName,
-    "description": description,
+    "itemName": itemName,
     "isActive": isActive,
   };
 
   ModelItemList copyWith({
     String? id,
-    String? serviceName,
+    String? itemName,
     String? description,
     bool? isActive,
   }) {
     return ModelItemList(
       id: id ?? this.id,
-      serviceName: serviceName ?? this.serviceName,
-      description: description ?? this.description,
+      itemName: itemName ?? this.itemName,
       isActive: isActive ?? this.isActive,
     );
   }

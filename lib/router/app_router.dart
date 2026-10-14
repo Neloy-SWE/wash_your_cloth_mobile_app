@@ -26,6 +26,12 @@ import '../presentation/screen/authentication/registration/bloc/registration_blo
 import '../presentation/screen/authentication/registration/screen_registration.dart';
 import '../presentation/screen/role/screen_role.dart';
 import '../presentation/screen/shop/home/screen_home_shop.dart';
+import '../presentation/screen/shop/inventory/item/item_add/bloc/item_add_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_add/screen_item_add.dart';
+import '../presentation/screen/shop/inventory/item/item_list/bloc/item_list_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_list/screen_item_list.dart';
+import '../presentation/screen/shop/inventory/item/item_update/bloc/item_update_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_update/screen_item_update.dart';
 import '../presentation/screen/shop/inventory/price/price_add/screen_price_add.dart';
 import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_shop_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_list/screen_price_list.dart';
@@ -91,6 +97,9 @@ class AppRouter {
   static const String screenServiceList = "/screenServiceList";
   static const String screenServiceUpdate = "/screenServiceUpdate";
   static const String screenServiceAdd = "/screenServiceAdd";
+  static const String screenItemList = "/screenItemList";
+  static const String screenItemUpdate = "/screenItemUpdate";
+  static const String screenItemAdd = "/screenItemAdd";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -452,6 +461,48 @@ class AppRouter {
               repositoryInventory: context.read<IRepositoryShopInventory>(),
             ),
             child: ScreenServiceAdd(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemList,
+        builder: (context, state) {
+          return BlocProvider<ItemListBloc>(
+            create: (context) => ItemListBloc(
+              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
+            )..add(ItemListEventFetch()),
+            child: ScreenItemList(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final itemName = extra[AppConstant.itemName] as String;
+          final itemId = extra[AppConstant.itemId] as String;
+          return BlocProvider<ItemUpdateBloc>(
+            create: (context) => ItemUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenItemUpdate(
+              itemName: itemName,
+              itemId: itemId,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemAdd,
+        builder: (context, state) {
+          return BlocProvider<ItemAddBloc>(
+            create: (context) => ItemAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenItemAdd(),
           );
         },
       ),
