@@ -126,4 +126,8 @@ class AppText {
   static const String updateItem = "Update item";
   static const String itemName = "Item name";
   static const String itemNameHint = "T-shirt";
+  static const String selectService = "Select service";
+  static const String selectServiceHint = "Suit care...";
+  static const String selectItem = "Select item";
+  static const String selectItemHint = "Jeans pant...";
 }
