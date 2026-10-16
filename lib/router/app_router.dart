@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/price/price_add/bloc/price_add_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_add/bloc/service_add_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
@@ -417,7 +418,12 @@ class AppRouter {
       GoRoute(
         path: screenPriceAdd,
         builder: (context, state) {
-          return ScreenPriceAdd();
+          return BlocProvider<PriceAddBloc>(
+            create: (context) => PriceAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            )..add(PriceAddEventDropdownDataFetch()),
+            child: ScreenPriceAdd(),
+          );
         },
       ),
 
@@ -487,10 +493,7 @@ class AppRouter {
             create: (context) => ItemUpdateBloc(
               repositoryInventory: context.read<IRepositoryShopInventory>(),
             ),
-            child: ScreenItemUpdate(
-              itemName: itemName,
-              itemId: itemId,
-            ),
+            child: ScreenItemUpdate(itemName: itemName, itemId: itemId),
           );
         },
       ),
