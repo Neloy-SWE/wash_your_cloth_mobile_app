@@ -21,6 +21,7 @@ class ClientConstant {
   // status:
   static const String serverError = "Server error!";
   static const String unableToGetDetails = "Unable to get details!";
+  static const String unableToSetDropdown = "Unable to set dropdown!";
   static const String validToken = "validToken";
   static const String updateToken = "updateToken";
   static const String logout = "logout";

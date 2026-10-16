@@ -12,13 +12,15 @@ import '../network/api_call/resource/shop/item/api_item_add.dart';
 import '../network/api_call/resource/shop/item/api_item_update.dart';
 import '../network/api_call/resource/shop/price/api_get_price_list_shop.dart';
 import '../network/api_call/resource/shop/price/api_price_activation.dart';
+import '../network/api_call/resource/shop/price/api_price_add.dart';
 import '../network/api_call/resource/shop/price/api_price_update.dart';
 import '../network/api_call/resource/shop/service/api_get_service_list.dart';
 import '../network/api_call/resource/shop/service/api_service_activation.dart';
 import '../network/api_call/resource/shop/service/api_service_add.dart';
 import '../network/api_call/resource/shop/service/api_service_update.dart';
 import '../request/request_item.dart';
-import '../request/request_update_price.dart';
+import '../request/request_price_add.dart';
+import '../request/request_price_update.dart';
 import '../request/request_service.dart';
 import '../use_case/use_case_generic.dart';
 
@@ -32,7 +34,7 @@ abstract class IRepositoryShopInventory {
   Future<UseCaseGeneric> serviceActivation({required String serviceId});
 
   Future<UseCaseGeneric> priceUpdate({
-    required RequestUpdatePrice updatePrice,
+    required RequestPriceUpdate updatePrice,
     required String priceId,
   });
 
@@ -53,12 +55,15 @@ abstract class IRepositoryShopInventory {
   });
 
   Future<UseCaseGeneric> itemAdd({required RequestItem itemAdd});
+
+  Future<UseCaseGeneric> priceAdd({required RequestPriceAdd priceAdd});
 }
 
 class RepositoryShopInventory implements IRepositoryShopInventory {
   final IApiGetPriceListShop apiGetPriceListShop;
   final IApiPriceActivation apiPriceActivation;
   final IApiPriceUpdate apiPriceUpdate;
+  final IApiPriceAdd apiPriceAdd;
 
   final IApiServiceActivation apiServiceActivation;
   final IApiGetServiceList apiGetServiceList;
@@ -82,6 +87,7 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
     required this.apiGetItemList,
     required this.apiItemUpdate,
     required this.apiItemAdd,
+    required this.apiPriceAdd,
   });
 
   @override
@@ -120,7 +126,7 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
 
   @override
   Future<UseCaseGeneric> priceUpdate({
-    required RequestUpdatePrice updatePrice,
+    required RequestPriceUpdate updatePrice,
     required String priceId,
   }) async {
     try {
@@ -292,6 +298,25 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
 
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, message: modelItemAdd?.message);
+      } else {
+        return UseCaseGeneric.fromModelError(modelError);
+      }
+    } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric<dynamic>> priceAdd({
+    required RequestPriceAdd priceAdd,
+  }) async {
+    try {
+      var (modelPriceAdd, modelError) = await apiPriceAdd.priceAdd(
+        data: priceAdd.toMap(),
+      );
+
+      if (modelError == null) {
+        return UseCaseGeneric(isSuccess: true, message: modelPriceAdd?.message);
       } else {
         return UseCaseGeneric.fromModelError(modelError);
       }

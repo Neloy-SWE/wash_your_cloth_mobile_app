@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../data/client/client_constant.dart';
 import '../../../../../../../data/repository/repository_shop_inventory.dart';
-import '../../../../../../../data/request/request_update_price.dart';
+import '../../../../../../../data/request/request_price_update.dart';
 import '../../../../../../../data/use_case/use_case_generic.dart';
 
 part 'price_update_event.dart';
@@ -29,7 +29,7 @@ class PriceUpdateBloc extends Bloc<PriceUpdateEvent, PriceUpdateState> {
   ) async {
     emit(PriceUpdateStateLoading());
     try {
-      RequestUpdatePrice updatePrice = RequestUpdatePrice(
+      RequestPriceUpdate updatePrice = RequestPriceUpdate(
         price: event.price,
         discountPrice: event.discountPrice,
         ironPressPrice: event.ironPressPrice,

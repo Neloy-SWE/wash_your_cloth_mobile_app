@@ -3,12 +3,12 @@ Created by Neloy on 09 October, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-class RequestUpdatePrice {
+class RequestPriceUpdate {
   final double price;
   final double discountPrice;
   final double ironPressPrice;
 
-  RequestUpdatePrice({
+  RequestPriceUpdate({
     required this.price,
     required this.discountPrice,
     required this.ironPressPrice,
