@@ -246,6 +246,22 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: screenPriceList,
+                builder: (context, state) {
+                  return BlocProvider<PriceListShopBloc>(
+                    create: (context) => PriceListShopBloc(
+                      repositoryShopInventory: context
+                          .read<IRepositoryShopInventory>(),
+                    )..add(PriceListShopEventFetch()),
+                    child: ScreenPriceList(),
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: screenProfileShop,
                 builder: (context, state) => BlocProvider<ProfileViewShopBloc>(
                   create: (context) => ProfileViewShopBloc(
@@ -377,18 +393,6 @@ class AppRouter {
               weekends: weekends,
               deliveryCharge: deliveryCharge,
             ),
-          );
-        },
-      ),
-
-      GoRoute(
-        path: screenPriceList,
-        builder: (context, state) {
-          return BlocProvider<PriceListShopBloc>(
-            create: (context) => PriceListShopBloc(
-              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
-            )..add(PriceListShopEventFetch()),
-            child: ScreenPriceList(),
           );
         },
       ),

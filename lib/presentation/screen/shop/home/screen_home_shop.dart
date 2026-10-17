@@ -17,6 +17,7 @@ class ScreenHomeShop extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> titles = [
       AppText.orderList,
+      AppText.inventory,
       AppText.profile,
     ];
     return Scaffold(
@@ -35,6 +36,11 @@ class ScreenHomeShop extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined),
             selectedIcon: Icon(Icons.view_list, color: AppColor.colorPrimary),
+            label: "",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.inventory_2_outlined),
+            selectedIcon: Icon(Icons.inventory, color: AppColor.colorPrimary),
             label: "",
           ),
           NavigationDestination(

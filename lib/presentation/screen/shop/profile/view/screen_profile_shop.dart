@@ -273,16 +273,6 @@ class _ScreenProfileShopState extends State<ScreenProfileShop> {
                 AppSize.gapH50,
                 CustomButton(
                   onPressed: () {
-                    context.push(AppRouter.screenPriceList);
-                  },
-                  buttonText: AppText.inventory,
-                  colorText: AppColor.colorPrimary,
-                  colorButton: Colors.white,
-                  colorBorder: AppColor.colorPrimary,
-                ),
-                AppSize.gapH20,
-                CustomButton(
-                  onPressed: () {
                     context.push(AppRouter.screenChangePassword);
                   },
                   buttonText: AppText.changePassword,
