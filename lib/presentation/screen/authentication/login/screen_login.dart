@@ -159,7 +159,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                           context.pushReplacement(AppRouter.screenRegistration);
                         },
                         buttonText: AppText.registration,
-                        textColor: AppColor.colorPrimary,
+                        colorText: AppColor.colorPrimary,
                         colorButton: Colors.white,
                       ),
                       AppSize.gapH35,

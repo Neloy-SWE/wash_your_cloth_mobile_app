@@ -91,7 +91,7 @@ class ScreenRole extends StatelessWidget {
                         }
                       },
                       buttonText: AppText.proceed,
-                      textColor: selectedRole != null
+                      colorText: selectedRole != null
                           ? Colors.white
                           : AppColor.colorPrimary,
                       colorButton: selectedRole != null

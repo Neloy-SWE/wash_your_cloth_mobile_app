@@ -6,54 +6,71 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_order.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_password/screen_change_password.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/change_phone/screen_change_phone.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/login/screen_login.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/bloc/otp_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/otp/screen_otp.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/authentication/registration/bloc/registration_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/role/screen_role.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/home/screen_home_shop.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/profile/view/screen_profile_shop.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/splash/screen_splash.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/bloc/order_place_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/cart/screen_cart.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/home/screen_home_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/order/order_details/screen_order_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/profile/view/bloc/profile_view_user_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_details/screen_shop_details_user.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/price/price_add/bloc/price_add_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_add/bloc/service_add_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
+import '../data/repository/repository_order.dart';
 import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
+import '../data/repository/repository_shop_inventory.dart';
 import '../data/use_case/order/use_case_order_place.dart';
+import '../presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
+import '../presentation/screen/authentication/change_password/screen_change_password.dart';
 import '../presentation/screen/authentication/change_phone/bloc/change_phone_bloc.dart';
+import '../presentation/screen/authentication/change_phone/screen_change_phone.dart';
 import '../presentation/screen/authentication/login/bloc/login_bloc.dart';
+import '../presentation/screen/authentication/login/screen_login.dart';
+import '../presentation/screen/authentication/otp/bloc/otp_bloc.dart';
+import '../presentation/screen/authentication/otp/screen_otp.dart';
+import '../presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
+import '../presentation/screen/role/screen_role.dart';
+import '../presentation/screen/shop/home/screen_home_shop.dart';
+import '../presentation/screen/shop/inventory/item/item_add/bloc/item_add_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_add/screen_item_add.dart';
+import '../presentation/screen/shop/inventory/item/item_list/bloc/item_list_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_list/screen_item_list.dart';
+import '../presentation/screen/shop/inventory/item/item_update/bloc/item_update_bloc.dart';
+import '../presentation/screen/shop/inventory/item/item_update/screen_item_update.dart';
+import '../presentation/screen/shop/inventory/price/price_add/screen_price_add.dart';
+import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_shop_bloc.dart';
+import '../presentation/screen/shop/inventory/price/price_list/screen_price_list.dart';
+import '../presentation/screen/shop/inventory/price/price_update/bloc/price_update_bloc.dart';
+import '../presentation/screen/shop/inventory/price/price_update/screen_price_update.dart';
+import '../presentation/screen/shop/inventory/service/service_add/screen_service_add.dart';
+import '../presentation/screen/shop/inventory/service/service_list/bloc/service_list_bloc.dart';
+import '../presentation/screen/shop/inventory/service/service_list/screen_service_list.dart';
+import '../presentation/screen/shop/inventory/service/service_update/bloc/service_update_bloc.dart';
+import '../presentation/screen/shop/inventory/service/service_update/screen_service_update.dart';
 import '../presentation/screen/shop/order/order_details/bloc/order_details_shop_bloc.dart';
 import '../presentation/screen/shop/order/order_details/screen_order_details_shop.dart';
 import '../presentation/screen/shop/order/order_list/screen_order_list_shop.dart';
 import '../presentation/screen/shop/profile/update/bloc/profile_update_shop_bloc.dart';
 import '../presentation/screen/shop/profile/update/screen_profile_update_shop.dart';
 import '../presentation/screen/shop/profile/view/bloc/profile_view_shop_bloc.dart';
+import '../presentation/screen/shop/profile/view/screen_profile_shop.dart';
+import '../presentation/screen/splash/screen_splash.dart';
+import '../presentation/screen/user/cart/bloc/order_place_bloc.dart';
+import '../presentation/screen/user/cart/screen_cart.dart';
+import '../presentation/screen/user/home/screen_home_user.dart';
+import '../presentation/screen/user/order/order_details/bloc/order_details_user_bloc.dart';
+import '../presentation/screen/user/order/order_details/screen_order_details_user.dart';
 import '../presentation/screen/user/order/order_list/screen_order_list_user.dart';
 import '../presentation/screen/user/profile/update/bloc/profile_update_user_bloc.dart';
 import '../presentation/screen/user/profile/update/screen_profile_update_user.dart';
+import '../presentation/screen/user/profile/view/bloc/profile_view_user_bloc.dart';
 import '../presentation/screen/user/profile/view/screen_profile_user.dart';
 import '../presentation/screen/user/shop/shop_details/bloc/shop_details_user_bloc.dart';
+import '../presentation/screen/user/shop/shop_details/screen_shop_details_user.dart';
+import '../presentation/screen/user/shop/shop_list/bloc/shop_list_bloc.dart';
 import '../presentation/screen/user/shop/shop_list/screen_shop_list.dart';
+import '../utilities/app_constant.dart';
 
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
 class AppRouter {
-  // final GlobalBloc globalBloc;
-  //
-  // AppRouter({required this.globalBloc});
+  // to get current path: final currentPath = GoRouterState.of(context).uri.path;
 
   static const String screenSplash = "/screenSplash";
   static const String screenRole = "/screenRole";
@@ -75,10 +92,19 @@ class AppRouter {
   static const String screenOrderListShop = "/screenOrderListShop";
   static const String screenProfileShop = "/screenProfileShop";
   static const String screenProfileUpdateShop = "/screenProfileUpdateShop";
+  static const String screenPriceList = "/screenPriceList";
+  static const String screenPriceUpdate = "/screenPriceUpdate";
+  static const String screenPriceAdd = "/screenPriceAdd";
+  static const String screenServiceList = "/screenServiceList";
+  static const String screenServiceUpdate = "/screenServiceUpdate";
+  static const String screenServiceAdd = "/screenServiceAdd";
+  static const String screenItemList = "/screenItemList";
+  static const String screenItemUpdate = "/screenItemUpdate";
+  static const String screenItemAdd = "/screenItemAdd";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
-    initialLocation: AppRouter.screenSplash,
+    initialLocation: screenSplash,
     // refreshListenable: GoRouterRefreshStream(globalBloc.stream),
     // redirect: (context, state) {
     //   final currentState = globalBloc.state;
@@ -93,16 +119,10 @@ class AppRouter {
     //   return null;
     // },
     routes: [
+      GoRoute(path: screenSplash, builder: (context, state) => ScreenSplash()),
+      GoRoute(path: screenRole, builder: (context, state) => ScreenRole()),
       GoRoute(
-        path: AppRouter.screenSplash,
-        builder: (context, state) => ScreenSplash(),
-      ),
-      GoRoute(
-        path: AppRouter.screenRole,
-        builder: (context, state) => ScreenRole(),
-      ),
-      GoRoute(
-        path: AppRouter.screenLogin,
+        path: screenLogin,
         builder: (context, state) => BlocProvider<LoginBloc>(
           create: (_) => LoginBloc(
             repositoryAuthentication: context.read<IRepositoryAuthentication>(),
@@ -111,7 +131,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRouter.screenOTP,
+        path: screenOTP,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final otpRequestId = extra[AppConstant.otpRequestId] as String;
@@ -127,7 +147,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenRegistration,
+        path: screenRegistration,
         builder: (context, state) => BlocProvider<RegistrationBloc>(
           create: (_) => RegistrationBloc(
             repositoryAuthentication: context.read<IRepositoryAuthentication>(),
@@ -144,7 +164,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenOrderListUser,
+                path: screenOrderListUser,
                 builder: (context, state) => const ScreenOrderListUser(),
               ),
             ],
@@ -152,7 +172,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenShopList,
+                path: screenShopList,
                 builder: (context, state) => BlocProvider<ShopListBloc>(
                   create: (context) => ShopListBloc(
                     repositoryShop: context.read<IRepositoryShop>(),
@@ -165,7 +185,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenProfileUser,
+                path: screenProfileUser,
                 builder: (context, state) => BlocProvider<ProfileViewUserBloc>(
                   create: (context) => ProfileViewUserBloc(
                     repositoryProfile: context.read<IRepositoryProfile>(),
@@ -179,7 +199,7 @@ class AppRouter {
       ),
 
       // GoRoute(
-      //   path: AppRouter.screenHomeUser,
+      //   path: screenHomeUser,
       //   builder: (context, state) => MultiBlocProvider(
       //     providers: [
       //       BlocProvider<OrderListUserBloc>(
@@ -198,7 +218,7 @@ class AppRouter {
       //   ),
       // ),
       GoRoute(
-        path: AppRouter.screenOrderDetailsUser,
+        path: screenOrderDetailsUser,
         builder: (context, state) {
           final orderId = state.extra as String;
           return BlocProvider<OrderDetailsUserBloc>(
@@ -218,7 +238,7 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenOrderListShop,
+                path: screenOrderListShop,
                 builder: (context, state) => const ScreenOrderListShop(),
               ),
             ],
@@ -226,7 +246,23 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.screenProfileShop,
+                path: screenPriceList,
+                builder: (context, state) {
+                  return BlocProvider<PriceListShopBloc>(
+                    create: (context) => PriceListShopBloc(
+                      repositoryShopInventory: context
+                          .read<IRepositoryShopInventory>(),
+                    )..add(PriceListShopEventFetch()),
+                    child: ScreenPriceList(),
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: screenProfileShop,
                 builder: (context, state) => BlocProvider<ProfileViewShopBloc>(
                   create: (context) => ProfileViewShopBloc(
                     repositoryProfile: context.read<IRepositoryProfile>(),
@@ -240,7 +276,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenShopDetailsUser,
+        path: screenShopDetailsUser,
         builder: (context, state) {
           final shopId = state.extra as String;
           return BlocProvider<ShopDetailsUserBloc>(
@@ -253,7 +289,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenCart,
+        path: screenCart,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final shopId = extra[AppConstant.shopId] as String;
@@ -273,7 +309,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenProfileUpdateUser,
+        path: screenProfileUpdateUser,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final firstName = extra[AppConstant.firstName] as String;
@@ -293,7 +329,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenChangePassword,
+        path: screenChangePassword,
         builder: (context, state) {
           return BlocProvider<ChangePasswordBloc>(
             create: (context) => ChangePasswordBloc(
@@ -306,7 +342,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenChangePhone,
+        path: screenChangePhone,
         builder: (context, state) {
           return BlocProvider<ChangePhoneBloc>(
             create: (context) => ChangePhoneBloc(
@@ -319,7 +355,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenOrderDetailsShop,
+        path: screenOrderDetailsShop,
         builder: (context, state) {
           final orderId = state.extra as String;
           return BlocProvider<OrderDetailsShopBloc>(
@@ -332,7 +368,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRouter.screenProfileUpdateShop,
+        path: screenProfileUpdateShop,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final ownerFirstName = extra[AppConstant.ownerFirstName] as String;
@@ -357,6 +393,123 @@ class AppRouter {
               weekends: weekends,
               deliveryCharge: deliveryCharge,
             ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenPriceUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final price = extra[AppConstant.price] as double;
+          final discountPrice = extra[AppConstant.discountPrice] as double;
+          final ironPressPrice = extra[AppConstant.ironPressPrice] as double;
+          final priceId = extra[AppConstant.priceId] as String;
+          return BlocProvider<PriceUpdateBloc>(
+            create: (context) => PriceUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenPriceUpdate(
+              price: price,
+              discountPrice: discountPrice,
+              ironPressPrice: ironPressPrice,
+              priceId: priceId,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenPriceAdd,
+        builder: (context, state) {
+          return BlocProvider<PriceAddBloc>(
+            create: (context) => PriceAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            )..add(PriceAddEventDropdownDataFetch()),
+            child: ScreenPriceAdd(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceList,
+        builder: (context, state) {
+          return BlocProvider<ServiceListBloc>(
+            create: (context) => ServiceListBloc(
+              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
+            )..add(ServiceListEventFetch()),
+            child: ScreenServiceList(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final serviceName = extra[AppConstant.serviceName] as String;
+          final description = extra[AppConstant.description] as String;
+          final serviceId = extra[AppConstant.serviceId] as String;
+          return BlocProvider<ServiceUpdateBloc>(
+            create: (context) => ServiceUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenServiceUpdate(
+              serviceName: serviceName,
+              description: description,
+              serviceId: serviceId,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenServiceAdd,
+        builder: (context, state) {
+          return BlocProvider<ServiceAddBloc>(
+            create: (context) => ServiceAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenServiceAdd(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemList,
+        builder: (context, state) {
+          return BlocProvider<ItemListBloc>(
+            create: (context) => ItemListBloc(
+              repositoryShopInventory: context.read<IRepositoryShopInventory>(),
+            )..add(ItemListEventFetch()),
+            child: ScreenItemList(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemUpdate,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final itemName = extra[AppConstant.itemName] as String;
+          final itemId = extra[AppConstant.itemId] as String;
+          return BlocProvider<ItemUpdateBloc>(
+            create: (context) => ItemUpdateBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenItemUpdate(itemName: itemName, itemId: itemId),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: screenItemAdd,
+        builder: (context, state) {
+          return BlocProvider<ItemAddBloc>(
+            create: (context) => ItemAddBloc(
+              repositoryInventory: context.read<IRepositoryShopInventory>(),
+            ),
+            child: ScreenItemAdd(),
           );
         },
       ),

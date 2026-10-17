@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../utilities/app_color.dart';
 import '../../../../../utilities/app_size.dart';
 import '../../../../../utilities/app_text.dart';
-import '../../../../../utilities/app_tool.dart';
+import '../../../../../utilities/app_text_formatter.dart';
 import '../../../../../utilities/app_validator.dart';
 import '../../../../custom_widget/custom_button.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
@@ -292,7 +292,7 @@ class _ScreenProfileUpdateShopState extends State<ScreenProfileUpdateShop> {
                       textInputType: TextInputType.numberWithOptions(),
                       textInputAction: TextInputAction.next,
                       title: AppText.deliveryChargeBDT,
-                      label: AppText.deliveryChargeHint,
+                      label: AppText.priceHint,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return AppValidator.validatorDeliveryCharge;

@@ -49,7 +49,7 @@ class AppText {
   static const String shopList = "Shop list";
   static const String profile = "Profile";
   static const String totalAmount = "Total amount";
-    static const String bdtCapital = "BDT";
+  static const String bdtCapital = "BDT";
   static const String orderDetails = "Order details";
   static const String shopInformation = "Shop information";
   static const String userInformation = "User information";
@@ -72,7 +72,7 @@ class AppText {
   static const String priceList = "Price list";
   static const String deliveryCharge = "Delivery charge";
   static const String deliveryChargeBDT = "Delivery charge (BDT)";
-  static const String deliveryChargeHint = "10";
+  static const String priceHint = "10";
   static const String ironPressColon = "Iron Press:";
   static const String cart = "Cart";
   static const String placeOrder = "Place order";
@@ -94,4 +94,40 @@ class AppText {
   static const String shopActiveStatus = "Shop active status";
   static const String ordersOverview = "Orders Overview";
   static const String shopAddress = "Shop address";
+  static const String inventory = "Inventory";
+  static const String description = "Description";
+  static const String manageService = "Manage service";
+  static const String manageItem = "Manage item";
+  static const String addNewPrice = "Add new price";
+  static const String discount = "Discount";
+  static const String active = "Active";
+  static const String inactive = "Inactive";
+  static const String priceActivationAlertMessage =
+      "Ultimate price visibility to user depends on both service and item visibility";
+  static const String updatePrice = "Update price";
+  static const String priceBDT = "Price (BDT)";
+  static const String discountPriceBDT = "Discount price (BDT)";
+  static const String ironPressPriceBDT = "Iron press rice (BDT)";
+  static const String search = "Search...";
+  static const String noOptionFound = "No options found";
+  static const String serviceList = "Service list";
+  static const String addNewService = "Add new service";
+  static const String serviceActivationAlertMessage =
+      "Modifying this service will automatically show or hide its associated pricing";
+  static const String updateService = "Update service";
+  static const String serviceName = "Service name";
+  static const String serviceNameHint = "Dry wash";
+  static const String descriptionHint = "Add a description of the service...";
+  static const String add = "Add";
+  static const String itemList = "Item list";
+  static const String addNewItem = "Add new item";
+  static const String itemActivationAlertMessage =
+      "Modifying this item will automatically show or hide its associated pricing";
+  static const String updateItem = "Update item";
+  static const String itemName = "Item name";
+  static const String itemNameHint = "T-shirt";
+  static const String selectService = "Select service";
+  static const String selectServiceHint = "Suit care...";
+  static const String selectItem = "Select item";
+  static const String selectItemHint = "Jeans pant...";
 }

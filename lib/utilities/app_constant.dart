@@ -19,6 +19,15 @@ class AppConstant {
   static const String openTime = "openTime";
   static const String closeTime = "closeTime";
   static const String weekends = "weekends";
+  static const String price = "price";
+  static const String discountPrice = "discountPrice";
+  static const String ironPressPrice = "ironPressPrice";
+  static const String priceId = "priceId";
+  static const String serviceName = "serviceName";
+  static const String description = "description";
+  static const String serviceId = "serviceId";
+  static const String itemName = "itemName";
+  static const String itemId = "itemId";
 }
 
 enum Role { user, shop }

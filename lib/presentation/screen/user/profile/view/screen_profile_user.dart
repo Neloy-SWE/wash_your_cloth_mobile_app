@@ -162,7 +162,7 @@ class ScreenProfileUser extends StatelessWidget {
                     // context.go(AppRouter.screenAuthLogin);
                   },
                   buttonText: AppText.logout,
-                  textColor: AppColor.colorDanger,
+                  colorText: AppColor.colorDanger,
                   colorButton: Colors.white,
                   colorBorder: AppColor.colorDanger,
                 ),

@@ -22,6 +22,18 @@ import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
 import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
 import 'data/network/api_call/profile/user/api_profile_update_user.dart';
 import 'data/network/api_call/profile/user/api_profile_view_user.dart';
+import 'data/network/api_call/resource/shop/item/api_get_item_list.dart';
+import 'data/network/api_call/resource/shop/item/api_item_activation.dart';
+import 'data/network/api_call/resource/shop/item/api_item_add.dart';
+import 'data/network/api_call/resource/shop/item/api_item_update.dart';
+import 'data/network/api_call/resource/shop/price/api_get_price_list_shop.dart';
+import 'data/network/api_call/resource/shop/price/api_price_activation.dart';
+import 'data/network/api_call/resource/shop/price/api_price_add.dart';
+import 'data/network/api_call/resource/shop/price/api_price_update.dart';
+import 'data/network/api_call/resource/shop/service/api_get_service_list.dart';
+import 'data/network/api_call/resource/shop/service/api_service_activation.dart';
+import 'data/network/api_call/resource/shop/service/api_service_add.dart';
+import 'data/network/api_call/resource/shop/service/api_service_update.dart';
 import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
 import 'data/network/api_call/shop/api_get_shop_list.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
@@ -29,6 +41,7 @@ import 'data/repository/repository_authentication.dart';
 import 'data/repository/repository_order.dart';
 import 'data/repository/repository_profile.dart';
 import 'data/repository/repository_shop.dart';
+import 'data/repository/repository_shop_inventory.dart';
 import 'presentation/bloc_global/global_bloc.dart';
 import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
@@ -140,6 +153,60 @@ class MyApp extends StatelessWidget {
                 ApiProfileUpdateShop(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetPriceListShop>(
+            create: (context) =>
+                ApiGetPriceListShop(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiPriceActivation>(
+            create: (context) =>
+                ApiPriceActivation(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiPriceUpdate>(
+            create: (context) => ApiPriceUpdate(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetServiceList>(
+            create: (context) =>
+                ApiGetServiceList(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiServiceActivation>(
+            create: (context) =>
+                ApiServiceActivation(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiServiceUpdate>(
+            create: (context) =>
+                ApiServiceUpdate(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiServiceAdd>(
+            create: (context) => ApiServiceAdd(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetItemList>(
+            create: (context) => ApiGetItemList(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemActivation>(
+            create: (context) =>
+                ApiItemActivation(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemUpdate>(
+            create: (context) => ApiItemUpdate(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiItemAdd>(
+            create: (context) => ApiItemAdd(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiPriceAdd>(
+            create: (context) => ApiPriceAdd(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -175,6 +242,23 @@ class MyApp extends StatelessWidget {
               apiProfileViewShop: context.read<IApiProfileViewShop>(),
               apiProfileUpdateUser: context.read<IApiProfileUpdateUser>(),
               apiProfileUpdateShop: context.read<IApiProfileUpdateShop>(),
+            ),
+          ),
+
+          RepositoryProvider<IRepositoryShopInventory>(
+            create: (context) => RepositoryShopInventory(
+              apiGetPriceListShop: context.read<IApiGetPriceListShop>(),
+              apiPriceActivation: context.read<IApiPriceActivation>(),
+              apiPriceUpdate: context.read<IApiPriceUpdate>(),
+              apiGetServiceList: context.read<IApiGetServiceList>(),
+              apiServiceActivation: context.read<IApiServiceActivation>(),
+              apiServiceUpdate: context.read<IApiServiceUpdate>(),
+              apiServiceAdd: context.read<IApiServiceAdd>(),
+              apiGetItemList: context.read<IApiGetItemList>(),
+              apiItemActivation: context.read<IApiItemActivation>(),
+              apiItemUpdate: context.read<IApiItemUpdate>(),
+              apiItemAdd: context.read<IApiItemAdd>(),
+              apiPriceAdd: context.read<IApiPriceAdd>(),
             ),
           ),
 

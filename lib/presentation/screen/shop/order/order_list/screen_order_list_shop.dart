@@ -37,7 +37,10 @@ class ScreenOrderListShop extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is OrderListShopStateFetch) {
+        if (state is OrderListShopStateLoading ||
+            state is OrderListShopStateInitial) {
+          return AppSize.noGap;
+        } else if (state is OrderListShopStateFetch) {
           if (state.orderList.isEmpty) {
             return CustomNotFound();
           }
