@@ -22,132 +22,146 @@ import '../../../../../custom_widget/custom_not_found.dart';
 import '../../../../../custom_widget/custom_snack_bar.dart';
 import 'bloc/item_list_bloc.dart';
 
-class ScreenItemList extends StatelessWidget {
+class ScreenItemList extends StatefulWidget {
   const ScreenItemList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(AppText.itemList)),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: AppSize.paddingAll25,
-          child: Column(
-            children: [
-              CustomListHeader(
-                textListName: AppText.itemList,
-                onTap: () => navigateToAddItem(context: context),
-                textAddNewListName: AppText.addNewItem,
-              ),
-              AppSize.gapH20,
+  State<ScreenItemList> createState() => _ScreenItemListState();
+}
 
-              BlocConsumer<ItemListBloc, ItemListState>(
-                listener: (context, state) {
-                  if (state is ItemListStateLoading) {
-                    CallDialogue.showLoader(context);
-                  } else if (state is ItemListStateFetch) {
-                    if (!state.isActivating && !state.isUpdating) {
+class _ScreenItemListState extends State<ScreenItemList> {
+  bool isUpdate = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (didPop) return;
+        context.pop(isUpdate);
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text(AppText.itemList)),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: AppSize.paddingAll25,
+            child: Column(
+              children: [
+                CustomListHeader(
+                  textListName: AppText.itemList,
+                  onTap: () => navigateToAddItem(context: context),
+                  textAddNewListName: AppText.addNewItem,
+                ),
+                AppSize.gapH20,
+
+                BlocConsumer<ItemListBloc, ItemListState>(
+                  listener: (context, state) {
+                    if (state is ItemListStateLoading) {
+                      CallDialogue.showLoader(context);
+                    } else if (state is ItemListStateFetch) {
+                      if (!state.isActivating && !state.isUpdating) {
+                        CallDialogue.hideLoader(context);
+                      }
+                    } else if (state is ItemListStateError) {
                       CallDialogue.hideLoader(context);
+                      CallDialogue.showResult(
+                        context: context,
+                        message: state.message,
+                        onOk: () => CallDialogue.hideLoader(context),
+                      );
+                    } else if (state is ItemListStateActionResult) {
+                      CustomSnackBar.primary(
+                        context: context,
+                        contentText: state.message,
+                        backgroundColor: state.isSuccess
+                            ? AppColor.colorPrimary
+                            : Colors.redAccent,
+                      );
                     }
-                  } else if (state is ItemListStateError) {
-                    CallDialogue.hideLoader(context);
-                    CallDialogue.showResult(
-                      context: context,
-                      message: state.message,
-                      onOk: () => CallDialogue.hideLoader(context),
-                    );
-                  } else if (state is ItemListStateActionResult) {
-                    CustomSnackBar.primary(
-                      context: context,
-                      contentText: state.message,
-                      backgroundColor: state.isSuccess
-                          ? AppColor.colorPrimary
-                          : Colors.redAccent,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is ItemListStateFetch) {
-                    if (state.itemList.isEmpty) {
+                  },
+                  builder: (context, state) {
+                    if (state is ItemListStateFetch) {
+                      if (state.itemList.isEmpty) {
+                        return const CustomNotFound();
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.itemList.length,
+                        separatorBuilder: (context, index) => AppSize.gapH20,
+                        itemBuilder: (context, index) {
+                          final item = state.itemList[index];
+                          return CustomCard(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    item.itemName,
+                                    style: AppText.style.titleMedium,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Stack(
+                                      alignment: AlignmentDirectional.center,
+                                      children: [
+                                        Transform.scale(
+                                          scale: 0.5,
+                                          child: CupertinoSwitch(
+                                            value: item.isActive,
+                                            activeTrackColor:
+                                                AppColor.colorPrimary,
+                                            onChanged: state.isActivating
+                                                ? null // Disable during pending request
+                                                : (value) {
+                                                    _handleItemActivation(
+                                                      context: context,
+                                                      itemId: item.id,
+                                                    );
+                                                  },
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          child: Text(
+                                            item.isActive
+                                                ? AppText.active
+                                                : AppText.inactive,
+                                            style: AppText.style.bodyLarge!
+                                                .copyWith(fontSize: 8),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      onPressed: () => navigateToUpdateItem(
+                                        context: context,
+                                        item: item,
+                                      ),
+                                      icon: Icon(Icons.edit, size: 16),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    } else if (state is ItemListStateLoading ||
+                        state is ItemListStateInitial) {
+                      return AppSize.noGap;
+                    } else {
                       return const CustomNotFound();
                     }
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.itemList.length,
-                      separatorBuilder: (context, index) => AppSize.gapH20,
-                      itemBuilder: (context, index) {
-                        final item = state.itemList[index];
-                        return CustomCard(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.itemName,
-                                  style: AppText.style.titleMedium,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Stack(
-                                    alignment: AlignmentDirectional.center,
-                                    children: [
-                                      Transform.scale(
-                                        scale: 0.5,
-                                        child: CupertinoSwitch(
-                                          value: item.isActive,
-                                          activeTrackColor:
-                                              AppColor.colorPrimary,
-                                          onChanged: state.isActivating
-                                              ? null // Disable during pending request
-                                              : (value) {
-                                                  _handleItemActivation(
-                                                    context: context,
-                                                    itemId: item.id,
-                                                  );
-                                                },
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        child: Text(
-                                          item.isActive
-                                              ? AppText.active
-                                              : AppText.inactive,
-                                          style: AppText.style.bodyLarge!
-                                              .copyWith(fontSize: 8),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  IconButton(
-                                    onPressed: () => navigateToUpdateItem(
-                                      context: context,
-                                      item: item,
-                                    ),
-                                    icon: Icon(Icons.edit, size: 16),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else if (state is ItemListStateLoading ||
-                      state is ItemListStateInitial) {
-                    return AppSize.noGap;
-                  } else {
-                    return const CustomNotFound();
-                  }
-                },
-              ),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -191,6 +205,7 @@ class ScreenItemList extends StatelessWidget {
             itemId: item.id,
           ),
         );
+        isUpdate = true;
       }
     } catch (e) {
       if (context.mounted) {

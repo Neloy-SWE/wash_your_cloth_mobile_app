@@ -31,7 +31,7 @@ class ApiPriceAdd implements IApiPriceAdd {
         ApiPath.priceAdd,
         data: data,
       );
-      if (response.statusCode == ClientConstant.statusCode200OK) {
+      if (response.statusCode == ClientConstant.statusCode201Created) {
         ModelPriceAdd activation = ModelPriceAdd.fromJson(response.data);
         return (activation, null);
       } else {

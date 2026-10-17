@@ -51,6 +51,8 @@ class AppValidator {
   static const String validatorItemName = "Please enter item name";
   static const String validatorDescription =
       "Description must be between 10 and 500 characters.";
+  static const String validatorFieldFillup =
+      "Please fill up all mandatory field";
 
   // bool checkInitialNullEmpty(String? value) {
   //   if (value == null || value.isEmpty || value[0] == " ") {

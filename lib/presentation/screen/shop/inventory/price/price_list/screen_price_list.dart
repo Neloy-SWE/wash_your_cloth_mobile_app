@@ -30,7 +30,6 @@ class ScreenPriceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppText.inventory)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: AppSize.paddingAll25,
@@ -40,8 +39,10 @@ class ScreenPriceList extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      onPressed: () =>
-                          context.push(AppRouter.screenServiceList),
+                      onPressed: () => navigateToAddInventory(
+                        context: context,
+                        path: AppRouter.screenServiceList,
+                      ),
                       buttonText: AppText.manageService,
                       colorBorder: AppColor.colorPrimary,
                       colorButton: Colors.white,
@@ -51,8 +52,10 @@ class ScreenPriceList extends StatelessWidget {
                   AppSize.gapW10,
                   Expanded(
                     child: CustomButton(
-                      onPressed: () =>
-                          context.push(AppRouter.screenItemList),
+                      onPressed: () => navigateToAddInventory(
+                        context: context,
+                        path: AppRouter.screenItemList,
+                      ),
                       buttonText: AppText.manageItem,
                       colorBorder: AppColor.colorPrimary,
                       colorButton: Colors.white,
@@ -66,7 +69,10 @@ class ScreenPriceList extends StatelessWidget {
 
               CustomListHeader(
                 textListName: AppText.priceList,
-                onTap: () => context.push(AppRouter.screenPriceAdd),
+                onTap: () => navigateToAddInventory(
+                  context: context,
+                  path: AppRouter.screenPriceAdd,
+                ),
                 textAddNewListName: AppText.addNewPrice,
               ),
               AppSize.gapH20,
@@ -274,6 +280,16 @@ class ScreenPriceList extends StatelessWidget {
           contentText: AppValidator.validatorPriceUpdateFail,
         );
       }
+    }
+  }
+
+  Future<void> navigateToAddInventory({
+    required BuildContext context,
+    required String path,
+  }) async {
+    final bool? result = await context.push(path);
+    if (result != null && result && context.mounted) {
+      context.read<PriceListShopBloc>().add(PriceListShopEventFetch());
     }
   }
 }
