@@ -21,12 +21,14 @@ class PriceAddStateDropdownDataLoaded extends PriceAddState {
   final List<ModelServiceList> serviceList;
   final bool isNavigate;
   final String message;
+  final bool needLoader;
 
   const PriceAddStateDropdownDataLoaded({
     required this.itemList,
     required this.serviceList,
     required this.isNavigate,
     required this.message,
+    required this.needLoader,
   });
 
   PriceAddStateDropdownDataLoaded copyWith({
@@ -34,15 +36,23 @@ class PriceAddStateDropdownDataLoaded extends PriceAddState {
     List<ModelServiceList>? serviceList,
     bool? isNavigate,
     String? message,
+    bool? needLoader,
   }) {
     return PriceAddStateDropdownDataLoaded(
       itemList: itemList ?? this.itemList,
       serviceList: serviceList ?? this.serviceList,
       message: message ?? this.message,
       isNavigate: isNavigate ?? this.isNavigate,
+      needLoader: needLoader ?? this.needLoader,
     );
   }
 
   @override
-  List<Object?> get props => [itemList, serviceList, message, isNavigate];
+  List<Object?> get props => [
+    itemList,
+    serviceList,
+    message,
+    isNavigate,
+    needLoader,
+  ];
 }

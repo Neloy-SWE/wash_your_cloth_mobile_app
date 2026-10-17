@@ -47,6 +47,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
             serviceList: serviceList.data!,
             isNavigate: false,
             message: "",
+            needLoader: false,
           ),
         );
       } else {
@@ -60,6 +61,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
                 ? itemList.message!
                 : ClientConstant.unableToSetDropdown,
             isNavigate: false,
+            needLoader: false,
           ),
         );
       }
@@ -70,6 +72,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
           serviceList: [],
           message: ClientConstant.serverError,
           isNavigate: false,
+          needLoader: false,
         ),
       );
     }
@@ -81,7 +84,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
   ) async {
     if (state is! PriceAddStateDropdownDataLoaded) return;
     final currentState = state as PriceAddStateDropdownDataLoaded;
-    emit(PriceAddStateLoading());
+    emit(currentState.copyWith(needLoader: true, isNavigate: false, message: ""));
     try {
       RequestPriceAdd priceAdd = RequestPriceAdd(
         price: event.price,
@@ -99,6 +102,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
         currentState.copyWith(
           message: useCaseGeneric.message!,
           isNavigate: useCaseGeneric.isSuccess,
+          needLoader: false,
         ),
       );
     } catch (e) {
@@ -106,6 +110,7 @@ class PriceAddBloc extends Bloc<PriceAddEvent, PriceAddState> {
         currentState.copyWith(
           message: ClientConstant.serverError,
           isNavigate: false,
+          needLoader: false,
         ),
       );
     }
