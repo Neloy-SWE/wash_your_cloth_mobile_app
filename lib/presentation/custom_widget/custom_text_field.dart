@@ -313,23 +313,23 @@ class _CustomFieldDropdownSearchState<T>
     super.initState();
     _filteredItems = List<T>.from(widget.items);
     _focusNode.addListener(_handleFocusChange);
-    _errorText = _getValidationError(widget.controller.text);
+    // _errorText = _getValidationError(widget.controller.text);
   }
 
-  @override
-  void didUpdateWidget(covariant CustomFieldDropdownSearch<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.items != widget.items) {
-      _filteredItems = List<T>.from(widget.items);
-      _validateValue();
-      if (_isOpen) {
-        _overlayEntry?.markNeedsBuild();
-      }
-    }
-    if (oldWidget.validator != widget.validator) {
-      _validateValue();
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant CustomFieldDropdownSearch<T> oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.items != widget.items) {
+  //     _filteredItems = List<T>.from(widget.items);
+  //     _validateValue();
+  //     if (_isOpen) {
+  //       _overlayEntry?.markNeedsBuild();
+  //     }
+  //   }
+  //   if (oldWidget.validator != widget.validator) {
+  //     _validateValue();
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -349,14 +349,20 @@ class _CustomFieldDropdownSearchState<T>
   }
 
   String? _getValidationError(String? value) {
-    if (value != null && value.isNotEmpty) {
-      final exists = widget.items.any(
-        (item) => widget.itemAsString(item) == value,
-      );
-      if (!exists) {
-        return AppValidator.validatorInvalidDropdownSelect;
+    // if (value != null && value.isNotEmpty) {
+    final exists = widget.items.any(
+      (item) => widget.itemAsString(item) == value,
+    );
+    if (!exists) {
+      if (_errorText == null || _errorText!.isEmpty) {
+        setState(() {
+          _errorText = AppValidator.validatorInvalidDropdownSelect;
+        });
       }
+
+      return AppValidator.validatorInvalidDropdownSelect;
     }
+    // }
     if (widget.validator != null) {
       return widget.validator!(value);
     }
@@ -371,13 +377,6 @@ class _CustomFieldDropdownSearchState<T>
     setState(() {
       _errorText = newError;
     });
-    if (_isOpen) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _isOpen) {
-          _overlayEntry?.markNeedsBuild();
-        }
-      });
-    }
   }
 
   void _filterItems(String query) {
@@ -394,11 +393,18 @@ class _CustomFieldDropdownSearchState<T>
           )
           .toList();
     }
+
     _validateValue();
-    if (_isOpen) {
-      _overlayEntry?.markNeedsBuild();
-    }
     setState(() {});
+
+    // Re-position overlay AFTER layout frame finishes updating the error box height
+    if (_isOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _isOpen) {
+          _overlayEntry?.markNeedsBuild();
+        }
+      });
+    }
   }
 
   void _openOverlay() {
@@ -432,7 +438,7 @@ class _CustomFieldDropdownSearchState<T>
                   borderRadius: BorderRadius.circular(8),
                   child: _filteredItems.isEmpty
                       ? Padding(
-                          padding: EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.all(12.0),
                           child: Text(
                             AppText.noOptionFound,
                             style: AppText.style.bodyLarge!.copyWith(
@@ -445,7 +451,7 @@ class _CustomFieldDropdownSearchState<T>
                           thumbVisibility: true,
                           child: ListView.separated(
                             controller: _scrollController,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 12.0,
                               vertical: 10.0,
                             ),
@@ -462,16 +468,18 @@ class _CustomFieldDropdownSearchState<T>
                                   _validateValue();
                                   _focusNode.unfocus();
                                 },
-                                child: Text(
-                                  text,
-                                  style: AppText.style.bodyMedium,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    text,
+                                    style: AppText.style.bodyMedium,
+                                  ),
                                 ),
                               );
                             },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                                  return Divider();
-                                },
+                            separatorBuilder: (context, index) {
+                              return const Divider(height: 1);
+                            },
                           ),
                         ),
                 ),
@@ -484,11 +492,6 @@ class _CustomFieldDropdownSearchState<T>
     Overlay.of(context).insert(_overlayEntry!);
     setState(() {
       _isOpen = true;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _isOpen) {
-        _overlayEntry?.markNeedsBuild();
-      }
     });
   }
 
@@ -516,6 +519,7 @@ class _CustomFieldDropdownSearchState<T>
             title: widget.title!,
             isRequired: widget.isRequired,
           ),
+          AppSize.gapH05,
         ],
         CompositedTransformTarget(
           link: _layerLink,
@@ -608,10 +612,15 @@ class _CustomFieldDropdownSearchState<T>
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 12.0,
-                    top: 0.0,
+                    top: 4.0,
                     right: 12.0,
                   ),
-                  child: Text(_errorText!, style: AppText.style.bodySmall),
+                  child: Text(
+                    _errorText!,
+                    style: AppText.style.bodySmall!.copyWith(
+                      color: AppColor.colorDanger,
+                    ),
+                  ),
                 ),
               ],
             ],
