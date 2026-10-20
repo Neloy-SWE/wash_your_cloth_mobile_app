@@ -47,4 +47,8 @@ class ApiPath {
   static const updateUser = "$user/update";
   static const changePassword = "$user/change-password";
   static const changePhone = "$user/change-phone";
+
+  // notification
+  static const String notification = "/notification";
+  static const String notificationList = "$notification/list";
 }
