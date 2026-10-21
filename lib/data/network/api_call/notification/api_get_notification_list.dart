@@ -12,7 +12,10 @@ import '../../../model/model_notification_list.dart';
 import '../../api_path.dart';
 
 abstract class IApiGetNotificationList {
-  Future<(ModelNotificationList?, ModelError?)> getList();
+  Future<(ModelNotificationList?, ModelError?)> getList({
+    required int currentPage,
+    required int pageSize,
+  });
 }
 
 class ApiGetNotificationList implements IApiGetNotificationList {
@@ -21,14 +24,21 @@ class ApiGetNotificationList implements IApiGetNotificationList {
   const ApiGetNotificationList({required this.client});
 
   @override
-  Future<(ModelNotificationList?, ModelError?)> getList() async {
+  Future<(ModelNotificationList?, ModelError?)> getList({
+    required int currentPage,
+    required int pageSize,
+  }) async {
     try {
       Response response = await client.request.get(
         ApiPath.notificationList,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+        },
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
         ModelNotificationList modelNotificationList =
-        ModelNotificationList.fromJson(response.data);
+            ModelNotificationList.fromJson(response.data);
         return (modelNotificationList, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
