@@ -18,16 +18,23 @@ class ModelNotificationList {
     required this.notifications,
   });
 
-  factory ModelNotificationList.fromRawJson(String str) => ModelNotificationList.fromJson(json.decode(str));
+  factory ModelNotificationList.fromRawJson(String str) =>
+      ModelNotificationList.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModelNotificationList.fromJson(Map<String, dynamic> json) => ModelNotificationList(
-    currentPage: json["currentPage"],
-    pageSize: json["pageSize"],
-    totalItem: json["totalItem"],
-    notifications: List<Notification>.from(json["notifications"].map((x) => Notification.fromJson(x))),
-  );
+  factory ModelNotificationList.fromJson(Map<String, dynamic> json) =>
+      ModelNotificationList(
+        currentPage: (json["currentPage"] as num).toInt(),
+        pageSize: (json["pageSize"] as num).toInt(),
+        totalItem: (json["totalItem"] as num).toInt(),
+        notifications: List<Notification>.from(
+          (json["notifications"] as List).map(
+            (item) =>
+                Notification.fromJson(Map<String, dynamic>.from(item as Map)),
+          ),
+        ),
+      );
 
   Map<String, dynamic> toJson() => {
     "currentPage": currentPage,
@@ -56,18 +63,29 @@ class Notification {
     required this.createdAt,
   });
 
-  factory Notification.fromRawJson(String str) => Notification.fromJson(json.decode(str));
+  factory Notification.fromRawJson(String str) =>
+      Notification.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Notification.fromJson(Map<String, dynamic> json) => Notification(
-    id: json["id"],
-    title: json["title"],
-    message: json["message"],
-    isRead: json["isRead"],
-    navigation: json["navigation"],
-    metaData: json["metaData"],
-    createdAt: DateTime.parse(json["createdAt"]),
+    id: json["id"] as String,
+    title: json["title"] as String,
+    message: json["message"] as String,
+    isRead: json["isRead"] as bool,
+    navigation: json["navigation"] as String,
+    metaData: json["metaData"]?.toString() ?? "",
+    createdAt: DateTime.parse(json["createdAt"] as String),
+  );
+
+  Notification copyWith({bool? isRead}) => Notification(
+    id: id,
+    title: title,
+    message: message,
+    isRead: isRead ?? this.isRead,
+    navigation: navigation,
+    metaData: metaData,
+    createdAt: createdAt,
   );
 
   Map<String, dynamic> toJson() => {
