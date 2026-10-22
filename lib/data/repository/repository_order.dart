@@ -3,12 +3,14 @@ Created by Neloy on 15 July, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
+import '../../utilities/app_constant.dart';
 import '../model/model_order_details_shop.dart';
 import '../model/model_order_details_user.dart';
 import '../model/model_order_list.dart';
 import '../network/api_call/order/shop/api_get_order_details_shop.dart';
 import '../network/api_call/order/user/api_get_order_details_user.dart';
 import '../network/api_call/order/api_get_order_list.dart';
+import '../network/api_call/order/api_update_order_status.dart';
 import '../network/api_call/order/user/api_place_order.dart';
 import '../use_case/order/use_case_order_place.dart';
 import '../use_case/use_case_generic.dart';
@@ -25,6 +27,11 @@ abstract class IRepositoryOrder {
   });
 
   Future<UseCaseGeneric> placeOrder({required OrderPlaceData orderPlaceData});
+
+  Future<UseCaseGeneric> updateStatus({
+    required String orderId,
+    required OrderStatusAction action,
+  });
 }
 
 class RepositoryOrder implements IRepositoryOrder {
@@ -32,12 +39,14 @@ class RepositoryOrder implements IRepositoryOrder {
   final IApiGetOrderDetailsUser apiGetOrderDetailsUser;
   final IApiGetOrderDetailsShop apiGetOrderDetailsShop;
   final IApiPlaceOrder apiPlaceOrder;
+  final IApiOrderStatusUpdate apiUpdateOrderStatus;
 
   const RepositoryOrder({
     required this.apiGetOrderList,
     required this.apiGetOrderDetailsUser,
     required this.apiPlaceOrder,
     required this.apiGetOrderDetailsShop,
+    required this.apiUpdateOrderStatus,
   });
 
   @override
@@ -112,6 +121,26 @@ class RepositoryOrder implements IRepositoryOrder {
         return UseCaseGeneric.fromModelError(modelError);
       }
     } catch (e) {
+      return UseCaseGeneric.serverError();
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric> updateStatus({
+    required String orderId,
+    required OrderStatusAction action,
+  }) async {
+    try {
+      final (modelOrderStatusUpdate, modelError) = await apiUpdateOrderStatus
+          .updateStatus(orderId: orderId, action: action);
+      if (modelError == null && modelOrderStatusUpdate != null) {
+        return UseCaseGeneric(
+          isSuccess: true,
+          message: modelOrderStatusUpdate.message,
+        );
+      }
+      return UseCaseGeneric.fromModelError(modelError!);
+    } catch (error) {
       return UseCaseGeneric.serverError();
     }
   }

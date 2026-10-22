@@ -17,6 +17,11 @@ class ApiPath {
   static const String orderDetailsUser = "$order/details-user/";
   static const String orderDetailsShop = "$order/details-shop/";
   static const String place = "$order/place/";
+  static const String orderAccept = "$order/accept/";
+  static const String orderReject = "$order/reject/";
+  static const String orderReady = "$order/ready/";
+  static const String orderHandoverRequest = "$order/handover-request/";
+  static const String orderConfirmReceived = "$order/confirm-received/";
 
   // shop
   static const String shop = "/shop";
@@ -51,4 +56,6 @@ class ApiPath {
   // notification
   static const String notification = "/notification";
   static const String notificationList = "$notification/list";
+  static const String notificationUnreadCount = "$notification/unread-count";
+  static const String notificationRead = "$notification/read/";
 }

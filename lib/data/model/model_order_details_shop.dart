@@ -32,6 +32,20 @@ class ModelOrderDetailsShop {
     required this.orderItems,
   });
 
+  ModelOrderDetailsShop copyWith({String? status}) => ModelOrderDetailsShop(
+    id: id,
+    trackingId: trackingId,
+    status: status ?? this.status,
+    totalPrice: totalPrice,
+    deliveryCharge: deliveryCharge,
+    note: note,
+    userFirstName: userFirstName,
+    userLastName: userLastName,
+    userAddress: userAddress,
+    userPhone: userPhone,
+    orderItems: orderItems,
+  );
+
   factory ModelOrderDetailsShop.fromRawJson(String str) =>
       ModelOrderDetailsShop.fromJson(json.decode(str));
 
