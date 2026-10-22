@@ -18,11 +18,36 @@ class OrderDetailsShopStateLoading extends OrderDetailsShopState {}
 
 class OrderDetailsShopStateFetch extends OrderDetailsShopState {
   final ModelOrderDetailsShop orderDetailsShop;
+  final bool isUpdating;
+  final String actionMessage;
+  final String actionError;
 
-  const OrderDetailsShopStateFetch({required this.orderDetailsShop});
+  const OrderDetailsShopStateFetch({
+    required this.orderDetailsShop,
+    this.isUpdating = false,
+    this.actionMessage = "",
+    this.actionError = "",
+  });
+
+  OrderDetailsShopStateFetch copyWith({
+    ModelOrderDetailsShop? orderDetailsShop,
+    bool? isUpdating,
+    String? actionMessage,
+    String? actionError,
+  }) => OrderDetailsShopStateFetch(
+    orderDetailsShop: orderDetailsShop ?? this.orderDetailsShop,
+    isUpdating: isUpdating ?? this.isUpdating,
+    actionMessage: actionMessage ?? "",
+    actionError: actionError ?? "",
+  );
 
   @override
-  List<Object?> get props => [orderDetailsShop];
+  List<Object?> get props => [
+    orderDetailsShop,
+    isUpdating,
+    actionMessage,
+    actionError,
+  ];
 }
 
 class OrderDetailsShopStateResult extends OrderDetailsShopState {

@@ -20,3 +20,16 @@ class OrderDetailsShopEventFetch extends OrderDetailsShopEvent {
   @override
   List<Object?> get props => [orderId];
 }
+
+class OrderDetailsShopEventUpdateStatus extends OrderDetailsShopEvent {
+  final String orderId;
+  final OrderStatusAction action;
+
+  const OrderDetailsShopEventUpdateStatus({
+    required this.orderId,
+    required this.action,
+  });
+
+  @override
+  List<Object?> get props => [orderId, action];
+}
