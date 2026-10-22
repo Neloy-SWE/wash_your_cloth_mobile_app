@@ -25,7 +25,7 @@ class NotificationStatusEventStop extends NotificationStatusEvent {
 }
 
 class NotificationStatusEventIncoming extends NotificationStatusEvent {
-  final Notification notification;
+  final NotificationItem notification;
 
   const NotificationStatusEventIncoming({required this.notification});
 

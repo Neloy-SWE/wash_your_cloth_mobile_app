@@ -26,7 +26,7 @@ class NotificationListEventMarkRead extends NotificationListEvent {
 }
 
 class NotificationListEventNewNotification extends NotificationListEvent {
-  final Notification notification;
+  final NotificationItem notification;
 
   const NotificationListEventNewNotification({required this.notification});
 

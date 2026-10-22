@@ -7,7 +7,7 @@ part of 'notification_status_bloc.dart';
 
 class NotificationStatusState extends Equatable {
   final int unreadCount;
-  final Notification? latestNotification;
+  final NotificationItem? latestNotification;
 
   const NotificationStatusState({
     this.unreadCount = 0,
@@ -16,7 +16,7 @@ class NotificationStatusState extends Equatable {
 
   NotificationStatusState copyWith({
     int? unreadCount,
-    Notification? latestNotification,
+    NotificationItem? latestNotification,
   }) => NotificationStatusState(
     unreadCount: unreadCount ?? this.unreadCount,
     latestNotification: latestNotification ?? this.latestNotification,

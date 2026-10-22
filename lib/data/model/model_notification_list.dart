@@ -9,7 +9,7 @@ class ModelNotificationList {
   final int currentPage;
   final int pageSize;
   final int totalItem;
-  final List<Notification> notifications;
+  final List<NotificationItem> notifications;
 
   ModelNotificationList({
     required this.currentPage,
@@ -28,10 +28,10 @@ class ModelNotificationList {
         currentPage: (json["currentPage"] as num).toInt(),
         pageSize: (json["pageSize"] as num).toInt(),
         totalItem: (json["totalItem"] as num).toInt(),
-        notifications: List<Notification>.from(
+        notifications: List<NotificationItem>.from(
           (json["notifications"] as List).map(
             (item) =>
-                Notification.fromJson(Map<String, dynamic>.from(item as Map)),
+                NotificationItem.fromJson(Map<String, dynamic>.from(item as Map)),
           ),
         ),
       );
@@ -44,7 +44,7 @@ class ModelNotificationList {
   };
 }
 
-class Notification {
+class NotificationItem {
   final String id;
   final String title;
   final String message;
@@ -53,7 +53,7 @@ class Notification {
   final String metaData;
   final DateTime createdAt;
 
-  Notification({
+  NotificationItem({
     required this.id,
     required this.title,
     required this.message,
@@ -63,12 +63,12 @@ class Notification {
     required this.createdAt,
   });
 
-  factory Notification.fromRawJson(String str) =>
-      Notification.fromJson(json.decode(str));
+  factory NotificationItem.fromRawJson(String str) =>
+      NotificationItem.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
+  factory NotificationItem.fromJson(Map<String, dynamic> json) => NotificationItem(
     id: json["id"] as String,
     title: json["title"] as String,
     message: json["message"] as String,
@@ -78,7 +78,7 @@ class Notification {
     createdAt: DateTime.parse(json["createdAt"] as String),
   );
 
-  Notification copyWith({bool? isRead}) => Notification(
+  NotificationItem copyWith({bool? isRead}) => NotificationItem(
     id: id,
     title: title,
     message: message,

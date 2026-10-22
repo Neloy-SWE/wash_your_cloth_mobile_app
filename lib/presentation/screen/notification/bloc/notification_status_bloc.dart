@@ -73,7 +73,7 @@ class NotificationStatusBloc
       });
       socket.on("notification:new", (dynamic payload) {
         try {
-          final notification = Notification.fromJson(
+          final notification = NotificationItem.fromJson(
             Map<String, dynamic>.from(payload as Map),
           );
           add(NotificationStatusEventIncoming(notification: notification));

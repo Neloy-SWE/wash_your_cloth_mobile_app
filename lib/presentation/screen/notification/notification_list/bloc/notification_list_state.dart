@@ -6,7 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 part of 'notification_list_bloc.dart';
 
 class NotificationListState extends Equatable {
-  final List<Notification> notifications;
+  final List<NotificationItem> notifications;
   final int currentPage;
   final int pageSize;
   final int totalItem;
@@ -33,7 +33,7 @@ class NotificationListState extends Equatable {
   bool get hasMore => notifications.length < totalItem;
 
   NotificationListState copyWith({
-    List<Notification>? notifications,
+    List<NotificationItem>? notifications,
     int? currentPage,
     int? pageSize,
     int? totalItem,
