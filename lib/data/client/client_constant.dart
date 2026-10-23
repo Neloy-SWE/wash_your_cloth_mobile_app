@@ -31,6 +31,7 @@ class ClientConstant {
   static const String refreshToken = "refreshToken";
   static const String expirationToken = "expirationToken";
   static const String expirationRefreshToken = "expirationRefreshToken";
+  static const String installationId = "installationId";
   static const String phone = "phone";
   static const String password = "password";
   static const String role = "role";
@@ -40,5 +41,5 @@ class ClientConstant {
   static const String currentPage = "currentPage";
   static const String pageSize = "pageSize";
   static const String unreadCount = "unreadCount";
-
+  static const String allDevices = "allDevices";
 }
