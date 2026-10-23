@@ -7,13 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/data/network/api_call/notification/api_get_notification_list.dart';
 import 'package:wash_your_cloth_mobile_app/data/repository/repository_notification.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_snack_bar.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/screen/notification/bloc/notification_status_bloc.dart';
 
 import 'data/client/client.dart';
+import 'data/client/auth_session_expiry_notifier.dart';
 import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_change_password.dart';
 import 'data/network/api_call/authentication/api_change_phone.dart';
 import 'data/network/api_call/authentication/api_login.dart';
+import 'data/network/api_call/authentication/api_logout.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/authentication/api_refresh_token.dart';
 import 'data/network/api_call/authentication/api_registration.dart';
@@ -50,6 +53,7 @@ import 'data/repository/repository_shop.dart';
 import 'data/repository/repository_shop_inventory.dart';
 import 'presentation/bloc_global/global_bloc.dart';
 import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
+import 'presentation/screen/authentication/logout/bloc/logout_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 import 'router/app_router.dart';
 import 'utilities/app_text.dart';
@@ -69,6 +73,11 @@ class MyApp extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MultiRepositoryProvider(
         providers: [
+          RepositoryProvider<AuthSessionExpiryNotifier>(
+            create: (context) => AuthSessionExpiryNotifier(),
+            dispose: (notifier) => notifier.dispose(),
+          ),
+
           RepositoryProvider<LocalStorageService>(
             create: (context) => LocalStorageService(),
           ),
@@ -76,6 +85,8 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<Client>(
             create: (context) => Client(
               localStorageService: context.read<LocalStorageService>(),
+              authSessionExpiryNotifier: context
+                  .read<AuthSessionExpiryNotifier>(),
             ),
           ),
 
@@ -86,6 +97,10 @@ class MyApp extends StatelessWidget {
 
           RepositoryProvider<IApiLogin>(
             create: (context) => ApiLogin(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiLogout>(
+            create: (context) => ApiLogout(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiRegistration>(
@@ -238,6 +253,7 @@ class MyApp extends StatelessWidget {
               localStorageService: context.read<LocalStorageService>(),
               apiRefreshToken: context.read<IApiRefreshToken>(),
               apiLogin: context.read<IApiLogin>(),
+              apiLogout: context.read<IApiLogout>(),
               apiRegistration: context.read<IApiRegistration>(),
               apiOTPVerify: context.read<IApiOTPVerify>(),
               apiChangePassword: context.read<IApiChangePassword>(),
@@ -306,7 +322,15 @@ class MyApp extends StatelessWidget {
               create: (context) => GlobalBloc(
                 repositoryAuthentication: context
                     .read<IRepositoryAuthentication>(),
+                authSessionExpiryNotifier: context
+                    .read<AuthSessionExpiryNotifier>(),
               )..add(GlobalEventGetLoginStatus()),
+            ),
+            BlocProvider<LogoutBloc>(
+              create: (context) => LogoutBloc(
+                repositoryAuthentication: context
+                    .read<IRepositoryAuthentication>(),
+              ),
             ),
 
             BlocProvider<OrderListUserBloc>(
@@ -323,6 +347,8 @@ class MyApp extends StatelessWidget {
               create: (context) => NotificationStatusBloc(
                 repositoryNotification: context.read<IRepositoryNotification>(),
                 localStorageService: context.read<LocalStorageService>(),
+                authSessionExpiryNotifier: context
+                    .read<AuthSessionExpiryNotifier>(),
               ),
             ),
           ],
@@ -332,11 +358,27 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.get,
             title: AppText.appTitle,
             builder: (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(
-                  context,
-                ).copyWith(textScaler: TextScaler.noScaling),
-                child: child!,
+              return BlocListener<GlobalBloc, GlobalState>(
+                listenWhen: (previous, current) =>
+                    !previous.sessionExpired && current.sessionExpired,
+                listener: (context, state) {
+                  context.read<NotificationStatusBloc>().add(
+                    const NotificationStatusEventStop(),
+                  );
+                  if (!state.deferRedirectUntilResultDismissed) {
+                    AppRouter.door.go(AppRouter.screenRole);
+                    CustomSnackBar.primary(
+                      context: context,
+                      contentText: AppText.sessionExpireMessage,
+                    );
+                  }
+                },
+                child: MediaQuery(
+                  data: MediaQuery.of(
+                    context,
+                  ).copyWith(textScaler: TextScaler.noScaling),
+                  child: child!,
+                ),
               );
             },
           ),

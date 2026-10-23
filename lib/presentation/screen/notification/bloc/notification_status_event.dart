@@ -24,6 +24,10 @@ class NotificationStatusEventStop extends NotificationStatusEvent {
   const NotificationStatusEventStop();
 }
 
+class NotificationStatusEventSessionExpired extends NotificationStatusEvent {
+  const NotificationStatusEventSessionExpired();
+}
+
 class NotificationStatusEventIncoming extends NotificationStatusEvent {
   final NotificationItem notification;
 

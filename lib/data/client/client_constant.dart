@@ -19,7 +19,7 @@ class ClientConstant {
   static const String retry = "retry";
 
   // status:
-  static const String serverError = "Server error!";
+  static const String serverError = "Session expire!";
   static const String unableToGetDetails = "Unable to get details!";
   static const String unableToSetDropdown = "Unable to set dropdown!";
   static const String validToken = "validToken";
@@ -31,6 +31,7 @@ class ClientConstant {
   static const String refreshToken = "refreshToken";
   static const String expirationToken = "expirationToken";
   static const String expirationRefreshToken = "expirationRefreshToken";
+  static const String installationId = "installationId";
   static const String phone = "phone";
   static const String password = "password";
   static const String role = "role";
@@ -40,5 +41,5 @@ class ClientConstant {
   static const String currentPage = "currentPage";
   static const String pageSize = "pageSize";
   static const String unreadCount = "unreadCount";
-
+  static const String allDevices = "allDevices";
 }

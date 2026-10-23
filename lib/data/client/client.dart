@@ -4,6 +4,7 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:dio/dio.dart';
+import 'package:wash_your_cloth_mobile_app/data/client/auth_session_expiry_notifier.dart';
 import 'package:wash_your_cloth_mobile_app/data/local/local_storage_service.dart';
 
 import 'client_constant.dart';
@@ -12,6 +13,7 @@ import 'client_interceptor.dart';
 class Client {
   late Dio request;
   final LocalStorageService localStorageService;
+  final AuthSessionExpiryNotifier authSessionExpiryNotifier;
 
   final BaseOptions options = BaseOptions(
     baseUrl: ClientConstant.baseUrl,
@@ -22,8 +24,16 @@ class Client {
     },
   );
 
-  Client({required this.localStorageService}) {
+  Client({
+    required this.localStorageService,
+    required this.authSessionExpiryNotifier,
+  }) {
     request = Dio(options);
-    request.interceptors.add(ClientInterceptor(localStorageService: localStorageService));
+    request.interceptors.add(
+      ClientInterceptor(
+        localStorageService: localStorageService,
+        authSessionExpiryNotifier: authSessionExpiryNotifier,
+      ),
+    );
   }
 }

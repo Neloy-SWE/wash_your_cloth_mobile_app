@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 
+import '../../../../data/client/auth_session_expiry_notifier.dart';
 import '../../../../data/client/client_constant.dart';
 import '../../../../data/local/local_storage_service.dart';
 import '../../../../data/model/model_notification_list.dart';
@@ -21,6 +22,7 @@ class NotificationStatusBloc
     extends Bloc<NotificationStatusEvent, NotificationStatusState> {
   final IRepositoryNotification repositoryNotification;
   final LocalStorageService localStorageService;
+  final AuthSessionExpiryNotifier authSessionExpiryNotifier;
   socket_io.Socket? _socket;
   String? _socketToken;
   final Set<String> _receivedNotificationIds = {};
@@ -29,11 +31,13 @@ class NotificationStatusBloc
   NotificationStatusBloc({
     required this.repositoryNotification,
     required this.localStorageService,
+    required this.authSessionExpiryNotifier,
   }) : super(const NotificationStatusState()) {
     on<NotificationStatusEventStart>(_onStart);
     on<NotificationStatusEventRefresh>(_onRefresh);
     on<NotificationStatusEventIncoming>(_onIncoming);
     on<NotificationStatusEventStop>(_onStop);
+    on<NotificationStatusEventSessionExpired>(_onSessionExpired);
   }
 
   Future<void> _onStart(
@@ -80,6 +84,9 @@ class NotificationStatusBloc
         } catch (error) {
           debugPrint("Unable to parse incoming notification: $error");
         }
+      });
+      socket.on("session:revoked", (_) {
+        add(const NotificationStatusEventSessionExpired());
       });
       socket.onConnectError((error) {
         debugPrint("Notification socket connection failed: $error");
@@ -131,11 +138,27 @@ class NotificationStatusBloc
     emit(const NotificationStatusState());
   }
 
+  Future<void> _onSessionExpired(
+    NotificationStatusEventSessionExpired event,
+    Emitter<NotificationStatusState> emit,
+  ) async {
+    _active = false;
+    _disconnect();
+    await localStorageService.clearAuthData();
+    emit(const NotificationStatusState());
+    authSessionExpiryNotifier.notifySessionExpired();
+  }
+
   void _disconnect() {
-    _socket?.dispose();
-    _socket = null;
-    _socketToken = null;
-    _receivedNotificationIds.clear();
+    try {
+      _socket?.disconnect();
+    } catch (e) {
+      debugPrint("Ignored socket teardown error: $e");
+    } finally {
+      _socket = null;
+      _socketToken = null;
+      _receivedNotificationIds.clear();
+    }
   }
 
   @override

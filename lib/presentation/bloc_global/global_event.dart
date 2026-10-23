@@ -27,6 +27,14 @@ class GlobalEventSetRole extends GlobalEvent {
 
 class GlobalEventGetLoginStatus extends GlobalEvent {}
 
+class GlobalEventLogoutCompleted extends GlobalEvent {}
+
+class GlobalEventSessionExpired extends GlobalEvent {
+  final bool deferRedirectUntilResultDismissed;
+
+  GlobalEventSessionExpired({required this.deferRedirectUntilResultDismissed});
+}
+
 // class GlobalEventSetProfile extends GlobalEvent {}
 
 // class GlobalEventUpdateProfile extends GlobalEvent {}
