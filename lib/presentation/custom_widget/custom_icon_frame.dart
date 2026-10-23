@@ -10,11 +10,17 @@ import '../../utilities/app_color.dart';
 class CustomIconFrame extends StatelessWidget {
   final double size;
   final IconData iconData;
+  final Color? colorBackground;
+  final Color colorIcon;
+  final double sizeIcon;
 
   const CustomIconFrame({
     super.key,
     required this.size,
     required this.iconData,
+    this.colorBackground,
+    this.colorIcon = Colors.white,
+    this.sizeIcon = 30,
   });
 
   @override
@@ -23,22 +29,27 @@ class CustomIconFrame extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            AppColor.colorBackgroundIconTop,
-            AppColor.colorBackgroundIconBottom,
-          ],
-        ),
+        gradient: colorBackground == null
+            ? LinearGradient(
+                colors: [
+                  AppColor.colorBackgroundIconTop,
+                  AppColor.colorBackgroundIconBottom,
+                ],
+              )
+            : null,
+        color: colorBackground,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        boxShadow: colorBackground == null
+            ? [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ]
+            : null,
       ),
-      child: Icon(iconData, color: Colors.white, size: 30),
+      child: Icon(iconData, color: colorIcon, size: sizeIcon),
     );
   }
 }

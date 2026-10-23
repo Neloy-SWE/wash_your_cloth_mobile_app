@@ -34,6 +34,21 @@ class ModelOrderDetailsUser {
     required this.note,
   });
 
+  ModelOrderDetailsUser copyWith({String? status}) => ModelOrderDetailsUser(
+    id: id,
+    trackingId: trackingId,
+    status: status ?? this.status,
+    totalPrice: totalPrice,
+    shopName: shopName,
+    ownerFirstName: ownerFirstName,
+    ownerLastName: ownerLastName,
+    shopAddress: shopAddress,
+    shopPhone: shopPhone,
+    deliveryCharge: deliveryCharge,
+    orderItems: orderItems,
+    note: note,
+  );
+
   factory ModelOrderDetailsUser.fromRawJson(String str) =>
       ModelOrderDetailsUser.fromJson(json.decode(str));
 

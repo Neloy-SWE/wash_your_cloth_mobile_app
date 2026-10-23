@@ -37,5 +37,8 @@ class ClientConstant {
   static const String authorization = "Authorization";
   static const String bearer = "Bearer";
   static const String message = "message";
+  static const String currentPage = "currentPage";
+  static const String pageSize = "pageSize";
+  static const String unreadCount = "unreadCount";
 
 }

@@ -28,7 +28,7 @@ class CustomStatusBadge extends StatelessWidget {
     );
 
     return switch (orderStatus) {
-      Status.pending => (
+      Status.pending || Status.handoverRequest => (
         AppColor.colorBackgroundStatusPending,
         AppColor.colorBorderStatusPending,
       ),
@@ -40,7 +40,7 @@ class CustomStatusBadge extends StatelessWidget {
         AppColor.colorBackgroundStatusRejected,
         AppColor.colorDanger,
       ),
-      Status.open || Status.ready || Status.delivered => (
+      Status.open || Status.ready || Status.received || Status.delivered => (
         AppColor.colorBackgroundStatusReady,
         AppColor.colorBorderStatusReady,
       ),

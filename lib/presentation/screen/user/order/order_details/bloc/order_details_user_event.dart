@@ -20,3 +20,16 @@ class OrderDetailsUserEventFetch extends OrderDetailsUserEvent {
   @override
   List<Object?> get props => [orderId];
 }
+
+class OrderDetailsUserEventUpdateStatus extends OrderDetailsUserEvent {
+  final String orderId;
+  final OrderStatusAction action;
+
+  const OrderDetailsUserEventUpdateStatus({
+    required this.orderId,
+    required this.action,
+  });
+
+  @override
+  List<Object?> get props => [orderId, action];
+}

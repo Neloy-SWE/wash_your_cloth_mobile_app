@@ -6,14 +6,13 @@ Email: taufiqneloy.swe@gmail.com
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/price/price_add/bloc/price_add_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/shop/inventory/service/service_add/bloc/service_add_bloc.dart';
 
 import '../data/repository/repository_authentication.dart';
 import '../data/repository/repository_order.dart';
 import '../data/repository/repository_profile.dart';
 import '../data/repository/repository_shop.dart';
 import '../data/repository/repository_shop_inventory.dart';
+import '../data/repository/repository_notification.dart';
 import '../data/use_case/order/use_case_order_place.dart';
 import '../presentation/screen/authentication/change_password/bloc/change_password_bloc.dart';
 import '../presentation/screen/authentication/change_password/screen_change_password.dart';
@@ -25,6 +24,8 @@ import '../presentation/screen/authentication/otp/bloc/otp_bloc.dart';
 import '../presentation/screen/authentication/otp/screen_otp.dart';
 import '../presentation/screen/authentication/registration/bloc/registration_bloc.dart';
 import '../presentation/screen/authentication/registration/screen_registration.dart';
+import '../presentation/screen/notification/notification_list/bloc/notification_list_bloc.dart';
+import '../presentation/screen/notification/notification_list/screen_notification_list.dart';
 import '../presentation/screen/role/screen_role.dart';
 import '../presentation/screen/shop/home/screen_home_shop.dart';
 import '../presentation/screen/shop/inventory/item/item_add/bloc/item_add_bloc.dart';
@@ -33,11 +34,13 @@ import '../presentation/screen/shop/inventory/item/item_list/bloc/item_list_bloc
 import '../presentation/screen/shop/inventory/item/item_list/screen_item_list.dart';
 import '../presentation/screen/shop/inventory/item/item_update/bloc/item_update_bloc.dart';
 import '../presentation/screen/shop/inventory/item/item_update/screen_item_update.dart';
+import '../presentation/screen/shop/inventory/price/price_add/bloc/price_add_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_add/screen_price_add.dart';
 import '../presentation/screen/shop/inventory/price/price_list/bloc/price_list_shop_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_list/screen_price_list.dart';
 import '../presentation/screen/shop/inventory/price/price_update/bloc/price_update_bloc.dart';
 import '../presentation/screen/shop/inventory/price/price_update/screen_price_update.dart';
+import '../presentation/screen/shop/inventory/service/service_add/bloc/service_add_bloc.dart';
 import '../presentation/screen/shop/inventory/service/service_add/screen_service_add.dart';
 import '../presentation/screen/shop/inventory/service/service_list/bloc/service_list_bloc.dart';
 import '../presentation/screen/shop/inventory/service/service_list/screen_service_list.dart';
@@ -101,6 +104,7 @@ class AppRouter {
   static const String screenItemList = "/screenItemList";
   static const String screenItemUpdate = "/screenItemUpdate";
   static const String screenItemAdd = "/screenItemAdd";
+  static const String screenNotificationList = "/screenNotificationList";
 
   static final GoRouter door = GoRouter(
     navigatorKey: navigator,
@@ -512,6 +516,16 @@ class AppRouter {
             child: ScreenItemAdd(),
           );
         },
+      ),
+
+      GoRoute(
+        path: screenNotificationList,
+        builder: (context, state) => BlocProvider<NotificationListBloc>(
+          create: (context) => NotificationListBloc(
+            repositoryNotification: context.read<IRepositoryNotification>(),
+          )..add(NotificationListEventFetch()),
+          child: ScreenNotificationList(),
+        ),
       ),
     ],
   );

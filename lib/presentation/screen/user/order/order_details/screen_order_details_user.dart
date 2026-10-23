@@ -9,6 +9,8 @@ import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_car
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_details_item.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_dialogue.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_snack_bar.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_order_status_actions.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_title.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
@@ -16,6 +18,7 @@ import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 import '../../../../../utilities/app_color.dart';
 import '../../../../custom_widget/custom_not_found.dart';
 import '../../../../custom_widget/custom_status_badge.dart';
+import '../order_list/bloc/order_list_user_bloc.dart';
 import 'bloc/order_details_user_bloc.dart';
 
 class ScreenOrderDetailsUser extends StatelessWidget {
@@ -31,7 +34,26 @@ class ScreenOrderDetailsUser extends StatelessWidget {
             if (state is OrderDetailsUserStateLoading) {
               CallDialogue.showLoader(context);
             } else if (state is OrderDetailsUserStateFetch) {
-              CallDialogue.hideLoader(context);
+              if (!state.isUpdating &&
+                  state.actionMessage.isEmpty &&
+                  state.actionError.isEmpty) {
+                CallDialogue.hideLoader(context);
+              }
+              if (state.actionMessage.isNotEmpty) {
+                context.read<OrderListUserBloc>().add(
+                  OrderListUserEventFetch(),
+                );
+                CustomSnackBar.primary(
+                  context: context,
+                  contentText: state.actionMessage,
+                );
+              } else if (state.actionError.isNotEmpty) {
+                CustomSnackBar.primary(
+                  context: context,
+                  contentText: state.actionError,
+                  backgroundColor: AppColor.colorDanger,
+                );
+              }
             } else if (state is OrderDetailsUserStateResult) {
               CallDialogue.hideLoader(context);
 
@@ -255,8 +277,20 @@ class ScreenOrderDetailsUser extends StatelessWidget {
                       title: AppText.grandTotal,
                       value: "${order.totalPrice} ${AppText.bdtCapital}",
                     ),
-
                     AppSize.gapH20,
+
+                    OrderStatusActions(
+                      status: order.status,
+                      isShop: false,
+                      isUpdating: state.isUpdating,
+                      onUpdate: (action) =>
+                          context.read<OrderDetailsUserBloc>().add(
+                            OrderDetailsUserEventUpdateStatus(
+                              orderId: order.id,
+                              action: action,
+                            ),
+                          ),
+                    ),
                   ],
                 ),
               );
