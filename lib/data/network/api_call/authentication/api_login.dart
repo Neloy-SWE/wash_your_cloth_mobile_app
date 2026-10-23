@@ -32,8 +32,9 @@ class ApiLogin implements IApiLogin {
         ModelLogin modelLogin = ModelLogin.fromJson(response.data);
         return (modelLogin, null, null);
       } else if (response.statusCode == ClientConstant.statusCode202Accepted) {
-        ModelOTPRequest modelOTPRequest =
-            ModelOTPRequest.fromJson(response.data);
+        ModelOTPRequest modelOTPRequest = ModelOTPRequest.fromJson(
+          response.data,
+        );
         return (null, modelOTPRequest, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);

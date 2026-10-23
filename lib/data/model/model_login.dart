@@ -13,6 +13,7 @@ class ModelLogin {
   final DateTime expirationToken;
   final DateTime expirationRefreshToken;
   final String role;
+  final String? installationId;
 
   ModelLogin({
     required this.status,
@@ -22,6 +23,7 @@ class ModelLogin {
     required this.expirationToken,
     required this.expirationRefreshToken,
     required this.role,
+    this.installationId,
   });
 
   factory ModelLogin.fromRawJson(String str) =>
@@ -37,6 +39,7 @@ class ModelLogin {
     expirationToken: DateTime.parse(json["expirationToken"]),
     expirationRefreshToken: DateTime.parse(json["expirationRefreshToken"]),
     role: json["role"],
+    installationId: json["installationId"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +50,6 @@ class ModelLogin {
     "expirationToken": expirationToken.toIso8601String(),
     "expirationRefreshToken": expirationRefreshToken.toIso8601String(),
     "role": role,
+    "installationId": installationId,
   };
 }

@@ -8,14 +8,17 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_call/authentication/
 import '../../utilities/app_constant.dart';
 import '../client/client_constant.dart';
 import '../local/local_storage_service.dart';
+import '../model/model_error.dart';
 import '../network/api_call/authentication/api_change_password.dart';
 import '../network/api_call/authentication/api_login.dart';
+import '../network/api_call/authentication/api_logout.dart';
 import '../network/api_call/authentication/api_otp_verify.dart';
 import '../network/api_call/authentication/api_refresh_token.dart';
 import '../network/api_call/authentication/api_registration.dart';
 import '../request/request_change_password.dart';
 import '../request/request_change_phone.dart';
 import '../use_case/authentication/use_case_login.dart';
+import '../use_case/use_case_generic.dart';
 import '../use_case/authentication/use_case_otp_request.dart';
 import '../use_case/authentication/use_case_otp_verify.dart';
 import '../use_case/authentication/use_case_registration.dart';
@@ -30,6 +33,8 @@ abstract class IRepositoryAuthentication {
     required String password,
     required String role,
   });
+
+  Future<UseCaseGeneric> logout({required bool allDevices});
 
   Future<UseCaseOTPRequest> registration({
     required RegistrationData registrationData,
@@ -50,6 +55,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
   final LocalStorageService localStorageService;
   final IApiRefreshToken apiRefreshToken;
   final IApiLogin apiLogin;
+  final IApiLogout apiLogout;
   final IApiRegistration apiRegistration;
   final IApiOTPVerify apiOTPVerify;
   final IApiChangePassword apiChangePassword;
@@ -59,6 +65,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
     required this.localStorageService,
     required this.apiRefreshToken,
     required this.apiLogin,
+    required this.apiLogout,
     required this.apiRegistration,
     required this.apiOTPVerify,
     required this.apiChangePassword,
@@ -74,9 +81,7 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         // tokenStatus: ClientConstant.tokenRefresh,
       );
 
-      if (result == ClientConstant.dashboard) {
-        return true;
-      } else if (result == ClientConstant.tokenRefresh) {
+      if (result == ClientConstant.tokenRefresh) {
         String? currentRefreshToken = await localStorageService
             .getRefreshToken();
         Map<String, dynamic> data = {
@@ -100,8 +105,6 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         } else {
           return await _handleSessionFailure();
         }
-      } else if (result == ClientConstant.selectRole) {
-        return await _handleSessionFailure();
       }
       return await _handleSessionFailure();
       // return false;
@@ -121,6 +124,8 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         ClientConstant.phone: phone,
         ClientConstant.password: password,
         ClientConstant.role: role,
+        ClientConstant.installationId: await localStorageService
+            .getOrCreateInstallationId(),
       };
       var (modelLogin, modelOTPRequest, modelError) = await apiLogin.login(
         data: data,
@@ -152,6 +157,24 @@ class RepositoryAuthentication implements IRepositoryAuthentication {
         isOTP: false,
       );
       return result;
+    }
+  }
+
+  @override
+  Future<UseCaseGeneric> logout({required bool allDevices}) async {
+    try {
+      final (response, modelError) = await apiLogout.logout(
+        data: {ClientConstant.allDevices: allDevices},
+      );
+      if (modelError == null && response != null) {
+        await localStorageService.clearAuthData();
+        return UseCaseGeneric(isSuccess: true, message: response.message);
+      }
+      return UseCaseGeneric.fromModelError(
+        modelError ?? ModelError(error: [ClientConstant.serverError]),
+      );
+    } catch (error) {
+      return UseCaseGeneric.serverError();
     }
   }
 
