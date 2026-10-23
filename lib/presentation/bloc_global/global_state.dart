@@ -10,6 +10,8 @@ class GlobalState {
   // final OTPNavigation? otpNavigation;
   // final String? phone;
   final bool? isLogin;
+  final bool sessionExpired;
+  final bool deferRedirectUntilResultDismissed;
   // final String? otpRequestId;
   // final String? recordId;
 
@@ -18,6 +20,8 @@ class GlobalState {
     // this.otpNavigation,
     // this.phone,
     this.isLogin,
+    this.sessionExpired = false,
+    this.deferRedirectUntilResultDismissed = false,
     // this.otpRequestId,
     // this.recordId,
   });
@@ -28,6 +32,8 @@ class GlobalState {
     String? email,
     String? phone,
     bool? isLogin,
+    bool? sessionExpired,
+    bool? deferRedirectUntilResultDismissed,
     String? otpRequestId,
     String? recordId,
   }) {
@@ -36,6 +42,10 @@ class GlobalState {
       // otpNavigation: otpNavigation ?? this.otpNavigation,
       // phone: phone ?? this.phone,
       isLogin: isLogin ?? this.isLogin,
+      sessionExpired: sessionExpired ?? this.sessionExpired,
+      deferRedirectUntilResultDismissed:
+          deferRedirectUntilResultDismissed ??
+          this.deferRedirectUntilResultDismissed,
       // otpRequestId: otpRequestId ?? this.otpRequestId,
       // recordId: recordId ?? this.recordId,
     );

@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:wash_your_cloth_mobile_app/data/client/auth_session_expiry_notifier.dart';
 import 'package:wash_your_cloth_mobile_app/data/client/client_constant.dart';
 import 'package:wash_your_cloth_mobile_app/data/local/local_storage_service.dart';
 
@@ -14,6 +15,7 @@ import '../network/api_path.dart';
 
 class ClientInterceptor extends Interceptor {
   final LocalStorageService _localStorageService;
+  final AuthSessionExpiryNotifier _authSessionExpiryNotifier;
   Future<void>? _refreshInProgress;
 
   static const List<String> _openPaths = [
@@ -23,8 +25,11 @@ class ClientInterceptor extends Interceptor {
   ];
   final Dio _refreshDio = Dio(BaseOptions(baseUrl: ClientConstant.baseUrl));
 
-  ClientInterceptor({required LocalStorageService localStorageService})
-    : _localStorageService = localStorageService;
+  ClientInterceptor({
+    required LocalStorageService localStorageService,
+    required AuthSessionExpiryNotifier authSessionExpiryNotifier,
+  }) : _localStorageService = localStorageService,
+       _authSessionExpiryNotifier = authSessionExpiryNotifier;
 
   @override
   Future<void> onRequest(
@@ -119,25 +124,43 @@ class ClientInterceptor extends Interceptor {
   }
 
   Future<void> _performRefresh() async {
+    final refreshToken = await _localStorageService.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      await _expireSession();
+      throw StateError("Refresh token is missing");
+    }
+
+    late final Response<dynamic> response;
     try {
-      final refreshToken = await _localStorageService.getRefreshToken();
-      if (refreshToken == null || refreshToken.isEmpty) {
-        throw StateError("Refresh token is missing");
-      }
-      final response = await _refreshDio.post(
+      response = await _refreshDio.post(
         ApiPath.refreshToken,
         data: {ClientConstant.refreshToken: refreshToken},
       );
-      if (response.statusCode != ClientConstant.statusCode200OK) {
-        throw StateError("Session refresh was rejected");
+    } on DioException catch (error) {
+      if (error.response?.statusCode ==
+          ClientConstant.statusCode401Unauthorized) {
+        await _expireSession();
       }
-      await _localStorageService.saveAuthData(
-        modelLogin: ModelLogin.fromJson(response.data),
-      );
-    } catch (error) {
-      await _localStorageService.clearAuthData();
       rethrow;
     }
+
+    if (response.statusCode == ClientConstant.statusCode401Unauthorized) {
+      await _expireSession();
+      throw StateError("Session refresh was rejected");
+    }
+    if (response.statusCode != ClientConstant.statusCode200OK) {
+      throw StateError("Session refresh failed with ${response.statusCode}");
+    }
+    await _localStorageService.saveAuthData(
+      modelLogin: ModelLogin.fromJson(response.data),
+    );
+  }
+
+  Future<void> _expireSession() async {
+    await _localStorageService.clearAuthData();
+    _authSessionExpiryNotifier.notifySessionExpired(
+      deferRedirectUntilResultDismissed: true,
+    );
   }
 
   Future<Response<dynamic>> _retryRequest(

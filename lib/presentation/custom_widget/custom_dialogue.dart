@@ -4,7 +4,10 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_button.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/router/app_router.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
@@ -155,11 +158,24 @@ class CallDialogue {
         showDialog(
           context: context,
           barrierDismissible: true,
-          builder: (_) => CustomDialogue(
+          builder: (dialogContext) => CustomDialogue(
             dialogueType: DialogueType.result,
             message: message,
             onOkPressed: () {
-              if (onOk != null) onOk();
+              if (onOk == null) {
+                Navigator.of(dialogContext, rootNavigator: true).pop();
+              } else {
+                onOk();
+              }
+              final globalState = context.read<GlobalBloc>().state;
+              if (globalState.sessionExpired &&
+                  globalState.deferRedirectUntilResultDismissed) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (context.mounted) {
+                    AppRouter.door.go(AppRouter.screenRole);
+                  }
+                });
+              }
             },
           ),
         );
