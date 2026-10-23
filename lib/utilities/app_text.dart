@@ -130,4 +130,24 @@ class AppText {
   static const String selectServiceHint = "Suit care...";
   static const String selectItem = "Select item";
   static const String selectItemHint = "Jeans pant...";
+  static const String notifications = "Notifications";
+  static const String finished = "Finished";
+  static const String loadMore = "Load more";
+  static const String tryAgain = "Try again";
+  static const String stayInTheLoop = "Stay in the loop";
+  static const String noNewNotification = "Stay in the loop";
+  static const String updatesForYou = "updates for you";
+  static const String unread = "unread";
+  static const String emptyNotificationTitle = "Nothing new right now";
+  static const String emptyNotificationSubtitle = "All notifications will show up here...";
+  static const String nextStep = "Next step";
+  static const String acceptOrder = "Accept order";
+  static const String rejectOrder = "Reject order";
+  static const String markAsReady = "Mark as ready";
+  static const String requestHandover = "Request handover";
+  static const String confirmReceived = "Confirm received";
+  static const String confirmOrderUpdate = "Confirm order update";
+  static const String orderRejectQuestion = "Are you sure you want to reject this order?";
+  static const String handoverInstruction = "Collect the payment before handover";
+  static const String receivedOrderQuestion = "Confirm that you have received this order?";
 }

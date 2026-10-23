@@ -5,6 +5,9 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wash_your_cloth_mobile_app/data/network/api_call/notification/api_get_notification_list.dart';
+import 'package:wash_your_cloth_mobile_app/data/repository/repository_notification.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/screen/notification/bloc/notification_status_bloc.dart';
 
 import 'data/client/client.dart';
 import 'data/local/local_storage_service.dart';
@@ -14,9 +17,12 @@ import 'data/network/api_call/authentication/api_login.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/authentication/api_refresh_token.dart';
 import 'data/network/api_call/authentication/api_registration.dart';
+import 'data/network/api_call/notification/api_get_notification_unread_count.dart';
+import 'data/network/api_call/notification/api_notification_mark_read.dart';
 import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
 import 'data/network/api_call/order/user/api_get_order_details_user.dart';
 import 'data/network/api_call/order/api_get_order_list.dart';
+import 'data/network/api_call/order/api_update_order_status.dart';
 import 'data/network/api_call/order/user/api_place_order.dart';
 import 'data/network/api_call/profile/shop/api_profile_update_shop.dart';
 import 'data/network/api_call/profile/shop/api_profile_view_shop.dart';
@@ -124,6 +130,11 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiPlaceOrder(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiOrderStatusUpdate>(
+            create: (context) =>
+                ApiOrderStatusUpdate(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IApiProfileViewUser>(
             create: (context) =>
                 ApiProfileViewUser(client: context.read<Client>()),
@@ -207,6 +218,21 @@ class MyApp extends StatelessWidget {
             create: (context) => ApiPriceAdd(client: context.read<Client>()),
           ),
 
+          RepositoryProvider<IApiGetNotificationList>(
+            create: (context) =>
+                ApiGetNotificationList(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiGetNotificationUnreadCount>(
+            create: (context) =>
+                ApiGetNotificationUnreadCount(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiNotificationMarkRead>(
+            create: (context) =>
+                ApiNotificationMarkRead(client: context.read<Client>()),
+          ),
+
           RepositoryProvider<IRepositoryAuthentication>(
             create: (context) => RepositoryAuthentication(
               localStorageService: context.read<LocalStorageService>(),
@@ -225,6 +251,7 @@ class MyApp extends StatelessWidget {
               apiGetOrderDetailsUser: context.read<IApiGetOrderDetailsUser>(),
               apiPlaceOrder: context.read<IApiPlaceOrder>(),
               apiGetOrderDetailsShop: context.read<IApiGetOrderDetailsShop>(),
+              apiUpdateOrderStatus: context.read<IApiOrderStatusUpdate>(),
             ),
           ),
 
@@ -262,6 +289,15 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
+          RepositoryProvider<IRepositoryNotification>(
+            create: (context) => RepositoryNotification(
+              apiGetNotificationList: context.read<IApiGetNotificationList>(),
+              apiNotificationMarkRead: context.read<IApiNotificationMarkRead>(),
+              apiGetNotificationUnreadCount: context
+                  .read<IApiGetNotificationUnreadCount>(),
+            ),
+          ),
+
           // RepositoryProvider<AppRouter>(create: (context) => AppRouter()),
         ],
         child: MultiBlocProvider(
@@ -282,6 +318,12 @@ class MyApp extends StatelessWidget {
               create: (context) => OrderListShopBloc(
                 repositoryOrder: context.read<IRepositoryOrder>(),
               )..add(OrderListShopEventFetch()),
+            ),
+            BlocProvider<NotificationStatusBloc>(
+              create: (context) => NotificationStatusBloc(
+                repositoryNotification: context.read<IRepositoryNotification>(),
+                localStorageService: context.read<LocalStorageService>(),
+              ),
             ),
           ],
           child: MaterialApp.router(

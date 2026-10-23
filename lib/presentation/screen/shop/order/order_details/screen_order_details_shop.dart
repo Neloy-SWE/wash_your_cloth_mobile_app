@@ -14,8 +14,11 @@ import '../../../../custom_widget/custom_details_item.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_icon_frame.dart';
 import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_snack_bar.dart';
+import '../../../../custom_widget/custom_order_status_actions.dart';
 import '../../../../custom_widget/custom_status_badge.dart';
 import '../../../../custom_widget/custom_title.dart';
+import '../order_list/bloc/order_list_shop_bloc.dart';
 import 'bloc/order_details_shop_bloc.dart';
 
 class ScreenOrderDetailsShop extends StatelessWidget {
@@ -31,7 +34,26 @@ class ScreenOrderDetailsShop extends StatelessWidget {
             if (state is OrderDetailsShopStateLoading) {
               CallDialogue.showLoader(context);
             } else if (state is OrderDetailsShopStateFetch) {
-              CallDialogue.hideLoader(context);
+              if (!state.isUpdating &&
+                  state.actionMessage.isEmpty &&
+                  state.actionError.isEmpty) {
+                CallDialogue.hideLoader(context);
+              }
+              if (state.actionMessage.isNotEmpty) {
+                context.read<OrderListShopBloc>().add(
+                  OrderListShopEventFetch(),
+                );
+                CustomSnackBar.primary(
+                  context: context,
+                  contentText: state.actionMessage,
+                );
+              } else if (state.actionError.isNotEmpty) {
+                CustomSnackBar.primary(
+                  context: context,
+                  contentText: state.actionError,
+                  backgroundColor: AppColor.colorDanger,
+                );
+              }
             } else if (state is OrderDetailsShopStateResult) {
               CallDialogue.hideLoader(context);
 
@@ -244,8 +266,20 @@ class ScreenOrderDetailsShop extends StatelessWidget {
                       title: AppText.grandTotal,
                       value: "${order.totalPrice} ${AppText.bdtCapital}",
                     ),
-
                     AppSize.gapH20,
+
+                    OrderStatusActions(
+                      status: order.status,
+                      isShop: true,
+                      isUpdating: state.isUpdating,
+                      onUpdate: (action) =>
+                          context.read<OrderDetailsShopBloc>().add(
+                            OrderDetailsShopEventUpdateStatus(
+                              orderId: order.id,
+                              action: action,
+                            ),
+                          ),
+                    ),
                   ],
                 ),
               );

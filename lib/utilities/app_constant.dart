@@ -28,6 +28,11 @@ class AppConstant {
   static const String serviceId = "serviceId";
   static const String itemName = "itemName";
   static const String itemId = "itemId";
+  static const String orderDetails = "orderDetails";
+  static const String pending = "pending";
+  static const String accepted = "accepted";
+  static const String ready = "ready";
+  static const String handoverRequest = "handoverRequest";
 }
 
 enum Role { user, shop }
@@ -36,4 +41,16 @@ enum Role { user, shop }
 
 enum DialogueType { loader, question, result }
 
-enum Status { pending, accepted, rejected, ready, delivered, open, close }
+enum Status {
+  pending,
+  accepted,
+  rejected,
+  ready,
+  handoverRequest,
+  received,
+  delivered,
+  open,
+  close,
+}
+
+enum OrderStatusAction { accepted, rejected, ready, handoverRequest, received }
