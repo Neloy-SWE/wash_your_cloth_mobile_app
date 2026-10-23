@@ -27,13 +27,16 @@ class CustomPaginationFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoadingMore) {
-      return Center(child: SizedBox(
+      return Center(
+        child: SizedBox(
           height: 30,
           width: 30,
           child: CircularProgressIndicator(
             color: AppColor.colorPrimary,
             strokeWidth: 0.5,
-          )));
+          ),
+        ),
+      );
     }
     if (hasMore || textLoadMoreError.isNotEmpty) {
       return Column(

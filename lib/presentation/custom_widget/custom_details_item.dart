@@ -105,9 +105,9 @@ class CustomResultItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: .spaceBetween,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleMedium),
+          Text(title, style: AppText.style.titleMedium),
 
-          Text(value, style: Theme.of(context).textTheme.titleLarge),
+          Text(value, style: AppText.style.titleLarge),
         ],
       ),
     );

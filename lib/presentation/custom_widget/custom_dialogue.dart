@@ -5,7 +5,9 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_button.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_color.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_constant.dart';
+import 'package:wash_your_cloth_mobile_app/utilities/app_size.dart';
 import 'package:wash_your_cloth_mobile_app/utilities/app_text.dart';
 
 class CustomDialogue extends StatelessWidget {
@@ -27,6 +29,7 @@ class CustomDialogue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Padding(
@@ -61,16 +64,19 @@ class CustomDialogue extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: OutlinedButton(
+              child: CustomButton(
+                colorBorder: AppColor.colorPrimary,
+                colorButton: Colors.white,
+                colorText: AppColor.colorPrimary,
                 onPressed: onYesPressed ?? () => Navigator.of(context).pop(),
-                child: const Text('Yes'),
+                buttonText: AppText.yes,
               ),
             ),
-            const SizedBox(width: 12.0),
+            AppSize.gapW10,
             Expanded(
-              child: ElevatedButton(
+              child: CustomButton(
                 onPressed: onNoPressed ?? () => Navigator.of(context).pop(),
-                child: const Text('No'),
+                buttonText: AppText.no,
               ),
             ),
           ],
@@ -132,9 +138,7 @@ class CallDialogue {
             onYesPressed: () {
               onYes();
             },
-            onNoPressed: () {
-              if (onNo != null) onNo();
-            },
+            onNoPressed: onNo,
           ),
         );
       }
