@@ -17,6 +17,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
 
   GlobalBloc({required this.repositoryAuthentication}) : super(GlobalState()) {
     on<GlobalEventSetRole>(_onSetRole);
+    on<GlobalEventLogoutCompleted>(_onLogoutCompleted);
     // on<GlobalEventSetOTPNavigation>(_onSetOTPNavigation);
     // on<GlobalEventSetPhone>(_onSetPhone);
     on<GlobalEventGetLoginStatus>(_onGetLoginStatus);
@@ -25,6 +26,13 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
 
   void _onSetRole(GlobalEventSetRole event, Emitter<GlobalState> emit) {
     emit(state.copyWith(role: event.role));
+  }
+
+  void _onLogoutCompleted(
+    GlobalEventLogoutCompleted event,
+    Emitter<GlobalState> emit,
+  ) {
+    emit(GlobalState(isLogin: false));
   }
 
   // void _onSetOTPNavigation(

@@ -81,6 +81,9 @@ class NotificationStatusBloc
           debugPrint("Unable to parse incoming notification: $error");
         }
       });
+      socket.on("session:revoked", (_) {
+        add(const NotificationStatusEventStop());
+      });
       socket.onConnectError((error) {
         debugPrint("Notification socket connection failed: $error");
       });
@@ -132,10 +135,15 @@ class NotificationStatusBloc
   }
 
   void _disconnect() {
-    _socket?.dispose();
-    _socket = null;
-    _socketToken = null;
-    _receivedNotificationIds.clear();
+    try {
+      _socket?.disconnect();
+    } catch (e) {
+      debugPrint("Ignored socket teardown error: $e");
+    } finally {
+      _socket = null;
+      _socketToken = null;
+      _receivedNotificationIds.clear();
+    }
   }
 
   @override

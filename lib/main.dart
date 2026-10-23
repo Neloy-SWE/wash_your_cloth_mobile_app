@@ -14,6 +14,7 @@ import 'data/local/local_storage_service.dart';
 import 'data/network/api_call/authentication/api_change_password.dart';
 import 'data/network/api_call/authentication/api_change_phone.dart';
 import 'data/network/api_call/authentication/api_login.dart';
+import 'data/network/api_call/authentication/api_logout.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/authentication/api_refresh_token.dart';
 import 'data/network/api_call/authentication/api_registration.dart';
@@ -50,6 +51,7 @@ import 'data/repository/repository_shop.dart';
 import 'data/repository/repository_shop_inventory.dart';
 import 'presentation/bloc_global/global_bloc.dart';
 import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
+import 'presentation/screen/authentication/logout/bloc/logout_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
 import 'router/app_router.dart';
 import 'utilities/app_text.dart';
@@ -86,6 +88,10 @@ class MyApp extends StatelessWidget {
 
           RepositoryProvider<IApiLogin>(
             create: (context) => ApiLogin(client: context.read<Client>()),
+          ),
+
+          RepositoryProvider<IApiLogout>(
+            create: (context) => ApiLogout(client: context.read<Client>()),
           ),
 
           RepositoryProvider<IApiRegistration>(
@@ -238,6 +244,7 @@ class MyApp extends StatelessWidget {
               localStorageService: context.read<LocalStorageService>(),
               apiRefreshToken: context.read<IApiRefreshToken>(),
               apiLogin: context.read<IApiLogin>(),
+              apiLogout: context.read<IApiLogout>(),
               apiRegistration: context.read<IApiRegistration>(),
               apiOTPVerify: context.read<IApiOTPVerify>(),
               apiChangePassword: context.read<IApiChangePassword>(),
@@ -307,6 +314,12 @@ class MyApp extends StatelessWidget {
                 repositoryAuthentication: context
                     .read<IRepositoryAuthentication>(),
               )..add(GlobalEventGetLoginStatus()),
+            ),
+            BlocProvider<LogoutBloc>(
+              create: (context) => LogoutBloc(
+                repositoryAuthentication: context
+                    .read<IRepositoryAuthentication>(),
+              ),
             ),
 
             BlocProvider<OrderListUserBloc>(

@@ -24,30 +24,27 @@ class ScreenHomeUser extends StatefulWidget {
 
 class _ScreenHomeUserState extends State<ScreenHomeUser>
     with WidgetsBindingObserver {
+  late final NotificationStatusBloc _notificationStatusBloc;
+
   @override
   void initState() {
     super.initState();
+    _notificationStatusBloc = context.read<NotificationStatusBloc>();
     WidgetsBinding.instance.addObserver(this);
-    context.read<NotificationStatusBloc>().add(
-      const NotificationStatusEventStart(),
-    );
+    _notificationStatusBloc.add(const NotificationStatusEventStart());
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<NotificationStatusBloc>().add(
-        const NotificationStatusEventStart(),
-      );
+      _notificationStatusBloc.add(const NotificationStatusEventStart());
     }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    context.read<NotificationStatusBloc>().add(
-      const NotificationStatusEventStop(),
-    );
+    _notificationStatusBloc.add(const NotificationStatusEventStop());
     super.dispose();
   }
 

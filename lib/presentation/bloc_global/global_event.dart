@@ -27,6 +27,8 @@ class GlobalEventSetRole extends GlobalEvent {
 
 class GlobalEventGetLoginStatus extends GlobalEvent {}
 
+class GlobalEventLogoutCompleted extends GlobalEvent {}
+
 // class GlobalEventSetProfile extends GlobalEvent {}
 
 // class GlobalEventUpdateProfile extends GlobalEvent {}

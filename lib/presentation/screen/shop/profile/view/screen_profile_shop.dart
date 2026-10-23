@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wash_your_cloth_mobile_app/presentation/bloc_global/global_bloc.dart';
 
 import '../../../../../data/model/model_profile_view_shop.dart';
 import '../../../../../router/app_router.dart';
@@ -25,6 +26,8 @@ import '../../../../custom_widget/custom_snack_bar.dart';
 import '../../../../custom_widget/custom_title.dart';
 import '../../../../custom_widget/custom_titled_divider.dart';
 import '../../../../custom_widget/custom_weekend_selector.dart';
+import '../../../../screen/authentication/logout/bloc/logout_bloc.dart';
+import '../../../../screen/notification/bloc/notification_status_bloc.dart';
 import 'bloc/profile_view_shop_bloc.dart';
 
 class ScreenProfileShop extends StatefulWidget {
@@ -37,267 +40,302 @@ class ScreenProfileShop extends StatefulWidget {
 class _ScreenProfileShopState extends State<ScreenProfileShop> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileViewShopBloc, ProfileViewShopState>(
+    return BlocListener<LogoutBloc, LogoutState>(
       listener: (context, state) {
-        if (state is ProfileViewShopStateLoading) {
+        if (state is LogoutStateLoading) {
           CallDialogue.showLoader(context);
-        } else if (state is ProfileViewShopStateFetch) {
+        } else if (state is LogoutStateSuccess) {
           CallDialogue.hideLoader(context);
-        } else if (state is ProfileViewShopStateResult) {
-          CallDialogue.hideLoader(context);
-          CallDialogue.showResult(
-            context: context,
-            message: state.message,
-            onOk: () {
-              CallDialogue.hideLoader(context);
-            },
+          context.read<GlobalBloc>().add(GlobalEventLogoutCompleted());
+          context.read<NotificationStatusBloc>().add(
+            const NotificationStatusEventStop(),
           );
+          context.go(AppRouter.screenRole);
+        } else if (state is LogoutStateFailure) {
+          CallDialogue.hideLoader(context);
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      builder: (context, state) {
-        if (state is ProfileViewShopStateFetch) {
-          final profile = state.profileViewShop;
-          final summaryItems = profile.ordersSummary.toItemList();
+      child: BlocConsumer<ProfileViewShopBloc, ProfileViewShopState>(
+        listener: (context, state) {
+          if (state is ProfileViewShopStateLoading) {
+            CallDialogue.showLoader(context);
+          } else if (state is ProfileViewShopStateFetch) {
+            CallDialogue.hideLoader(context);
+          } else if (state is ProfileViewShopStateResult) {
+            CallDialogue.hideLoader(context);
+            CallDialogue.showResult(
+              context: context,
+              message: state.message,
+              onOk: () {
+                CallDialogue.hideLoader(context);
+              },
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is ProfileViewShopStateFetch) {
+            final profile = state.profileViewShop;
+            final summaryItems = profile.ordersSummary.toItemList();
 
-          return SingleChildScrollView(
-            padding: AppSize.paddingAll25,
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomIconFrame(
-                        size: 50,
-                        iconData: Icons.storefront_rounded,
-                      ),
-                      AppSize.gapW10,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            return SingleChildScrollView(
+              padding: AppSize.paddingAll25,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomIconFrame(
+                          size: 50,
+                          iconData: Icons.storefront_rounded,
+                        ),
+                        AppSize.gapW10,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                profile.shopName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppText.style.titleMedium?.copyWith(
+                                  color: AppColor.colorPrimary,
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppText.shopActiveStatus,
+                                    style: AppText.style.bodyMedium?.copyWith(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Transform.scale(
+                                    scale: 0.5,
+                                    child: CupertinoSwitch(
+                                      value: profile.status,
+                                      activeTrackColor: AppColor.colorPrimary,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          profile.status = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        AppSize.gapW10,
+                        IconButton(
+                          onPressed: () => navigateToUpdateProfile(
+                            context: context,
+                            profile: profile,
+                          ),
+                          icon: const Icon(Icons.edit_note),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppSize.gapH20,
+
+                  CustomCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Text(
-                              profile.shopName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppText.style.titleMedium?.copyWith(
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: AppColor.colorBackgroundCard,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.account_balance_wallet_outlined,
                                 color: AppColor.colorPrimary,
+                                size: 24,
                               ),
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  AppText.shopActiveStatus,
-                                  style: AppText.style.bodyMedium?.copyWith(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Transform.scale(
-                                  scale: 0.5,
-                                  child: CupertinoSwitch(
-                                    value: profile.status,
-                                    activeTrackColor: AppColor.colorPrimary,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        profile.status = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
+                            AppSize.gapW10,
+                            Text(
+                              AppText.totalAmount,
+                              style: AppText.style.titleMedium,
                             ),
                           ],
                         ),
-                      ),
-                      AppSize.gapW10,
-                      IconButton(
-                        onPressed: () => navigateToUpdateProfile(
-                          context: context,
-                          profile: profile,
+                        Text(
+                          "${profile.totalIncome.toStringAsFixed(2)} ${AppText.bdtCapital}",
+                          style: AppText.style.titleMedium?.copyWith(
+                            color: AppColor.colorPrimary,
+                          ),
                         ),
-                        icon: const Icon(Icons.edit_note),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                AppSize.gapH20,
+                  AppSize.gapH10,
 
-                CustomCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: AppColor.colorBackgroundCard,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.account_balance_wallet_outlined,
-                              color: AppColor.colorPrimary,
-                              size: 24,
-                            ),
-                          ),
-                          AppSize.gapW10,
-                          Text(
-                            AppText.totalAmount,
-                            style: AppText.style.titleMedium,
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "${profile.totalIncome.toStringAsFixed(2)} ${AppText.bdtCapital}",
-                        style: AppText.style.titleMedium?.copyWith(
-                          color: AppColor.colorPrimary,
+                  const CustomTitledDivider(title: AppText.ordersOverview),
+                  AppSize.gapH10,
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1.1,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                AppSize.gapH10,
-
-                const CustomTitledDivider(title: AppText.ordersOverview),
-                AppSize.gapH10,
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 1.1,
-                  ),
-                  itemCount: summaryItems.length,
-                  itemBuilder: (context, index) {
-                    final item = summaryItems[index];
-                    return Container(
-                      padding: AppSize.paddingAll10,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: item.color, width: 1),
-                        borderRadius: AppSize.borderRadiusAll8,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            item.title,
-                            textAlign: TextAlign.center,
-                            style: AppText.style.bodyLarge,
-                          ),
-                          AppSize.gapH05,
-                          Text(
-                            '${item.count}',
-                            style: AppText.style.titleLarge?.copyWith(
-                              color: item.color,
+                    itemCount: summaryItems.length,
+                    itemBuilder: (context, index) {
+                      final item = summaryItems[index];
+                      return Container(
+                        padding: AppSize.paddingAll10,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: item.color, width: 1),
+                          borderRadius: AppSize.borderRadiusAll8,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              item.title,
+                              textAlign: TextAlign.center,
+                              style: AppText.style.bodyLarge,
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                AppSize.gapH10,
-
-                const CustomTitledDivider(title: AppText.shopInformation),
-                AppSize.gapH10,
-
-                CustomCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: CustomTitleWithIconValue(
-                              iconData: Icons.phone,
-                              title: AppText.phone,
-                              value: hidePhoneOrEmail(
-                                phoneOrEmail: profile.shopPhone,
+                            AppSize.gapH05,
+                            Text(
+                              '${item.count}',
+                              style: AppText.style.titleLarge?.copyWith(
+                                color: item.color,
                               ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              context.push(AppRouter.screenChangePhone);
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: AppColor.colorPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                      CustomTitleWithIconValue(
-                        iconData: Icons.account_circle_outlined,
-                        title: AppText.owner,
-                        value:
-                            "${profile.ownerFirstName} ${profile.ownerLastName}",
-                      ),
-                      const Divider(),
-                      CustomTitleWithIconValue(
-                        iconData: Icons.location_on,
-                        title: AppText.address,
-                        value: profile.shopAddress,
-                      ),
-                      const Divider(),
-                      CustomTitleWithIconValue(
-                        iconData: Icons.work_history_outlined,
-                        title: AppText.businessHours,
-                        value: "${profile.openTime} - ${profile.closeTime}",
-                      ),
-                      const Divider(),
-                      CustomTitleWithIconValue(
-                        iconData: Icons.local_shipping_outlined,
-                        title: AppText.deliveryCharge,
-                        value:
-                            "${profile.deliveryCharge.toStringAsFixed(2)} ${AppText.bdtCapital}",
-                      ),
-                    ],
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                ),
-                AppSize.gapH10,
+                  AppSize.gapH10,
 
-                CustomTitledDivider(title: AppText.weekends),
-                CustomWeekendSelector(initialSelectedDays: profile.weekends),
+                  const CustomTitledDivider(title: AppText.shopInformation),
+                  AppSize.gapH10,
 
-                AppSize.gapH50,
-                CustomButton(
-                  onPressed: () {
-                    context.push(AppRouter.screenChangePassword);
-                  },
-                  buttonText: AppText.changePassword,
-                ),
-                AppSize.gapH20,
-                CustomButton(
-                  onPressed: () {
-                    // context.go(AppRouter.screenAuthLogin);
-                  },
-                  buttonText: AppText.logout,
-                  colorText: AppColor.colorDanger,
-                  colorButton: Colors.white,
-                  colorBorder: AppColor.colorDanger,
-                ),
-                AppSize.gapH35,
-              ],
-            ),
-          );
-        } else if (state is ProfileViewShopStateLoading ||
-            state is ProfileViewShopStateInitial) {
-          return AppSize.noGap;
-        } else {
-          return const CustomNotFound();
-        }
-      },
+                  CustomCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: CustomTitleWithIconValue(
+                                iconData: Icons.phone,
+                                title: AppText.phone,
+                                value: hidePhoneOrEmail(
+                                  phoneOrEmail: profile.shopPhone,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                context.push(AppRouter.screenChangePhone);
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: AppColor.colorPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        CustomTitleWithIconValue(
+                          iconData: Icons.account_circle_outlined,
+                          title: AppText.owner,
+                          value:
+                              "${profile.ownerFirstName} ${profile.ownerLastName}",
+                        ),
+                        const Divider(),
+                        CustomTitleWithIconValue(
+                          iconData: Icons.location_on,
+                          title: AppText.address,
+                          value: profile.shopAddress,
+                        ),
+                        const Divider(),
+                        CustomTitleWithIconValue(
+                          iconData: Icons.work_history_outlined,
+                          title: AppText.businessHours,
+                          value: "${profile.openTime} - ${profile.closeTime}",
+                        ),
+                        const Divider(),
+                        CustomTitleWithIconValue(
+                          iconData: Icons.local_shipping_outlined,
+                          title: AppText.deliveryCharge,
+                          value:
+                              "${profile.deliveryCharge.toStringAsFixed(2)} ${AppText.bdtCapital}",
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppSize.gapH10,
+
+                  CustomTitledDivider(title: AppText.weekends),
+                  CustomWeekendSelector(initialSelectedDays: profile.weekends),
+
+                  AppSize.gapH50,
+                  CustomButton(
+                    onPressed: () {
+                      context.push(AppRouter.screenChangePassword);
+                    },
+                    buttonText: AppText.changePassword,
+                  ),
+                  AppSize.gapH20,
+                  CustomButton(
+                    onPressed: () {
+                      CallDialogue.showQuestion(
+                        context: context,
+                        message: AppText.logoutMessage,
+                        onYes: () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                          context.read<LogoutBloc>().add(
+                            const LogoutEventRequested(allDevices: true),
+                          );
+                        },
+                        onNo: () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                          context.read<LogoutBloc>().add(
+                            const LogoutEventRequested(allDevices: false),
+                          );
+                        },
+                      );
+                    },
+                    buttonText: AppText.logout,
+                    colorText: AppColor.colorDanger,
+                    colorButton: Colors.white,
+                    colorBorder: AppColor.colorDanger,
+                  ),
+                  AppSize.gapH35,
+                ],
+              ),
+            );
+          } else if (state is ProfileViewShopStateLoading ||
+              state is ProfileViewShopStateInitial) {
+            return AppSize.noGap;
+          } else {
+            return const CustomNotFound();
+          }
+        },
+      ),
     );
   }
 
