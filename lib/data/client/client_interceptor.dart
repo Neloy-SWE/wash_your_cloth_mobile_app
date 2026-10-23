@@ -1,4 +1,4 @@
-/* 
+/*
 Created by Neloy on 29 June, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
@@ -14,6 +14,7 @@ import '../network/api_path.dart';
 
 class ClientInterceptor extends Interceptor {
   final LocalStorageService _localStorageService;
+  Future<void>? _refreshInProgress;
 
   static const List<String> _openPaths = [
     ApiPath.login,
@@ -45,7 +46,28 @@ class ClientInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    if (response.statusCode == ClientConstant.statusCode401Unauthorized &&
+        !_openPaths.contains(response.requestOptions.path)) {
+      try {
+        final retriedResponse = await _refreshAndRetry(response.requestOptions);
+        return handler.resolve(retriedResponse);
+      } catch (error) {
+        log("Authentication retry failed for ${response.requestOptions.path}");
+        return handler.reject(
+          DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            error: error,
+            type: DioExceptionType.badResponse,
+          ),
+        );
+      }
+    }
+
     log("\n\n\nResponse: $response\n\n\n");
     super.onResponse(response, handler);
   }
@@ -55,62 +77,80 @@ class ClientInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    if (err.response?.statusCode == ClientConstant.statusCode401Unauthorized &&
-        !_openPaths.contains(err.requestOptions.path)) {
-      final currentRefreshToken = await _localStorageService.getRefreshToken();
-
-      if (currentRefreshToken != null) {
-        try {
-          final response = await _refreshDio.post(
-            ApiPath.refreshToken,
-            data: {ClientConstant.refreshToken: currentRefreshToken},
-          );
-
-          if (response.statusCode == ClientConstant.statusCode200OK) {
-            final data = response.data;
-
-            await _localStorageService.saveAuthData(
-              modelLogin: ModelLogin.fromJson(data),
-            );
-
-            final requestOptions = err.requestOptions;
-            final dynamic newToken = data[ClientConstant.token];
-            requestOptions.headers[ClientConstant.authorization] =
-                '${ClientConstant.bearer} $newToken';
-
-            final clonedResponse = await _refreshDio.fetch(requestOptions);
-            return handler.resolve(clonedResponse);
-          }
-        } catch (_) {
-          await _localStorageService.clearAuthData();
-        }
-      }
-    }
-
     log("\n\n\nError: $err\n\n\n");
     super.onError(err, handler);
   }
 
-  // Future<void> refreshToken(
-  //   RequestOptions options,
-  //   RequestInterceptorHandler handler,
-  // ) async {
-  //   String status = await localStorageService.authorizeStatus(
-  //     positiveStatus: ClientConstant.validToken,
-  //     negativeStatus: ClientConstant.logout,
-  //     tokenStatus: ClientConstant.updateToken,
-  //   );
-  //   if (status == ClientConstant.updateToken) {
-  //     String? currentRefreshToken = await localStorageService.getRefreshToken();
-  //     Map<String, dynamic> data = {
-  //       ClientConstant.refreshToken: currentRefreshToken,
-  //     };
-  //     var (modelLogin, modelError) = await apiRefreshToken.refreshToken(
-  //       data: data,
-  //     );
-  //     if (modelError == null) {}
-  //   }
-  //
-  //   // ModelLogin modelLogin = await apiRefreshToken.refreshToken(data: data)
-  // }
+  Future<Response<dynamic>> _refreshAndRetry(
+    RequestOptions requestOptions,
+  ) async {
+    final latestAccessToken = await _localStorageService.getToken();
+    final sentAuthorization =
+        requestOptions.headers[ClientConstant.authorization] as String?;
+    if (latestAccessToken != null &&
+        sentAuthorization != '${ClientConstant.bearer} $latestAccessToken') {
+      return _retryRequest(requestOptions, latestAccessToken);
+    }
+
+    await _refreshTokens();
+    final newAccessToken = await _localStorageService.getToken();
+    if (newAccessToken == null) {
+      throw StateError("Access token is missing after refresh");
+    }
+    return _retryRequest(requestOptions, newAccessToken);
+  }
+
+  Future<void> _refreshTokens() async {
+    final runningRefresh = _refreshInProgress;
+    if (runningRefresh != null) {
+      await runningRefresh;
+      return;
+    }
+
+    final refreshFuture = _performRefresh();
+    _refreshInProgress = refreshFuture;
+    try {
+      await refreshFuture;
+    } finally {
+      if (identical(_refreshInProgress, refreshFuture)) {
+        _refreshInProgress = null;
+      }
+    }
+  }
+
+  Future<void> _performRefresh() async {
+    try {
+      final refreshToken = await _localStorageService.getRefreshToken();
+      if (refreshToken == null || refreshToken.isEmpty) {
+        throw StateError("Refresh token is missing");
+      }
+      final response = await _refreshDio.post(
+        ApiPath.refreshToken,
+        data: {ClientConstant.refreshToken: refreshToken},
+      );
+      if (response.statusCode != ClientConstant.statusCode200OK) {
+        throw StateError("Session refresh was rejected");
+      }
+      await _localStorageService.saveAuthData(
+        modelLogin: ModelLogin.fromJson(response.data),
+      );
+    } catch (error) {
+      await _localStorageService.clearAuthData();
+      rethrow;
+    }
+  }
+
+  Future<Response<dynamic>> _retryRequest(
+    RequestOptions requestOptions,
+    String accessToken,
+  ) {
+    return _refreshDio.fetch(
+      requestOptions.copyWith(
+        headers: {
+          ...requestOptions.headers,
+          ClientConstant.authorization: '${ClientConstant.bearer} $accessToken',
+        },
+      ),
+    );
+  }
 }
