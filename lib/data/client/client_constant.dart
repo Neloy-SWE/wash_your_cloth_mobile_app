@@ -40,6 +40,9 @@ class ClientConstant {
   static const String message = "message";
   static const String currentPage = "currentPage";
   static const String pageSize = "pageSize";
+  static const String search = "search";
+  static const int defaultPageSize = 15;
+  static const int maxPageSize = 100;
   static const String unreadCount = "unreadCount";
   static const String allDevices = "allDevices";
 }

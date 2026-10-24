@@ -13,6 +13,7 @@ class CustomCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Color colorBackground;
   final Color colorBorder;
+  final bool needBoxShadow;
 
   const CustomCard({
     super.key,
@@ -20,6 +21,7 @@ class CustomCard extends StatelessWidget {
     this.padding = AppSize.paddingAll10,
     this.colorBackground = Colors.white,
     this.colorBorder = AppColor.colorBorderCard,
+    this.needBoxShadow = true,
   });
 
   @override
@@ -30,13 +32,15 @@ class CustomCard extends StatelessWidget {
         color: colorBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colorBorder, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: needBoxShadow
+            ? [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: child,
     );
@@ -48,6 +52,7 @@ class CustomCardWithAction extends StatelessWidget {
   final Widget child;
   final Color colorBackground;
   final Color colorBorder;
+  final bool needBoxShadow;
 
   const CustomCardWithAction({
     super.key,
@@ -55,6 +60,7 @@ class CustomCardWithAction extends StatelessWidget {
     required this.child,
     this.colorBackground = Colors.white,
     this.colorBorder = AppColor.colorBorderCard,
+    this.needBoxShadow = true,
   });
 
   @override
@@ -65,6 +71,7 @@ class CustomCardWithAction extends StatelessWidget {
       child: CustomCard(
         colorBorder: colorBorder,
         colorBackground: colorBackground,
+        needBoxShadow: needBoxShadow,
         child: child,
       ),
     );

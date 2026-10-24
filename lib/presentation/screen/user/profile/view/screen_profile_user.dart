@@ -206,8 +206,10 @@ class ScreenProfileUser extends StatelessWidget {
                 ],
               ),
             );
-          } else {
+          } else if (state is ProfileViewUserStateResult) {
             return CustomNotFound();
+          } else {
+            return AppSize.noGap;
           }
         },
       ),

@@ -24,86 +24,95 @@ class ScreenRole extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(AppText.selectRole)),
       body: SafeArea(
-        child: Padding(
-          padding: AppSize.paddingAll25,
-          child: Center(
-            child: BlocBuilder<GlobalBloc, GlobalState>(
-              builder: (context, state) {
-                final selectedRole = state.role;
-                // print("selectedRole::: $selectedRole");
+        child: BlocBuilder<GlobalBloc, GlobalState>(
+          builder: (context, state) {
+            final selectedRole = state.role;
+            // print("selectedRole::: $selectedRole");
 
-                return Column(
-                  crossAxisAlignment: .center,
-                  mainAxisAlignment: .center,
-                  children: [
-                    Text(
-                      selectedRole != null
-                          ? "${AppText.selectedRoleColon} ${selectedRole.name.toUpperCase()}"
-                          : "",
-                      style: AppText.style.titleMedium,
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: AppSize.paddingAll25,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
                     ),
-                    AppSize.gapH150,
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildRoleCard(
-                            context: context,
-                            title: AppText.userCapital,
-                            icon: Icons.person_outline_rounded,
-                            isSelected: selectedRole == Role.user,
-                            onTap: () {
-                              context.read<GlobalBloc>().add(
-                                GlobalEventSetRole(role: Role.user),
-                              );
-                            },
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: .center,
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text(
+                            selectedRole != null
+                                ? "${AppText.selectedRoleColon} ${selectedRole.name.toUpperCase()}"
+                                : "",
+                            style: AppText.style.titleMedium,
                           ),
-                        ),
+                          AppSize.gapH150,
 
-                        AppSize.gapW15,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildRoleCard(
+                                  context: context,
+                                  title: AppText.userCapital,
+                                  icon: Icons.person_outline_rounded,
+                                  isSelected: selectedRole == Role.user,
+                                  onTap: () {
+                                    context.read<GlobalBloc>().add(
+                                      GlobalEventSetRole(role: Role.user),
+                                    );
+                                  },
+                                ),
+                              ),
 
-                        Expanded(
-                          child: _buildRoleCard(
-                            context: context,
-                            title: AppText.shopCapital,
-                            icon: Icons.storefront_rounded,
-                            isSelected: selectedRole == Role.shop,
-                            onTap: () {
-                              context.read<GlobalBloc>().add(
-                                GlobalEventSetRole(role: Role.shop),
-                              );
-                            },
+                              AppSize.gapW15,
+
+                              Expanded(
+                                child: _buildRoleCard(
+                                  context: context,
+                                  title: AppText.shopCapital,
+                                  icon: Icons.storefront_rounded,
+                                  isSelected: selectedRole == Role.shop,
+                                  onTap: () {
+                                    context.read<GlobalBloc>().add(
+                                      GlobalEventSetRole(role: Role.shop),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    AppSize.gapH80,
+                          AppSize.gapH80,
 
-                    CustomButton(
-                      onPressed: () {
-                        if (selectedRole != null) {
-                          context.push(AppRouter.screenLogin);
-                        } else {
-                          CustomSnackBar.primary(
-                            context: context,
-                            contentText: AppText.pleaseSelectARole,
-                          );
-                        }
-                      },
-                      buttonText: AppText.proceed,
-                      colorText: selectedRole != null
-                          ? Colors.white
-                          : AppColor.colorPrimary,
-                      colorButton: selectedRole != null
-                          ? AppColor.colorPrimary
-                          : Colors.white,
-                      colorBorder: AppColor.colorPrimary,
+                          CustomButton(
+                            onPressed: () {
+                              if (selectedRole != null) {
+                                context.push(AppRouter.screenLogin);
+                              } else {
+                                CustomSnackBar.primary(
+                                  context: context,
+                                  contentText: AppText.pleaseSelectARole,
+                                );
+                              }
+                            },
+                            buttonText: AppText.proceed,
+                            colorText: selectedRole != null
+                                ? Colors.white
+                                : AppColor.colorPrimary,
+                            colorButton: selectedRole != null
+                                ? AppColor.colorPrimary
+                                : Colors.white,
+                            colorBorder: AppColor.colorPrimary,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 );
               },
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
