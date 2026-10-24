@@ -9,10 +9,15 @@ import '../../../../../client/client.dart';
 import '../../../../../client/client_constant.dart';
 import '../../../../../model/model_error.dart';
 import '../../../../../model/model_price_list_shop.dart';
+import '../../../../../model/model_paged_list.dart';
 import '../../../../api_path.dart';
 
 abstract class IApiGetPriceListShop {
-  Future<(List<ModelPriceListShop>?, ModelError?)> getPriceList();
+  Future<(ModelPagedList<ModelPriceListShop>?, ModelError?)> getPriceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 }
 
 class ApiGetPriceListShop implements IApiGetPriceListShop {
@@ -21,12 +26,25 @@ class ApiGetPriceListShop implements IApiGetPriceListShop {
   const ApiGetPriceListShop({required this.client});
 
   @override
-  Future<(List<ModelPriceListShop>?, ModelError?)> getPriceList() async {
+  Future<(ModelPagedList<ModelPriceListShop>?, ModelError?)> getPriceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      Response response = await client.request.get(ApiPath.priceListShop);
+      Response response = await client.request.get(
+        ApiPath.priceListShop,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
+        },
+      );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelPriceListShop = List<ModelPriceListShop>.from(
-          response.data.map((x) => ModelPriceListShop.fromJson(x)),
+        var modelPriceListShop = ModelPagedList<ModelPriceListShop>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          ModelPriceListShop.fromJson,
         );
         return (modelPriceListShop, null);
       } else {

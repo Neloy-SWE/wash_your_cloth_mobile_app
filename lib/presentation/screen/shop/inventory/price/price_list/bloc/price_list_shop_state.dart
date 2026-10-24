@@ -20,27 +20,63 @@ class PriceListShopStateFetch extends PriceListShopState {
   final List<ModelPriceListShop> priceList;
   final bool isActivating;
   final bool isUpdating;
+  final int currentPage;
+  final int pageSize;
+  final int totalItem;
+  final String search;
+  final bool isLoadingMore;
+  final String loadMoreError;
 
   const PriceListShopStateFetch({
     required this.priceList,
     this.isActivating = false,
     this.isUpdating = false,
+    this.currentPage = 0,
+    this.pageSize = ClientConstant.defaultPageSize,
+    this.totalItem = 0,
+    this.search = '',
+    this.isLoadingMore = false,
+    this.loadMoreError = '',
   });
+
+  bool get hasMore => priceList.length < totalItem;
 
   PriceListShopStateFetch copyWith({
     List<ModelPriceListShop>? priceList,
     bool? isActivating,
     bool? isUpdating,
+    int? currentPage,
+    int? pageSize,
+    int? totalItem,
+    String? search,
+    bool? isLoadingMore,
+    String? loadMoreError,
   }) {
     return PriceListShopStateFetch(
       priceList: priceList ?? this.priceList,
       isActivating: isActivating ?? this.isActivating,
       isUpdating: isUpdating ?? this.isUpdating,
+      currentPage: currentPage ?? this.currentPage,
+      pageSize: pageSize ?? this.pageSize,
+      totalItem: totalItem ?? this.totalItem,
+      search: search ?? this.search,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      loadMoreError: loadMoreError ?? this.loadMoreError,
     );
   }
 
   @override
-  List<Object?> get props => [priceList, isActivating];
+  List<Object?> get props => [
+    priceList,
+    isActivating,
+    isUpdating,
+    currentPage,
+    pageSize,
+    totalItem,
+    search,
+    isLoadingMore,
+    loadMoreError,
+  ];
 }
 
 class PriceListShopStateError extends PriceListShopState {
