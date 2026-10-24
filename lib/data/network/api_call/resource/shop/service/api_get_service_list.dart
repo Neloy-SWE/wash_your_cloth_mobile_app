@@ -9,10 +9,15 @@ import '../../../../../client/client.dart';
 import '../../../../../client/client_constant.dart';
 import '../../../../../model/model_error.dart';
 import '../../../../../model/model_service_list.dart';
+import '../../../../../model/model_paged_list.dart';
 import '../../../../api_path.dart';
 
 abstract class IApiGetServiceList {
-  Future<(List<ModelServiceList>?, ModelError?)> getServiceList();
+  Future<(ModelPagedList<ModelServiceList>?, ModelError?)> getServiceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 }
 
 class ApiGetServiceList implements IApiGetServiceList {
@@ -21,12 +26,25 @@ class ApiGetServiceList implements IApiGetServiceList {
   const ApiGetServiceList({required this.client});
 
   @override
-  Future<(List<ModelServiceList>?, ModelError?)> getServiceList() async {
+  Future<(ModelPagedList<ModelServiceList>?, ModelError?)> getServiceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      Response response = await client.request.get(ApiPath.serviceList);
+      Response response = await client.request.get(
+        ApiPath.serviceList,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
+        },
+      );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelServiceList = List<ModelServiceList>.from(
-          response.data.map((x) => ModelServiceList.fromJson(x)),
+        var modelServiceList = ModelPagedList<ModelServiceList>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          ModelServiceList.fromJson,
         );
         return (modelServiceList, null);
       } else {

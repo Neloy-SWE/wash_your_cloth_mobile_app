@@ -8,13 +8,15 @@ import 'package:dio/dio.dart';
 import '../../../client/client.dart';
 import '../../../client/client_constant.dart';
 import '../../../model/model_error.dart';
-import '../../../model/model_notification_list.dart';
+import '../../../model/model_notification_item.dart';
+import '../../../model/model_paged_list.dart';
 import '../../api_path.dart';
 
 abstract class IApiGetNotificationList {
-  Future<(ModelNotificationList?, ModelError?)> getList({
+  Future<(ModelPagedList<NotificationItem>?, ModelError?)> getList({
     required int currentPage,
     required int pageSize,
+    String? search,
   });
 }
 
@@ -24,9 +26,10 @@ class ApiGetNotificationList implements IApiGetNotificationList {
   const ApiGetNotificationList({required this.client});
 
   @override
-  Future<(ModelNotificationList?, ModelError?)> getList({
+  Future<(ModelPagedList<NotificationItem>?, ModelError?)> getList({
     required int currentPage,
     required int pageSize,
+    String? search,
   }) async {
     try {
       Response response = await client.request.get(
@@ -34,12 +37,17 @@ class ApiGetNotificationList implements IApiGetNotificationList {
         queryParameters: {
           ClientConstant.currentPage: currentPage,
           ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
         },
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        ModelNotificationList modelNotificationList =
-            ModelNotificationList.fromJson(response.data);
-        return (modelNotificationList, null);
+        final pagedNotifications = ModelPagedList<NotificationItem>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          NotificationItem.fromJson,
+          itemsKey: 'notifications',
+        );
+        return (pagedNotifications, null);
       } else {
         ModelError modelError = ModelError.fromJson(response.data);
         return (null, modelError);

@@ -6,6 +6,7 @@ Email: taufiqneloy.swe@gmail.com
 import '../model/model_item_list.dart';
 import '../model/model_price_list_shop.dart';
 import '../model/model_service_list.dart';
+import '../model/model_paged_list.dart';
 import '../network/api_call/resource/shop/item/api_get_item_list.dart';
 import '../network/api_call/resource/shop/item/api_item_activation.dart';
 import '../network/api_call/resource/shop/item/api_item_add.dart';
@@ -25,9 +26,17 @@ import '../request/request_service.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryShopInventory {
-  Future<UseCaseGeneric<List<ModelPriceListShop>>> getPriceListShop();
+  Future<UseCaseGeneric<ModelPagedList<ModelPriceListShop>>> getPriceListShop({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 
-  Future<UseCaseGeneric<List<ModelServiceList>>> getServiceList();
+  Future<UseCaseGeneric<ModelPagedList<ModelServiceList>>> getServiceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 
   Future<UseCaseGeneric> priceActivation({required String priceId});
 
@@ -45,7 +54,11 @@ abstract class IRepositoryShopInventory {
 
   Future<UseCaseGeneric> serviceAdd({required RequestService serviceAdd});
 
-  Future<UseCaseGeneric<List<ModelItemList>>> getItemList();
+  Future<UseCaseGeneric<ModelPagedList<ModelItemList>>> getItemList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 
   Future<UseCaseGeneric> itemActivation({required String itemId});
 
@@ -91,10 +104,18 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   });
 
   @override
-  Future<UseCaseGeneric<List<ModelPriceListShop>>> getPriceListShop() async {
+  Future<UseCaseGeneric<ModelPagedList<ModelPriceListShop>>> getPriceListShop({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
       var (modelPriceListShop, modelError) = await apiGetPriceListShop
-          .getPriceList();
+          .getPriceList(
+            currentPage: currentPage,
+            pageSize: pageSize,
+            search: search,
+          );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelPriceListShop);
       } else {
@@ -149,10 +170,18 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   }
 
   @override
-  Future<UseCaseGeneric<List<ModelServiceList>>> getServiceList() async {
+  Future<UseCaseGeneric<ModelPagedList<ModelServiceList>>> getServiceList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
       var (modelServiceList, modelError) = await apiGetServiceList
-          .getServiceList();
+          .getServiceList(
+            currentPage: currentPage,
+            pageSize: pageSize,
+            search: search,
+          );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelServiceList);
       } else {
@@ -229,9 +258,17 @@ class RepositoryShopInventory implements IRepositoryShopInventory {
   }
 
   @override
-  Future<UseCaseGeneric<List<ModelItemList>>> getItemList() async {
+  Future<UseCaseGeneric<ModelPagedList<ModelItemList>>> getItemList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      var (modelItemList, modelError) = await apiGetItemList.getItemList();
+      var (modelItemList, modelError) = await apiGetItemList.getItemList(
+        currentPage: currentPage,
+        pageSize: pageSize,
+        search: search,
+      );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelItemList);
       } else {

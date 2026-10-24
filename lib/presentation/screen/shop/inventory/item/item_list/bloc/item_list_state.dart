@@ -20,27 +20,63 @@ class ItemListStateFetch extends ItemListState {
   final List<ModelItemList> itemList;
   final bool isActivating;
   final bool isUpdating;
+  final int currentPage;
+  final int pageSize;
+  final int totalItem;
+  final String search;
+  final bool isLoadingMore;
+  final String loadMoreError;
 
   const ItemListStateFetch({
     required this.itemList,
     this.isActivating = false,
     this.isUpdating = false,
+    this.currentPage = 0,
+    this.pageSize = ClientConstant.defaultPageSize,
+    this.totalItem = 0,
+    this.search = '',
+    this.isLoadingMore = false,
+    this.loadMoreError = '',
   });
+
+  bool get hasMore => itemList.length < totalItem;
 
   ItemListStateFetch copyWith({
     List<ModelItemList>? itemList,
     bool? isActivating,
     bool? isUpdating,
+    int? currentPage,
+    int? pageSize,
+    int? totalItem,
+    String? search,
+    bool? isLoadingMore,
+    String? loadMoreError,
   }) {
     return ItemListStateFetch(
       itemList: itemList ?? this.itemList,
       isActivating: isActivating ?? this.isActivating,
       isUpdating: isUpdating ?? this.isUpdating,
+      currentPage: currentPage ?? this.currentPage,
+      pageSize: pageSize ?? this.pageSize,
+      totalItem: totalItem ?? this.totalItem,
+      search: search ?? this.search,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      loadMoreError: loadMoreError ?? this.loadMoreError,
     );
   }
 
   @override
-  List<Object?> get props => [itemList, isActivating];
+  List<Object?> get props => [
+    itemList,
+    isActivating,
+    isUpdating,
+    currentPage,
+    pageSize,
+    totalItem,
+    search,
+    isLoadingMore,
+    loadMoreError,
+  ];
 }
 
 class ItemListStateError extends ItemListState {

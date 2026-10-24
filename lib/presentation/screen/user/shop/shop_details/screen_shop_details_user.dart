@@ -19,7 +19,9 @@ import '../../../../custom_widget/custom_card.dart';
 import '../../../../custom_widget/custom_dialogue.dart';
 import '../../../../custom_widget/custom_icon_frame.dart';
 import '../../../../custom_widget/custom_not_found.dart';
+import '../../../../custom_widget/custom_pagination_footer.dart';
 import '../../../../custom_widget/custom_status_badge.dart';
+import '../../../../custom_widget/custom_text_field.dart';
 import '../../../../custom_widget/custom_title.dart';
 import '../../../../custom_widget/custom_titled_divider.dart';
 import '../../../../custom_widget/custom_weekend_selector.dart';
@@ -34,10 +36,24 @@ class ScreenShopDetailsUser extends StatefulWidget {
 
 class _ScreenShopDetailsUserState extends State<ScreenShopDetailsUser> {
   final Map<String, CartData> _cartItems = {};
+  bool _isLoaderVisible = false;
 
   int get _cartItemCount => _cartItems.length;
   String shopId = "";
   double deliveryCharge = 0.0;
+  final TextEditingController _searchController = TextEditingController();
+
+  void _hideLoaderIfVisible() {
+    if (!_isLoaderVisible) return;
+    _isLoaderVisible = false;
+    CallDialogue.hideLoader(context);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,16 +89,13 @@ class _ScreenShopDetailsUserState extends State<ScreenShopDetailsUser> {
         child: BlocConsumer<ShopDetailsUserBloc, ShopDetailsUserState>(
           listener: (context, state) {
             if (state is ShopDetailsUserStateLoading) {
+              _isLoaderVisible = true;
               CallDialogue.showLoader(context);
             } else if (state is ShopDetailsUserStateFetch) {
-              CallDialogue.hideLoader(context);
+              _hideLoaderIfVisible();
             } else if (state is ShopDetailsUserStateResult) {
-              CallDialogue.hideLoader(context);
-              CallDialogue.showResult(
-                context: context,
-                message: state.message,
-                onOk: () => CallDialogue.hideLoader(context),
-              );
+              _hideLoaderIfVisible();
+              CallDialogue.showResult(context: context, message: state.message);
             }
           },
           builder: (context, state) {
@@ -91,134 +104,198 @@ class _ScreenShopDetailsUserState extends State<ScreenShopDetailsUser> {
               shopId = shop.id;
               deliveryCharge = shop.deliveryCharge;
               final priceList = state.priceList;
-              return SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  left: 25,
-                  right: 25,
-                  top: 25,
-                  bottom: 65,
-                ),
-                child: Column(
-                  children: [
-                    // shop name, status
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              const CustomIconFrame(
-                                size: 45,
-                                iconData: Icons.storefront_rounded,
-                              ),
-                              AppSize.gapW10,
-                              Expanded(
-                                child: Text(
-                                  shop.shopName,
-                                  style: AppText.style.titleMedium!.copyWith(
-                                    color: AppColor.colorPrimary,
+              return RefreshIndicator(
+                color: AppColor.colorPrimary,
+                onRefresh: () async {
+                  final bloc = context.read<ShopDetailsUserBloc>();
+                  final loaded = bloc.stream.firstWhere(
+                    (next) =>
+                        next is ShopDetailsUserStateFetch ||
+                        next is ShopDetailsUserStateResult,
+                  );
+                  bloc.add(
+                    ShopDetailsUserEventFetch(
+                      shopId: state.shopId,
+                      query: _searchController.text,
+                    ),
+                  );
+                  await loaded;
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    top: 25,
+                    bottom: 65,
+                  ),
+                  child: Column(
+                    children: [
+                      // shop name, status
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                const CustomIconFrame(
+                                  size: 45,
+                                  iconData: Icons.storefront_rounded,
+                                ),
+                                AppSize.gapW10,
+                                Expanded(
+                                  child: Text(
+                                    shop.shopName,
+                                    style: AppText.style.titleMedium!.copyWith(
+                                      color: AppColor.colorPrimary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        AppSize.gapW10,
-                        CustomStatusBadge(
-                          status: shop.status ? AppText.open : AppText.close,
-                          isBorder: false,
-                          fontSize: 11,
-                        ),
-                      ],
-                    ),
-                    AppSize.gapH20,
-                    CustomCard(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          CustomTitleWithIconValue(
-                            title: AppText.owner,
-                            iconData: Icons.account_circle_outlined,
-                            value:
-                                '${shop.ownerFirstName} ${shop.ownerLastName}',
-                          ),
-                          const Divider(),
-                          CustomTitleWithIconValue(
-                            iconData: Icons.location_on,
-                            title: AppText.address,
-                            value: shop.shopAddress,
-                          ),
-                          const Divider(),
-                          CustomTitleWithIconValue(
-                            iconData: Icons.phone,
-                            title: AppText.phone,
-                            value: shop.shopPhone,
-                          ),
-                          const Divider(),
-                          CustomTitleWithIconValue(
-                            iconData: Icons.work_history_outlined,
-                            title: AppText.businessHours,
-                            value: '${shop.openTime} - ${shop.closeTime}',
-                          ),
-                          const Divider(),
-                          CustomTitleWithIconValue(
-                            iconData: Icons.money,
-                            title: AppText.deliveryCharge,
-                            value:
-                                '${shop.deliveryCharge} ${AppText.bdtCapital}',
+                          AppSize.gapW10,
+                          CustomStatusBadge(
+                            status: shop.status ? AppText.open : AppText.close,
+                            isBorder: false,
+                            fontSize: 11,
                           ),
                         ],
                       ),
-                    ),
-                    AppSize.gapH20,
+                      AppSize.gapH20,
+                      CustomCard(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            CustomTitleWithIconValue(
+                              title: AppText.owner,
+                              iconData: Icons.account_circle_outlined,
+                              value:
+                                  '${shop.ownerFirstName} ${shop.ownerLastName}',
+                            ),
+                            const Divider(),
+                            CustomTitleWithIconValue(
+                              iconData: Icons.location_on,
+                              title: AppText.address,
+                              value: shop.shopAddress,
+                            ),
+                            const Divider(),
+                            CustomTitleWithIconValue(
+                              iconData: Icons.phone,
+                              title: AppText.phone,
+                              value: shop.shopPhone,
+                            ),
+                            const Divider(),
+                            CustomTitleWithIconValue(
+                              iconData: Icons.work_history_outlined,
+                              title: AppText.businessHours,
+                              value: '${shop.openTime} - ${shop.closeTime}',
+                            ),
+                            const Divider(),
+                            CustomTitleWithIconValue(
+                              iconData: Icons.money,
+                              title: AppText.deliveryCharge,
+                              value:
+                                  '${shop.deliveryCharge} ${AppText.bdtCapital}',
+                            ),
+                          ],
+                        ),
+                      ),
+                      AppSize.gapH20,
 
-                    CustomTitledDivider(title: AppText.weekends),
-                    CustomWeekendSelector(initialSelectedDays: shop.weekends),
-                    AppSize.gapH20,
+                      CustomTitledDivider(title: AppText.weekends),
+                      CustomWeekendSelector(initialSelectedDays: shop.weekends),
+                      AppSize.gapH20,
 
-                    // Price List
-                    CustomTitledDivider(title: AppText.priceList),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final price = priceList[index];
-                        return PriceListItemCard(
-                          price: price,
-                          onItemChanged: (quantity, isIronPressed) {
-                            setState(() {
-                              if (quantity > 0) {
-                                final hasDiscount =
-                                    price.discountPrice > 0 &&
-                                    price.discountPrice < price.price;
-                                final effectivePrice = hasDiscount
-                                    ? (price.price - price.discountPrice)
-                                    : price.price;
+                      // Price List
+                      CustomTitledDivider(title: AppText.priceList),
+                      CustomFieldPrimary(
+                        controller: _searchController,
+                        textInputType: TextInputType.text,
+                        textInputAction: TextInputAction.search,
+                        label: AppText.search,
+                        isRequired: false,
+                        prefixWidget: const Icon(Icons.search),
+                        onChanged: (query) =>
+                            context.read<ShopDetailsUserBloc>().add(
+                              ShopDetailsUserEventFetch(
+                                shopId: state.shopId,
+                                query: query,
+                                debounce: true,
+                                fetchDetails: false,
+                              ),
+                            ),
+                      ),
+                      AppSize.gapH15,
+                      if (priceList.isEmpty && state.loadMoreError.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(25),
+                          child: Text(state.loadMoreError),
+                        ),
+                      if (priceList.isEmpty &&
+                          state.loadMoreError.isEmpty &&
+                          state.search.isNotEmpty)
+                        Padding(
+                          padding: AppSize.paddingAll25,
+                          child: Text(
+                            AppText.noResultsFound,
+                            style: AppText.style.bodySmall,
+                          ),
+                        ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final price = priceList[index];
+                          return PriceListItemCard(
+                            key: ValueKey(price.id),
+                            price: price,
+                            onItemChanged: (quantity, isIronPressed) {
+                              setState(() {
+                                if (quantity > 0) {
+                                  final hasDiscount =
+                                      price.discountPrice > 0 &&
+                                      price.discountPrice < price.price;
+                                  final effectivePrice = hasDiscount
+                                      ? (price.price - price.discountPrice)
+                                      : price.price;
 
-                                _cartItems[price.id] = CartData(
-                                  priceId: price.id,
-                                  quantity: quantity,
-                                  isIronPress: isIronPressed,
-                                  unitPrice: effectivePrice,
-                                  ironPressPrice: price.ironPressPrice,
-                                  serviceName: price.serviceName,
-                                  itemName: price.itemName,
-                                );
-                              } else {
-                                _cartItems.remove(price.id);
-                              }
-                            });
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return AppSize.gapH10;
-                      },
-                      itemCount: priceList.length,
-                    ),
-                    AppSize.gapH35,
-                  ],
+                                  _cartItems[price.id] = CartData(
+                                    priceId: price.id,
+                                    quantity: quantity,
+                                    isIronPress: isIronPressed,
+                                    unitPrice: effectivePrice,
+                                    ironPressPrice: price.ironPressPrice,
+                                    serviceName: price.serviceName,
+                                    itemName: price.itemName,
+                                  );
+                                } else {
+                                  _cartItems.remove(price.id);
+                                }
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return AppSize.gapH10;
+                        },
+                        itemCount: priceList.length,
+                      ),
+                      if (priceList.isNotEmpty) ...[
+                        AppSize.gapH15,
+                        CustomPaginationFooter(
+                          hasMore: state.hasMore,
+                          isLoadingMore: state.isLoadingMore,
+                          textLoadMoreError: state.loadMoreError,
+                          onLoadMore: () => context
+                              .read<ShopDetailsUserBloc>()
+                              .add(ShopDetailsUserEventLoadMore()),
+                        ),
+                      ],
+                      AppSize.gapH35,
+                    ],
+                  ),
                 ),
               );
             } else if (state is ShopDetailsUserStateLoading) {
@@ -305,7 +382,9 @@ class _PriceListItemCardState extends State<PriceListItemCard> {
                       children: [
                         Text(
                           "${AppText.unitPrice}: ",
-                          style: AppText.style.titleMedium?.copyWith(fontSize: 16),
+                          style: AppText.style.titleMedium?.copyWith(
+                            fontSize: 16,
+                          ),
                         ),
                         Text(
                           "${effectivePrice.toStringAsFixed(2)} ${AppText.bdtCapital}",
@@ -368,7 +447,11 @@ class _PriceListItemCardState extends State<PriceListItemCard> {
                             borderRadius: AppSize.borderRadiusAll10,
                             onTap: _increment,
                             child: const Center(
-                              child: Icon(Icons.add, color: Colors.black, size: 20),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.black,
+                                size: 20,
+                              ),
                             ),
                           ),
                         )
@@ -449,16 +532,10 @@ class _PriceListItemCardState extends State<PriceListItemCard> {
 
           ExpansionTile(
             splashColor: Colors.transparent,
-            title: Text(
-              AppText.description,
-              style: AppText.style.titleSmall,
-            ),
+            title: Text(AppText.description, style: AppText.style.titleSmall),
             children: [
               ListTile(
-                title: Text(
-                  price.description,
-                  style: AppText.style.bodyMedium,
-                ),
+                title: Text(price.description, style: AppText.style.bodyMedium),
               ),
             ],
           ),

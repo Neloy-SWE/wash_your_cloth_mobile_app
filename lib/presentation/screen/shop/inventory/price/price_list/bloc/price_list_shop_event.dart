@@ -12,7 +12,17 @@ sealed class PriceListShopEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class PriceListShopEventFetch extends PriceListShopEvent {}
+class PriceListShopEventFetch extends PriceListShopEvent {
+  final String? query;
+  final bool debounce;
+
+  const PriceListShopEventFetch({this.query, this.debounce = false});
+
+  @override
+  List<Object?> get props => [query, debounce];
+}
+
+class PriceListShopEventLoadMore extends PriceListShopEvent {}
 
 class PriceListShopEventActivation extends PriceListShopEvent {
   final String priceId;

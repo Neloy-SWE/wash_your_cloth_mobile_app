@@ -9,10 +9,15 @@ import '../../../client/client.dart';
 import '../../../client/client_constant.dart';
 import '../../../model/model_error.dart';
 import '../../../model/model_order_list.dart';
+import '../../../model/model_paged_list.dart';
 import '../../api_path.dart';
 
 abstract class IApiGetOrderList {
-  Future<(List<ModelOrderList>?, ModelError?)> getOrderList();
+  Future<(ModelPagedList<ModelOrderList>?, ModelError?)> getOrderList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 }
 
 class ApiGetOrderList implements IApiGetOrderList {
@@ -21,13 +26,26 @@ class ApiGetOrderList implements IApiGetOrderList {
   const ApiGetOrderList({required this.client});
 
   @override
-  Future<(List<ModelOrderList>?, ModelError?)> getOrderList() async {
+  Future<(ModelPagedList<ModelOrderList>?, ModelError?)> getOrderList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      Response response = await client.request.get(ApiPath.orderList);
+      Response response = await client.request.get(
+        ApiPath.orderList,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
+        },
+      );
 
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelOrderList = List<ModelOrderList>.from(
-          response.data.map((x) => ModelOrderList.fromJson(x)),
+        var modelOrderList = ModelPagedList<ModelOrderList>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          ModelOrderList.fromJson,
         );
 
         return (modelOrderList, null);

@@ -12,7 +12,17 @@ sealed class ItemListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ItemListEventFetch extends ItemListEvent {}
+class ItemListEventFetch extends ItemListEvent {
+  final String? query;
+  final bool debounce;
+
+  const ItemListEventFetch({this.query, this.debounce = false});
+
+  @override
+  List<Object?> get props => [query, debounce];
+}
+
+class ItemListEventLoadMore extends ItemListEvent {}
 
 class ItemListEventActivation extends ItemListEvent {
   final String itemId;
@@ -27,10 +37,7 @@ class ItemListEventUpdate extends ItemListEvent {
   final String itemName;
   final String itemId;
 
-  const ItemListEventUpdate({
-    required this.itemName,
-    required this.itemId,
-  });
+  const ItemListEventUpdate({required this.itemName, required this.itemId});
 
   @override
   List<Object?> get props => [itemName, itemId];

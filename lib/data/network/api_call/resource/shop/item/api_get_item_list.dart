@@ -9,10 +9,15 @@ import '../../../../../client/client.dart';
 import '../../../../../client/client_constant.dart';
 import '../../../../../model/model_error.dart';
 import '../../../../../model/model_item_list.dart';
+import '../../../../../model/model_paged_list.dart';
 import '../../../../api_path.dart';
 
 abstract class IApiGetItemList {
-  Future<(List<ModelItemList>?, ModelError?)> getItemList();
+  Future<(ModelPagedList<ModelItemList>?, ModelError?)> getItemList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 }
 
 class ApiGetItemList implements IApiGetItemList {
@@ -21,12 +26,25 @@ class ApiGetItemList implements IApiGetItemList {
   const ApiGetItemList({required this.client});
 
   @override
-  Future<(List<ModelItemList>?, ModelError?)> getItemList() async {
+  Future<(ModelPagedList<ModelItemList>?, ModelError?)> getItemList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      Response response = await client.request.get(ApiPath.itemList);
+      Response response = await client.request.get(
+        ApiPath.itemList,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
+        },
+      );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelItemList = List<ModelItemList>.from(
-          response.data.map((x) => ModelItemList.fromJson(x)),
+        var modelItemList = ModelPagedList<ModelItemList>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          ModelItemList.fromJson,
         );
         return (modelItemList, null);
       } else {

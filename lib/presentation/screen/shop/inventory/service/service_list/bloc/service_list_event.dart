@@ -12,7 +12,17 @@ sealed class ServiceListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ServiceListEventFetch extends ServiceListEvent {}
+class ServiceListEventFetch extends ServiceListEvent {
+  final String? query;
+  final bool debounce;
+
+  const ServiceListEventFetch({this.query, this.debounce = false});
+
+  @override
+  List<Object?> get props => [query, debounce];
+}
+
+class ServiceListEventLoadMore extends ServiceListEvent {}
 
 class ServiceListEventActivation extends ServiceListEvent {
   final String serviceId;

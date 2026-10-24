@@ -1,3 +1,8 @@
+/*
+Created by Neloy on 23 October, 2026.
+Email: taufiqneloy.swe@gmail.com
+*/
+
 import 'dart:async';
 
 class AuthSessionExpiryNotifier {

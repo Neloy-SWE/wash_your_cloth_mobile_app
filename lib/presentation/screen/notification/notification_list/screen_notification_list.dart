@@ -9,10 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_card.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_icon_frame.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_not_found.dart';
 import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_snack_bar.dart';
 
-import '../../../../data/model/model_notification_list.dart';
+import '../../../../data/model/model_notification_item.dart';
 import '../../../../presentation/bloc_global/global_bloc.dart';
 import '../../../../presentation/screen/notification/bloc/notification_status_bloc.dart';
 import '../../../../router/app_router.dart';
@@ -21,10 +20,24 @@ import '../../../../utilities/app_constant.dart';
 import '../../../../utilities/app_size.dart';
 import '../../../../utilities/app_text.dart';
 import '../../../custom_widget/custom_pagination_footer.dart';
+import '../../../custom_widget/custom_text_field.dart';
 import 'bloc/notification_list_bloc.dart';
 
-class ScreenNotificationList extends StatelessWidget {
+class ScreenNotificationList extends StatefulWidget {
   const ScreenNotificationList({super.key});
+
+  @override
+  State<ScreenNotificationList> createState() => _ScreenNotificationListState();
+}
+
+class _ScreenNotificationListState extends State<ScreenNotificationList> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +97,13 @@ class ScreenNotificationList extends StatelessWidget {
         body: SafeArea(
           child: BlocBuilder<NotificationListBloc, NotificationListState>(
             builder: (context, state) {
-              if (state.isLoading && state.notifications.isEmpty) {
+              if (state.isLoading && !state.hasLoaded) {
                 return Center(
                   child: CircularProgressIndicator(
                     color: AppColor.colorPrimary,
                   ),
                 );
               }
-              if (state.error.isNotEmpty && state.notifications.isEmpty) {
-                return CustomNotFound();
-              }
-
               return RefreshIndicator(
                 color: AppColor.colorPrimary,
                 onRefresh: () async {
@@ -103,18 +112,56 @@ class ScreenNotificationList extends StatelessWidget {
                   final fetchStarted = bloc.stream.firstWhere(
                     (next) => next.isLoading,
                   );
-                  bloc.add(NotificationListEventFetch());
+                  bloc.add(
+                    NotificationListEventFetch(query: _searchController.text),
+                  );
                   await fetchStarted;
                   await bloc.stream.firstWhere((next) => !next.isLoading);
                 },
                 child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: AppSize.paddingAll25,
                   child: Column(
                     children: [
                       notificationHeader(totalCount: state.totalItem),
                       AppSize.gapH35,
+                      CustomFieldPrimary(
+                        controller: _searchController,
+                        textInputType: TextInputType.text,
+                        textInputAction: TextInputAction.search,
+                        label: AppText.search,
+                        isRequired: false,
+                        prefixWidget: const Icon(Icons.search),
+                        onChanged: (query) =>
+                            context.read<NotificationListBloc>().add(
+                              NotificationListEventFetch(
+                                query: query,
+                                debounce: true,
+                              ),
+                            ),
+                      ),
+                      if (state.isLoading) ...[
+                        AppSize.gapH10,
+                        LinearProgressIndicator(
+                          color: AppColor.colorPrimary,
+                          backgroundColor: AppColor.colorPrimary.withValues(
+                            alpha: 0.15,
+                          ),
+                        ),
+                      ],
+                      AppSize.gapH20,
                       if (state.notifications.isEmpty) ...[
-                        emptyView(),
+                        state.error.isNotEmpty
+                            ? Text(state.error)
+                            : state.search.isNotEmpty
+                            ? Padding(
+                                padding: AppSize.paddingAll25,
+                                child: Text(
+                                  AppText.noResultsFound,
+                                  style: AppText.style.bodySmall,
+                                ),
+                              )
+                            : emptyView(),
                       ] else ...[
                         ListView.separated(
                           itemCount: state.notifications.length,
@@ -228,6 +275,7 @@ class ScreenNotificationList extends StatelessWidget {
       colorBorder: unread
           ? AppColor.colorBoarderUnread
           : AppColor.colorBorderCard,
+      needBoxShadow: false,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

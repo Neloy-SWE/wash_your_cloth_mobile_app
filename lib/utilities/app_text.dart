@@ -152,4 +152,5 @@ class AppText {
   static const String receivedOrderQuestion = "Confirm that you have received this order?";
   static const String logoutMessage = "Log out from all devices?";
   static const String sessionExpireMessage = "Your current session is expire. Please login again";
+  static const String noResultsFound = "No results found!";
 }

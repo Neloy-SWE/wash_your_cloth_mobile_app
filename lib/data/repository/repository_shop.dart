@@ -8,19 +8,27 @@ import 'package:wash_your_cloth_mobile_app/data/network/api_call/resource/user/a
 
 import '../model/model_shop_details.dart';
 import '../model/model_shop_list.dart';
+import '../model/model_paged_list.dart';
 import '../network/api_call/shop/api_get_shop_list.dart';
 import '../network/api_call/shop/user/api_get_shop_details_user.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryShop {
-  Future<UseCaseGeneric<List<ModelShopList>>> getShopList();
+  Future<UseCaseGeneric<ModelPagedList<ModelShopList>>> getShopList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 
   Future<UseCaseGeneric<ModelShopDetails>> getShopDetailsUser({
     required String shopId,
   });
 
-  Future<UseCaseGeneric<List<ModelPriceListUser>>> getPriceListUser({
+  Future<UseCaseGeneric<ModelPagedList<ModelPriceListUser>>> getPriceListUser({
     required String shopId,
+    required int currentPage,
+    required int pageSize,
+    String? search,
   });
 }
 
@@ -36,9 +44,17 @@ class RepositoryShop implements IRepositoryShop {
   });
 
   @override
-  Future<UseCaseGeneric<List<ModelShopList>>> getShopList() async {
+  Future<UseCaseGeneric<ModelPagedList<ModelShopList>>> getShopList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      var (modelSopList, modelError) = await apiGetShopList.getShopList();
+      var (modelSopList, modelError) = await apiGetShopList.getShopList(
+        currentPage: currentPage,
+        pageSize: pageSize,
+        search: search,
+      );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelSopList);
       } else {
@@ -67,12 +83,20 @@ class RepositoryShop implements IRepositoryShop {
   }
 
   @override
-  Future<UseCaseGeneric<List<ModelPriceListUser>>> getPriceListUser({
+  Future<UseCaseGeneric<ModelPagedList<ModelPriceListUser>>> getPriceListUser({
     required String shopId,
+    required int currentPage,
+    required int pageSize,
+    String? search,
   }) async {
     try {
       var (modelPriceListUser, modelError) = await apiGetPriceListUser
-          .getPriceList(shopId: shopId);
+          .getPriceList(
+            shopId: shopId,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            search: search,
+          );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelPriceListUser);
       } else {

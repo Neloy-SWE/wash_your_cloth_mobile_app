@@ -367,10 +367,6 @@ class MyApp extends StatelessWidget {
                   );
                   if (!state.deferRedirectUntilResultDismissed) {
                     AppRouter.door.go(AppRouter.screenRole);
-                    CustomSnackBar.primary(
-                      context: context,
-                      contentText: AppText.sessionExpireMessage,
-                    );
                   }
                 },
                 child: MediaQuery(
