@@ -3,8 +3,9 @@ Created by Neloy on 20 October, 2026.
 Email: taufiqneloy.swe@gmail.com
 */
 
-import '../model/model_notification_list.dart';
+import '../model/model_notification_item.dart';
 import '../model/model_error.dart';
+import '../model/model_paged_list.dart';
 import '../network/api_call/notification/api_get_notification_list.dart';
 import '../network/api_call/notification/api_get_notification_unread_count.dart';
 import '../network/api_call/notification/api_notification_mark_read.dart';
@@ -12,9 +13,10 @@ import '../use_case/use_case_generic.dart';
 import '../client/client_constant.dart';
 
 abstract class IRepositoryNotification {
-  Future<UseCaseGeneric<ModelNotificationList>> getList({
+  Future<UseCaseGeneric<ModelPagedList<NotificationItem>>> getList({
     required int currentPage,
     required int pageSize,
+    String? search,
   });
 
   Future<UseCaseGeneric<int>> getUnreadCount();
@@ -34,15 +36,20 @@ class RepositoryNotification implements IRepositoryNotification {
   });
 
   @override
-  Future<UseCaseGeneric<ModelNotificationList>> getList({
+  Future<UseCaseGeneric<ModelPagedList<NotificationItem>>> getList({
     required int currentPage,
     required int pageSize,
+    String? search,
   }) async {
     try {
-      var (modelNotificationList, modelError) = await apiGetNotificationList
-          .getList(currentPage: currentPage, pageSize: pageSize);
+      var (pagedNotifications, modelError) = await apiGetNotificationList
+          .getList(
+            currentPage: currentPage,
+            pageSize: pageSize,
+            search: search,
+          );
       if (modelError == null) {
-        return UseCaseGeneric(isSuccess: true, data: modelNotificationList);
+        return UseCaseGeneric(isSuccess: true, data: pagedNotifications);
       } else {
         return UseCaseGeneric.fromModelError(modelError);
       }

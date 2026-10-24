@@ -12,7 +12,15 @@ sealed class NotificationListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class NotificationListEventFetch extends NotificationListEvent {}
+class NotificationListEventFetch extends NotificationListEvent {
+  final String? query;
+  final bool debounce;
+
+  const NotificationListEventFetch({this.query, this.debounce = false});
+
+  @override
+  List<Object?> get props => [query, debounce];
+}
 
 class NotificationListEventLoadMore extends NotificationListEvent {}
 

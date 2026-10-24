@@ -11,7 +11,7 @@ import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import '../../../../data/client/auth_session_expiry_notifier.dart';
 import '../../../../data/client/client_constant.dart';
 import '../../../../data/local/local_storage_service.dart';
-import '../../../../data/model/model_notification_list.dart';
+import '../../../../data/model/model_notification_item.dart';
 import '../../../../data/repository/repository_notification.dart';
 
 part 'notification_status_event.dart';
