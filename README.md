@@ -43,8 +43,7 @@ Online laundry marketplace that connects customers with local laundry service pr
     flutter run
     ```
 
-## Project Structure
-    ```bash
+## Project Structure        
     │   main.dart
     │   
     ├───data
@@ -467,4 +466,3 @@ Online laundry marketplace that connects customers with local laundry service pr
             app_text_formatter.dart
             app_theme.dart
             app_validator.dart
-    ```
