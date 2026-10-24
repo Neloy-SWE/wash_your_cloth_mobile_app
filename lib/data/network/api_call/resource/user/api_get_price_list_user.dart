@@ -9,11 +9,15 @@ import '../../../../client/client.dart';
 import '../../../../client/client_constant.dart';
 import '../../../../model/model_error.dart';
 import '../../../../model/model_price_list_user.dart';
+import '../../../../model/model_paged_list.dart';
 import '../../../api_path.dart';
 
 abstract class IApiGetPriceListUser {
-  Future<(List<ModelPriceListUser>?, ModelError?)> getPriceList({
+  Future<(ModelPagedList<ModelPriceListUser>?, ModelError?)> getPriceList({
     required String shopId,
+    required int currentPage,
+    required int pageSize,
+    String? search,
   });
 }
 
@@ -23,16 +27,26 @@ class ApiGetPriceListUser implements IApiGetPriceListUser {
   const ApiGetPriceListUser({required this.client});
 
   @override
-  Future<(List<ModelPriceListUser>?, ModelError?)> getPriceList({
+  Future<(ModelPagedList<ModelPriceListUser>?, ModelError?)> getPriceList({
     required String shopId,
+    required int currentPage,
+    required int pageSize,
+    String? search,
   }) async {
     try {
       Response response = await client.request.get(
         ApiPath.priceListUser + shopId,
+        queryParameters: {
+          ClientConstant.currentPage: currentPage,
+          ClientConstant.pageSize: pageSize,
+          if (search?.trim().isNotEmpty == true)
+            ClientConstant.search: search!.trim(),
+        },
       );
       if (response.statusCode == ClientConstant.statusCode200OK) {
-        var modelPriceListUser = List<ModelPriceListUser>.from(
-          response.data.map((x) => ModelPriceListUser.fromJson(x)),
+        var modelPriceListUser = ModelPagedList<ModelPriceListUser>.fromJson(
+          Map<String, dynamic>.from(response.data as Map),
+          ModelPriceListUser.fromJson,
         );
         return (modelPriceListUser, null);
       } else {
