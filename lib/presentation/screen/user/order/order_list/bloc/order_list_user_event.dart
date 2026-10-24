@@ -12,4 +12,14 @@ sealed class OrderListUserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class OrderListUserEventFetch extends OrderListUserEvent {}
+class OrderListUserEventFetch extends OrderListUserEvent {
+  final String? query;
+  final bool debounce;
+
+  const OrderListUserEventFetch({this.query, this.debounce = false});
+
+  @override
+  List<Object?> get props => [query, debounce];
+}
+
+class OrderListUserEventLoadMore extends OrderListUserEvent {}

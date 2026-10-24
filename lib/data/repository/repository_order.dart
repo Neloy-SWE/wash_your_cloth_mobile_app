@@ -7,6 +7,7 @@ import '../../utilities/app_constant.dart';
 import '../model/model_order_details_shop.dart';
 import '../model/model_order_details_user.dart';
 import '../model/model_order_list.dart';
+import '../model/model_paged_list.dart';
 import '../network/api_call/order/shop/api_get_order_details_shop.dart';
 import '../network/api_call/order/user/api_get_order_details_user.dart';
 import '../network/api_call/order/api_get_order_list.dart';
@@ -16,7 +17,11 @@ import '../use_case/order/use_case_order_place.dart';
 import '../use_case/use_case_generic.dart';
 
 abstract class IRepositoryOrder {
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderList();
+  Future<UseCaseGeneric<ModelPagedList<ModelOrderList>>> getOrderList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  });
 
   Future<UseCaseGeneric<ModelOrderDetailsUser>> getOrderDetailsUser({
     required String orderId,
@@ -50,9 +55,17 @@ class RepositoryOrder implements IRepositoryOrder {
   });
 
   @override
-  Future<UseCaseGeneric<List<ModelOrderList>>> getOrderList() async {
+  Future<UseCaseGeneric<ModelPagedList<ModelOrderList>>> getOrderList({
+    required int currentPage,
+    required int pageSize,
+    String? search,
+  }) async {
     try {
-      var (modelOrderList, modelError) = await apiGetOrderList.getOrderList();
+      var (modelOrderList, modelError) = await apiGetOrderList.getOrderList(
+        currentPage: currentPage,
+        pageSize: pageSize,
+        search: search,
+      );
       if (modelError == null) {
         return UseCaseGeneric(isSuccess: true, data: modelOrderList);
       } else {
