@@ -8,7 +8,7 @@ Online laundry marketplace that connects customers with local laundry service pr
 
 ## Tool & Technologies
 1. Framework: flutter-3.41.9
-2. Programming Language: Dart-3.41.9
+2. Programming Language: Dart-3.11.5
 
 ## Packages
 1. dio: ^5.9.2
