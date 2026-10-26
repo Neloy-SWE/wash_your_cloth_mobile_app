@@ -1,6 +1,10 @@
 # Wash Your Cloth Mobile App
-
 Online laundry marketplace that connects customers with local laundry service providers.
+
+## Features
+- session based authentication that support multiple devices login.
+- order management for both customer and laundry service provider.
+- shop inventory management for laundry service provider.
 
 ## Tool & Technologies
 1. Framework: flutter-3.41.9
@@ -466,3 +470,41 @@ Online laundry marketplace that connects customers with local laundry service pr
             app_text_formatter.dart
             app_theme.dart
             app_validator.dart
+
+
+## Overview
+    splash screen.
+<p float="left">
+  <img src="screenshots/1.splash.png" width="200"  alt="initial"/>
+
+    role selection.
+<p float="left">
+  <img src="screenshots/2.roleSelect.png" width="200"  alt="initial"/>
+
+
+  
+### User Flow
+    user can register and login to the app.
+<p float="left">
+  <img src="screenshots/3.1.login.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/3.2.userReg.png" width="200"  alt="initial"/>
+
+    user can view shop list and shop details. inside shop details user can find price list and can add items to cart. from the cart, user can place order for laundry services.
+<p float="left">
+  <img src="screenshots/user/5.shopList.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/5.1.shopDetails.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/5.2.priceList.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/5.3.selectOrder.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/6.1.cartView.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/6.2.cartOrderPlace.png" width="200"  alt="initial"/>
+
+    user can view order list and order details.
+<p float="left">
+  <img src="screenshots/4.orderList.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/4.1.orderDetails.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/4.2.orderItems.png" width="200"  alt="initial"/>
+
+    user can view and update profile.
+<p float="left">
+  <img src="screenshots/user/7.userProfile.png" width="200"  alt="initial"/>
+  <img src="screenshots/user/7.1.update.png" width="200"  alt="initial"/>
