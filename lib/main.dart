@@ -5,10 +5,6 @@ Email: taufiqneloy.swe@gmail.com
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wash_your_cloth_mobile_app/data/network/api_call/notification/api_get_notification_list.dart';
-import 'package:wash_your_cloth_mobile_app/data/repository/repository_notification.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/custom_widget/custom_snack_bar.dart';
-import 'package:wash_your_cloth_mobile_app/presentation/screen/notification/bloc/notification_status_bloc.dart';
 
 import 'data/client/client.dart';
 import 'data/client/auth_session_expiry_notifier.dart';
@@ -20,6 +16,7 @@ import 'data/network/api_call/authentication/api_logout.dart';
 import 'data/network/api_call/authentication/api_otp_verify.dart';
 import 'data/network/api_call/authentication/api_refresh_token.dart';
 import 'data/network/api_call/authentication/api_registration.dart';
+import 'data/network/api_call/notification/api_get_notification_list.dart';
 import 'data/network/api_call/notification/api_get_notification_unread_count.dart';
 import 'data/network/api_call/notification/api_notification_mark_read.dart';
 import 'data/network/api_call/order/shop/api_get_order_details_shop.dart';
@@ -47,11 +44,13 @@ import 'data/network/api_call/resource/user/api_get_price_list_user.dart';
 import 'data/network/api_call/shop/api_get_shop_list.dart';
 import 'data/network/api_call/shop/user/api_get_shop_details_user.dart';
 import 'data/repository/repository_authentication.dart';
+import 'data/repository/repository_notification.dart';
 import 'data/repository/repository_order.dart';
 import 'data/repository/repository_profile.dart';
 import 'data/repository/repository_shop.dart';
 import 'data/repository/repository_shop_inventory.dart';
 import 'presentation/bloc_global/global_bloc.dart';
+import 'presentation/screen/notification/bloc/notification_status_bloc.dart';
 import 'presentation/screen/shop/order/order_list/bloc/order_list_shop_bloc.dart';
 import 'presentation/screen/authentication/logout/bloc/logout_bloc.dart';
 import 'presentation/screen/user/order/order_list/bloc/order_list_user_bloc.dart';
