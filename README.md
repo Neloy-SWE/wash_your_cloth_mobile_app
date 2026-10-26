@@ -489,6 +489,10 @@ Online laundry marketplace that connects customers with local laundry service pr
   <img src="screenshots/3.1.login.png" width="200"  alt="initial"/>
   <img src="screenshots/user/3.2.userReg.png" width="200"  alt="initial"/>
 
+- whenever a new user registers, change password or update phone number, user need to verify the action by providing OTP sent to the registered phone number.
+<p float="left">
+  <img src="screenshots/17.otp.png" width="200"  alt="initial"/>
+
 - user can view shop list and shop details. inside shop details user can find price list and can add items to cart. from the cart, user can place order for laundry services.
 <p float="left">
   <img src="screenshots/user/5.shopList.png" width="200"  alt="initial"/>
@@ -508,3 +512,62 @@ Online laundry marketplace that connects customers with local laundry service pr
 <p float="left">
   <img src="screenshots/user/7.userProfile.png" width="200"  alt="initial"/>
   <img src="screenshots/user/7.1.update.png" width="200"  alt="initial"/>
+
+### Shop Flow
+- shop can register and login to the app.
+<p float="left">
+  <img src="screenshots/3.1.login.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/3.2.1.shopReg.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/3.2.2.shopReg.png" width="200"  alt="initial"/>
+
+- shop can view its own order list and order details. shop can update order status from order details.
+<p float="left">
+  <img src="screenshots/4.orderList.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/10.1.orderDetails.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/10.2.orderStatusUpdate.png" width="200"  alt="initial"/>
+
+- shop can manage its own inventory. shop can add, update and activate/deactivate items, prices and services. activation/deactivation of either service or item will be responsible to show/hide the corresponding price from price list for the user. shop can show/hide the price by activating/deactivating the price as well.
+<p float="left">
+  <img src="screenshots/shop/12.1.priceList.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/12.2.addPrice.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/12.3.updatePrice.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/13.1.serviceList.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/13.2.seviceAdd.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/13.3.serviceUpdate.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/14.1.itemList.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/14.2.itemAdd.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/14.3.itemUpdate.png" width="200"  alt="initial"/>
+
+- shop can view and update profile.
+<p float="left">
+  <img src="screenshots/shop/15.1.shopProfile.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/15.2.shopDetails.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/15.3.shopUpdate.png" width="200"  alt="initial"/>
+  <img src="screenshots/shop/15.4.shopUpdateMore.png" width="200"  alt="initial"/>
+
+- there are also some common features for both user and shop like change password, change phone number and notification list.
+<p float="left">
+  <img src="screenshots/8.phoneUpdate.png" width="200"  alt="initial"/>
+  <img src="screenshots/9.passwordUpdate.png" width="200"  alt="initial"/>
+
+- user notification list.
+<p float="left">
+  <img src="screenshots/user/16.notification.png" width="200"  alt="initial"/>
+
+- shop notification list.
+<p float="left">
+  <img src="screenshots/shop/11.1.notification.png" width="200"  alt="initial"/>
+
+
+## Future Improvements
+- implement payment gateway for order payment.
+- latitude and longitude based location pick show shop list for user.
+- implement order tracking for user.
+- chat facility between user and shop.
+- include convenient time details during order placement to pick up and delivery for user.
+
+## Support
+If you find this repository useful, consider giving it a star.
+
+For feedbacks or suggestions:
+Email: taufiqneloy.swe@gmail.com
