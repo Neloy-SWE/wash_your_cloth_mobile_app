@@ -571,3 +571,5 @@ If you find this repository useful, consider giving it a star.
 
 For feedbacks or suggestions:
 Email: taufiqneloy.swe@gmail.com
+
+lets connect on [LinkedIn](https://www.linkedin.com/in/taufiq-ahommed-neloy/)
