@@ -4,7 +4,7 @@ Email: taufiqneloy.swe@gmail.com
 */
 
 class ClientConstant {
-  static const String baseUrl = "http://192.168.0.105:5000";
+  static const String baseUrl = "your_base_url";
 
   // status code:
   static const int statusCode200OK = 200;
